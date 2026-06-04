@@ -81,9 +81,15 @@ body {
 }
 
 .nav-plan.free {
-  background: rgba(139, 92, 246, 0.1);
-  border: 0.5px solid rgba(139, 92, 246, 0.3);
-  color: #a78bfa;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #f59e0b, #ec4899);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  border: 0.5px solid rgba(236, 72, 153, 0.3);
 }
 
 .nav-plan.premium {
