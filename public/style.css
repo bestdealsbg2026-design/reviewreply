@@ -5,15 +5,12 @@
 }
 
 body {
-  font-family: "Segoe UI", sans-serif;
+  font-family: "Times New Roman", Times, serif;
   background: #070710;
   color: #fff;
   overflow-x: hidden;
 }
 
-/* ===================== */
-/* NAVBAR */
-/* ===================== */
 .rr-nav {
   display: flex;
   justify-content: space-between;
@@ -53,7 +50,7 @@ body {
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  font-family: "Segoe UI", sans-serif;
+  font-family: "Times New Roman", Times, serif;
 }
 
 .nav-btn.outline {
@@ -70,7 +67,11 @@ body {
 
 .nav-email {
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.55);
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  font-weight: 500;
 }
 
 .nav-plan {
@@ -81,9 +82,9 @@ body {
 }
 
 .nav-plan.free {
-  background: rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.6);
-  border: 0.5px solid rgba(255, 255, 255, 0.15);
+  background: rgba(139, 92, 246, 0.1);
+  border: 0.5px solid rgba(139, 92, 246, 0.3);
+  color: #a78bfa;
 }
 
 .nav-plan.premium {
@@ -96,9 +97,6 @@ body {
   display: none;
 }
 
-/* ===================== */
-/* HERO */
-/* ===================== */
 .rr-hero {
   text-align: center;
   padding: 80px 40px 60px;
@@ -180,7 +178,7 @@ body {
   border-radius: 10px;
   font-size: 15px;
   cursor: pointer;
-  font-family: "Segoe UI", sans-serif;
+  font-family: "Times New Roman", Times, serif;
   font-weight: 600;
 }
 
@@ -196,12 +194,9 @@ body {
   border-radius: 10px;
   font-size: 15px;
   cursor: pointer;
-  font-family: "Segoe UI", sans-serif;
+  font-family: "Times New Roman", Times, serif;
 }
 
-/* ===================== */
-/* SECTIONS */
-/* ===================== */
 .rr-section {
   max-width: 680px;
   margin: 0 auto 60px;
@@ -224,9 +219,6 @@ body {
   margin-bottom: 28px;
 }
 
-/* ===================== */
-/* APP CARD */
-/* ===================== */
 .demo-inner {
   background: rgba(255, 255, 255, 0.04);
   border: 0.5px solid rgba(255, 255, 255, 0.1);
@@ -277,7 +269,6 @@ body {
   gap: 16px;
   margin-bottom: 16px;
 }
-
 .app-field.half {
   flex: 1;
   margin-bottom: 0;
@@ -292,7 +283,7 @@ select {
   border-radius: 10px;
   font-size: 14px;
   color: #fff;
-  font-family: "Segoe UI", sans-serif;
+  font-family: "Times New Roman", Times, serif;
   outline: none;
   resize: vertical;
 }
@@ -300,12 +291,10 @@ select {
 textarea {
   min-height: 120px;
 }
-
 textarea:focus,
 select:focus {
   border-color: rgba(139, 92, 246, 0.5);
 }
-
 select option {
   background: #1e1b4b;
   color: #fff;
@@ -322,7 +311,7 @@ select option {
   font-weight: 700;
   cursor: pointer;
   margin-bottom: 16px;
-  font-family: "Segoe UI", sans-serif;
+  font-family: "Times New Roman", Times, serif;
 }
 
 .loading {
@@ -349,7 +338,7 @@ select option {
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  font-family: "Segoe UI", sans-serif;
+  font-family: "Times New Roman", Times, serif;
 }
 
 .output-box {
@@ -364,9 +353,6 @@ select option {
   color: rgba(255, 255, 255, 0.8);
 }
 
-/* ===================== */
-/* STARS */
-/* ===================== */
 .stars {
   display: flex;
   gap: 6px;
@@ -383,9 +369,6 @@ select option {
   transform: scale(1.1);
 }
 
-/* ===================== */
-/* STATS */
-/* ===================== */
 .stats-box {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -416,9 +399,6 @@ select option {
   margin-top: 6px;
 }
 
-/* ===================== */
-/* PRICING */
-/* ===================== */
 .pricing-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -442,7 +422,6 @@ select option {
   border-color: rgba(16, 185, 129, 0.45);
   background: rgba(16, 185, 129, 0.1);
 }
-
 .free-top-bar {
   position: absolute;
   top: 0;
@@ -451,7 +430,6 @@ select option {
   height: 2px;
   background: linear-gradient(90deg, #059669, #34d399);
 }
-
 .free-badge {
   display: inline-block;
   background: rgba(16, 185, 129, 0.2);
@@ -467,7 +445,6 @@ select option {
   border-color: rgba(139, 92, 246, 0.45);
   background: rgba(139, 92, 246, 0.08);
 }
-
 .price-card.featured::before {
   content: "";
   position: absolute;
@@ -477,12 +454,10 @@ select option {
   height: 2px;
   background: linear-gradient(90deg, #6366f1, #8b5cf6, #a78bfa);
 }
-
 .price-card.yearly-card {
   border-color: rgba(236, 72, 153, 0.35);
   background: rgba(236, 72, 153, 0.06);
 }
-
 .price-card.yearly-card::before {
   content: "";
   position: absolute;
@@ -503,7 +478,6 @@ select option {
   border-radius: 100px;
   margin-bottom: 10px;
 }
-
 .save-badge {
   display: inline-block;
   background: rgba(236, 72, 153, 0.15);
@@ -522,7 +496,6 @@ select option {
   text-transform: uppercase;
   letter-spacing: 1px;
 }
-
 .price-amount {
   font-size: 32px;
   font-weight: 700;
@@ -530,13 +503,11 @@ select option {
   letter-spacing: -1px;
   line-height: 1;
 }
-
 .price-amount span {
   font-size: 13px;
   color: rgba(255, 255, 255, 0.35);
   font-weight: 400;
 }
-
 .price-desc {
   font-size: 12px;
   color: rgba(255, 255, 255, 0.35);
@@ -549,7 +520,6 @@ select option {
   margin-bottom: 20px;
   flex: 1;
 }
-
 .price-features li {
   font-size: 12px;
   color: rgba(255, 255, 255, 0.55);
@@ -559,7 +529,6 @@ select option {
   justify-content: center;
   gap: 7px;
 }
-
 .price-features li i {
   font-size: 14px;
   flex-shrink: 0;
@@ -572,32 +541,25 @@ select option {
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  font-family: "Segoe UI", sans-serif;
+  font-family: "Times New Roman", Times, serif;
   border: none;
   color: #fff;
 }
-
 .btn-free-plan {
   background: linear-gradient(135deg, #f59e0b, #ec4899);
 }
-
 .btn-monthly {
   background: linear-gradient(135deg, #6366f1, #8b5cf6);
 }
-
 .btn-yearly {
   background: linear-gradient(135deg, #8b5cf6, #ec4899);
 }
 
-/* ===================== */
-/* CTA */
-/* ===================== */
 .rr-cta {
   text-align: center;
   padding: 60px 40px;
   border-top: 0.5px solid rgba(255, 255, 255, 0.07);
 }
-
 .rr-cta h2 {
   font-size: 30px;
   font-weight: 700;
@@ -605,13 +567,11 @@ select option {
   margin-bottom: 12px;
   letter-spacing: -0.5px;
 }
-
 .rr-cta p {
   font-size: 14px;
   color: rgba(255, 255, 255, 0.4);
   margin-bottom: 28px;
 }
-
 .rr-footer {
   text-align: center;
   padding: 20px;
@@ -620,9 +580,6 @@ select option {
   color: rgba(255, 255, 255, 0.18);
 }
 
-/* ===================== */
-/* MODAL */
-/* ===================== */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -632,11 +589,9 @@ select option {
   justify-content: center;
   z-index: 9999;
 }
-
 .modal-overlay.active {
   display: flex;
 }
-
 .register-modal {
   width: 420px;
   background: #111827;
@@ -647,23 +602,19 @@ select option {
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
   border: 0.5px solid rgba(255, 255, 255, 0.1);
 }
-
 .register-modal h2 {
   color: #fff;
   margin-bottom: 10px;
 }
-
 .modal-header {
   text-align: center;
   margin-bottom: 20px;
 }
-
 .modal-subtitle {
   margin-top: 6px;
   font-size: 13px;
   color: #94a3b8;
 }
-
 .modal-input {
   width: 100%;
   padding: 14px;
@@ -673,9 +624,8 @@ select option {
   background: #0f172a;
   color: #fff;
   font-size: 14px;
-  font-family: "Segoe UI", sans-serif;
+  font-family: "Times New Roman", Times, serif;
 }
-
 .modal-register-btn {
   width: 100%;
   padding: 14px 16px;
@@ -687,9 +637,8 @@ select option {
   background: #8b5cf6;
   color: #fff;
   margin-top: 8px;
-  font-family: "Segoe UI", sans-serif;
+  font-family: "Times New Roman", Times, serif;
 }
-
 .switch-auth {
   margin-top: 20px;
   text-align: center;
@@ -697,7 +646,6 @@ select option {
   font-size: 13px;
   line-height: 1.6;
 }
-
 .switch-auth span {
   display: inline;
   margin-left: 4px;
@@ -706,7 +654,6 @@ select option {
   cursor: pointer;
   text-decoration: underline;
 }
-
 .close-modal {
   position: absolute;
   top: 12px;
@@ -718,9 +665,6 @@ select option {
   cursor: pointer;
 }
 
-/* ===================== */
-/* SUCCESS MODAL */
-/* ===================== */
 #successModal {
   position: fixed;
   inset: 0;
@@ -730,11 +674,9 @@ select option {
   background: rgba(0, 0, 0, 0.75);
   z-index: 99999;
 }
-
 #successModal.active {
   display: flex;
 }
-
 .success-box {
   background: #1e1b4b;
   border: 0.5px solid rgba(139, 92, 246, 0.4);
@@ -744,9 +686,6 @@ select option {
   font-weight: 600;
 }
 
-/* ===================== */
-/* MOBILE */
-/* ===================== */
 @media (max-width: 640px) {
   .rr-nav {
     padding: 14px 20px;
@@ -774,9 +713,6 @@ select option {
   }
 }
 
-/* ===================== */
-/* STAT COLORS FIX */
-/* ===================== */
 .stat-num.blue {
   color: #60a5fa;
 }
@@ -787,23 +723,18 @@ select option {
   color: #f472b6;
 }
 
-/* ===================== */
-/* REVIEWS */
-/* ===================== */
 .reviews-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 14px;
   margin-top: 8px;
 }
-
 .review-card {
   background: rgba(255, 255, 255, 0.04);
   border: 0.5px solid rgba(255, 255, 255, 0.09);
   border-radius: 14px;
   padding: 20px;
 }
-
 .review-stars {
   color: #f59e0b;
   font-size: 14px;
@@ -820,7 +751,6 @@ select option {
   align-items: center;
   gap: 10px;
 }
-
 .review-avatar {
   width: 32px;
   height: 32px;
@@ -834,7 +764,6 @@ select option {
   color: #fff;
   flex-shrink: 0;
 }
-
 .review-name {
   font-size: 13px;
   font-weight: 600;
