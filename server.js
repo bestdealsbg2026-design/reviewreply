@@ -183,7 +183,7 @@ app.post("/api/reply", async (req, res) => {
       window.currentLang === "bg"
         ? "Reply in Bulgarian language."
         : "Reply in English language.";
-    const { review, tone, uid, lang } = req.body;
+    const { lang } = req.body;
     const langText =
       lang === "bg"
         ? "Reply in Bulgarian language."
