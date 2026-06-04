@@ -170,6 +170,7 @@ async function checkAndResetUsage(uid) {
 ========================= */
 app.post("/api/reply", async (req, res) => {
   console.log("HANDLER STARTED");
+  console.log("BODY:", req.body);
 
   try {
     const { review, tone, uid } = req.body;
