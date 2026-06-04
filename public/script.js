@@ -298,6 +298,14 @@ async function generateReply() {
       if (p) p.textContent = "Register for free to get more replies.";
       return;
     }
+    if (window.currentLang === "bg") {
+      const m = document.getElementById("loginRequiredModal");
+      m.querySelector("h2").textContent = "Необходима е регистрация";
+      m.querySelector(".modal-subtitle").textContent =
+        "Влез или създай акаунт.";
+      document.getElementById("goToLoginBtn").textContent = "Вход";
+      document.getElementById("goToRegisterBtn").textContent = "Регистрация";
+    }
   }
 
   if (currentUser && !userData)
@@ -360,6 +368,13 @@ window.checkout = async function (plan) {
   if (!currentUser) {
     document.getElementById("loginRequiredModal").classList.add("active");
     return;
+  }
+  if (window.currentLang === "bg") {
+    const m = document.getElementById("loginRequiredModal");
+    m.querySelector("h2").textContent = "Необходима е регистрация";
+    m.querySelector(".modal-subtitle").textContent = "Влез или създай акаунт.";
+    document.getElementById("goToLoginBtn").textContent = "Вход";
+    document.getElementById("goToRegisterBtn").textContent = "Регистрация";
   }
 
   const res = await fetch(
