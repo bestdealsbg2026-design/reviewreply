@@ -67,13 +67,12 @@ body {
 
 .nav-email {
   font-size: 13px;
-  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  background: linear-gradient(135deg, #f59e0b, #ec4899) !important;
   -webkit-background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
   background-clip: text !important;
   font-weight: 500;
 }
-
 .nav-plan {
   font-size: 12px;
   font-weight: 600;
