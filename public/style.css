@@ -773,3 +773,74 @@ select option {
     display: none;
   }
 }
+
+/* ===================== */
+/* STAT COLORS FIX */
+/* ===================== */
+.stat-num.blue {
+  color: #60a5fa;
+}
+.stat-num.purple {
+  color: #a78bfa;
+}
+.stat-num.pink {
+  color: #f472b6;
+}
+
+/* ===================== */
+/* REVIEWS */
+/* ===================== */
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin-top: 8px;
+}
+
+.review-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 0.5px solid rgba(255, 255, 255, 0.09);
+  border-radius: 14px;
+  padding: 20px;
+}
+
+.review-stars {
+  color: #f59e0b;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+.review-text {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+.review-author {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.review-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.review-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+}
+.review-biz {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.32);
+}

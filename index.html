@@ -1,0 +1,959 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ReviewReply — AI-powered review management</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.29.0/dist/tabler-icons.min.css"
+    />
+    <style>
+      * {{ margin: 0; padding: 0; box-sizing: border-box; }} body {{ background: #070710; }}
+    </style>
+  </head>
+  <body>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      .rr-page {
+        background: #070710;
+        color: #fff;
+        font-family: var(--font-sans);
+        overflow-x: hidden;
+      }
+
+      .rr-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 18px 40px;
+        border-bottom: 0.5px solid rgba(255, 255, 255, 0.08);
+        background: rgba(7, 7, 16, 0.95);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+
+      .rr-logo {
+        font-size: 28px;
+        font-weight: 500;
+        color: #fff;
+        letter-spacing: -0.5px;
+      }
+      .rr-logo span {
+        color: #8b5cf6;
+      }
+
+      .rr-nav-links {
+        display: flex;
+        gap: 14px;
+      }
+
+      .btn-outline,
+      .btn-primary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 36px;
+        width: 108px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        font-family: var(--font-sans);
+      }
+
+      .btn-outline {
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: #fff;
+      }
+
+      .btn-primary {
+        background: #8b5cf6;
+        border: 1px solid #8b5cf6;
+        color: #fff;
+      }
+
+      .rr-hero {
+        text-align: center;
+        padding: 80px 40px 60px;
+        max-width: 720px;
+        margin: 0 auto;
+        position: relative;
+      }
+
+      .hero-glow {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 600px;
+        height: 300px;
+        background: radial-gradient(
+          ellipse at center,
+          rgba(139, 92, 246, 0.2) 0%,
+          rgba(59, 130, 246, 0.1) 40%,
+          transparent 70%
+        );
+        pointer-events: none;
+      }
+
+      .rr-badge {
+        display: inline-block;
+        background: rgba(139, 92, 246, 0.12);
+        border: 0.5px solid rgba(139, 92, 246, 0.35);
+        color: #c4b5fd;
+        font-size: 12px;
+        padding: 6px 14px;
+        border-radius: 100px;
+        margin-bottom: 24px;
+        position: relative;
+      }
+
+      .rr-hero h1 {
+        font-size: 48px;
+        font-weight: 500;
+        line-height: 1.15;
+        letter-spacing: -1px;
+        margin-bottom: 20px;
+        color: #fff;
+        position: relative;
+      }
+
+      .grad-text {
+        background: linear-gradient(90deg, #818cf8, #a78bfa, #e879f9);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .rr-hero p {
+        font-size: 16px;
+        color: rgba(255, 255, 255, 0.5);
+        line-height: 1.7;
+        margin-bottom: 36px;
+        position: relative;
+      }
+
+      .rr-hero-btns {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        flex-wrap: wrap;
+        position: relative;
+      }
+
+      .btn-hero {
+        background: linear-gradient(135deg, #8b5cf6, #6366f1);
+        border: none;
+        color: #fff;
+        padding: 0;
+        border-radius: 10px;
+        font-size: 15px;
+        cursor: pointer;
+        font-family: var(--font-sans);
+        font-weight: 500;
+        height: 42px;
+        width: 160px;
+      }
+
+      .btn-hero-outline {
+        background: transparent;
+        border: 0.5px solid rgba(255, 255, 255, 0.25);
+        color: rgba(255, 255, 255, 0.8);
+        padding: 0;
+        border-radius: 10px;
+        font-size: 15px;
+        cursor: pointer;
+        font-family: var(--font-sans);
+        height: 42px;
+        width: 160px;
+      }
+
+      .rr-demo {
+        margin: 0 auto 60px;
+        max-width: 680px;
+        padding: 0 40px;
+      }
+
+      .demo-inner {
+        background: rgba(255, 255, 255, 0.03);
+        border: 0.5px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        padding: 28px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .demo-inner::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(139, 92, 246, 0.6),
+          rgba(99, 102, 241, 0.6),
+          transparent
+        );
+      }
+
+      .demo-label {
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.3);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 12px;
+      }
+
+      .demo-review {
+        background: rgba(255, 255, 255, 0.05);
+        border: 0.5px solid rgba(255, 255, 255, 0.08);
+        border-radius: 10px;
+        padding: 14px;
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.65);
+        margin-bottom: 14px;
+        line-height: 1.6;
+      }
+
+      .demo-stars {
+        color: #f59e0b;
+        font-size: 14px;
+        margin-bottom: 6px;
+      }
+
+      .demo-arrow {
+        text-align: center;
+        color: #8b5cf6;
+        font-size: 20px;
+        margin: 10px 0;
+      }
+
+      .demo-reply {
+        background: rgba(139, 92, 246, 0.08);
+        border: 0.5px solid rgba(139, 92, 246, 0.25);
+        border-radius: 10px;
+        padding: 14px;
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.75);
+        line-height: 1.6;
+      }
+
+      .demo-reply-label {
+        font-size: 10px;
+        color: #a78bfa;
+        font-weight: 500;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+      }
+
+      .rr-stats {
+        max-width: 680px;
+        margin: 0 auto 60px;
+        padding: 0 40px;
+      }
+
+      .stats-box {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        background: rgba(255, 255, 255, 0.04);
+        border: 0.5px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        overflow: hidden;
+      }
+
+      .stat-item {
+        text-align: center;
+        padding: 32px 20px;
+        border-right: 0.5px solid rgba(255, 255, 255, 0.08);
+      }
+      .stat-item:last-child {
+        border-right: none;
+      }
+
+      .stat-num {
+        font-size: 36px;
+        font-weight: 500;
+        letter-spacing: -1px;
+        background: linear-gradient(135deg, #818cf8, #e879f9);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .stat-label {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.35);
+        margin-top: 4px;
+      }
+
+      .rr-features {
+        padding: 0 40px 60px;
+        max-width: 760px;
+        margin: 0 auto;
+      }
+
+      .section-title {
+        text-align: center;
+        font-size: 28px;
+        font-weight: 500;
+        color: #fff;
+        margin-bottom: 8px;
+        letter-spacing: -0.5px;
+      }
+
+      .section-sub {
+        text-align: center;
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.35);
+        margin-bottom: 32px;
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+      }
+
+      .feature-card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 0.5px solid rgba(255, 255, 255, 0.07);
+        border-radius: 14px;
+        padding: 22px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .feature-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(139, 92, 246, 0.4),
+          transparent
+        );
+      }
+
+      .feature-icon {
+        width: 38px;
+        height: 38px;
+        background: rgba(139, 92, 246, 0.12);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 12px;
+        color: #a78bfa;
+        font-size: 18px;
+      }
+
+      .feature-title {
+        font-size: 14px;
+        font-weight: 500;
+        color: #fff;
+        margin-bottom: 6px;
+      }
+      .feature-desc {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.4);
+        line-height: 1.6;
+      }
+
+      .rr-reviews {
+        padding: 0 40px 60px;
+        max-width: 760px;
+        margin: 0 auto;
+      }
+
+      .reviews-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+        margin-top: 32px;
+      }
+
+      .review-card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 0.5px solid rgba(255, 255, 255, 0.07);
+        border-radius: 14px;
+        padding: 18px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .review-card::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 60px;
+        background: linear-gradient(0deg, rgba(59, 7, 100, 0.15), transparent);
+        pointer-events: none;
+      }
+
+      .review-stars {
+        color: #f59e0b;
+        font-size: 13px;
+        margin-bottom: 8px;
+      }
+      .review-text {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.55);
+        line-height: 1.6;
+        margin-bottom: 14px;
+      }
+
+      .review-author {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .review-avatar {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #4f46e5, #7c3aed);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        font-weight: 500;
+        color: #fff;
+        flex-shrink: 0;
+      }
+
+      .review-name {
+        font-size: 12px;
+        font-weight: 500;
+        color: #fff;
+      }
+      .review-biz {
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.3);
+      }
+
+      .rr-pricing {
+        padding: 0 40px 60px;
+        max-width: 760px;
+        margin: 0 auto;
+      }
+
+      .pricing-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+        margin-top: 32px;
+      }
+
+      .price-card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 0.5px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        padding: 24px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        overflow: hidden;
+      }
+
+      .price-card.featured {
+        border-color: rgba(139, 92, 246, 0.45);
+        background: rgba(139, 92, 246, 0.07);
+      }
+
+      .price-card.featured::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #6366f1, #8b5cf6, #e879f9);
+      }
+
+      .price-card.yearly {
+        border-color: rgba(236, 72, 153, 0.35);
+        background: rgba(236, 72, 153, 0.05);
+      }
+
+      .price-card.yearly::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #8b5cf6, #ec4899, #ef4444);
+      }
+
+      .popular-badge {
+        display: inline-block;
+        background: rgba(139, 92, 246, 0.2);
+        border: 0.5px solid rgba(139, 92, 246, 0.4);
+        color: #c4b5fd;
+        font-size: 10px;
+        padding: 3px 10px;
+        border-radius: 100px;
+        margin-bottom: 10px;
+      }
+
+      .save-badge {
+        display: inline-block;
+        background: rgba(236, 72, 153, 0.15);
+        border: 0.5px solid rgba(236, 72, 153, 0.35);
+        color: #f9a8d4;
+        font-size: 10px;
+        padding: 3px 10px;
+        border-radius: 100px;
+        margin-bottom: 10px;
+      }
+
+      .price-plan {
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.35);
+        margin-bottom: 6px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+      .price-amount {
+        font-size: 32px;
+        font-weight: 500;
+        color: #fff;
+        letter-spacing: -1px;
+        line-height: 1;
+      }
+      .price-amount span {
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.35);
+        font-weight: 400;
+      }
+      .price-desc {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.35);
+        margin: 8px 0 18px;
+        line-height: 1.5;
+      }
+
+      .price-features {
+        list-style: none;
+        margin-bottom: 20px;
+        flex: 1;
+      }
+      .price-features li {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.55);
+        padding: 5px 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+      }
+      .price-features li i {
+        color: #8b5cf6;
+        font-size: 14px;
+        flex-shrink: 0;
+      }
+      .price-features li.pink i {
+        color: #ec4899;
+      }
+
+      .btn-plan {
+        width: 100%;
+        padding: 11px;
+        border-radius: 9px;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        font-family: var(--font-sans);
+        border: 0.5px solid rgba(255, 255, 255, 0.15);
+        background: transparent;
+        color: rgba(255, 255, 255, 0.65);
+      }
+
+      .btn-plan.featured {
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        border: none;
+        color: #fff;
+      }
+
+      .btn-plan.yearly-btn {
+        background: linear-gradient(135deg, #8b5cf6, #ec4899);
+        border: none;
+        color: #fff;
+      }
+
+      .rr-cta {
+        text-align: center;
+        padding: 60px 40px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .rr-cta::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(
+          ellipse at center bottom,
+          rgba(139, 92, 246, 0.15) 0%,
+          rgba(236, 72, 153, 0.08) 40%,
+          transparent 70%
+        );
+        pointer-events: none;
+      }
+
+      .rr-cta h2 {
+        font-size: 30px;
+        font-weight: 500;
+        color: #fff;
+        margin-bottom: 12px;
+        letter-spacing: -0.5px;
+        position: relative;
+      }
+
+      .rr-cta p {
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.4);
+        margin-bottom: 28px;
+        position: relative;
+      }
+
+      .rr-footer {
+        text-align: center;
+        padding: 20px;
+        border-top: 0.5px solid rgba(255, 255, 255, 0.05);
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.15);
+      }
+    </style>
+
+    <div class="rr-page">
+      <nav class="rr-nav">
+        <div class="rr-logo">Review<span>Reply</span></div>
+        <div class="rr-nav-links">
+          <button class="btn-outline">Login</button>
+          <button class="btn-primary">Start Free</button>
+        </div>
+      </nav>
+
+      <section class="rr-hero">
+        <div class="hero-glow"></div>
+        <div class="rr-badge">AI-powered review management</div>
+        <h1>
+          Reply to reviews in<br /><span class="grad-text"
+            >5 seconds with AI</span
+          >
+        </h1>
+        <p>
+          Stop spending hours writing responses to Google reviews. ReviewReply
+          generates professional, personalized replies instantly — so you can
+          focus on running your business.
+        </p>
+        <div class="rr-hero-btns">
+          <button
+            class="btn-hero"
+            onclick="sendPrompt('Tell me more about ReviewReply')"
+          >
+            Try for free →
+          </button>
+          <button class="btn-hero-outline">See how it works</button>
+        </div>
+      </section>
+
+      <div class="rr-demo">
+        <div class="demo-inner">
+          <div class="demo-label">Live demo</div>
+          <div class="demo-review">
+            <div class="demo-stars">★★★★★</div>
+            "Great place! Food was amazing and staff very friendly. Will
+            definitely come back!"
+          </div>
+          <div class="demo-arrow">↓</div>
+          <div class="demo-reply">
+            <div class="demo-reply-label">AI generated reply</div>
+            Thank you so much for your kind words — we're thrilled to hear you
+            enjoyed the food and had a great experience with our team! We look
+            forward to welcoming you back soon.
+          </div>
+        </div>
+      </div>
+
+      <div class="rr-stats">
+        <div class="stats-box">
+          <div class="stat-item">
+            <div class="stat-num">5 sec</div>
+            <div class="stat-label">Average reply time</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">500+</div>
+            <div class="stat-label">Businesses using it</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">98%</div>
+            <div class="stat-label">Satisfaction rate</div>
+          </div>
+        </div>
+      </div>
+
+      <section class="rr-features">
+        <div class="section-title">Everything you need</div>
+        <div class="section-sub">
+          Designed for any business with Google reviews
+        </div>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="ti ti-bolt" aria-hidden="true"></i>
+            </div>
+            <div class="feature-title">Instant AI replies</div>
+            <div class="feature-desc">
+              Generate professional responses in seconds. No more staring at a
+              blank screen wondering what to write.
+            </div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="ti ti-adjustments" aria-hidden="true"></i>
+            </div>
+            <div class="feature-title">Custom tone</div>
+            <div class="feature-desc">
+              Choose from friendly, professional, or formal tones to match your
+              brand's voice perfectly.
+            </div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="ti ti-star" aria-hidden="true"></i>
+            </div>
+            <div class="feature-title">Star rating aware</div>
+            <div class="feature-desc">
+              The AI adapts its response based on the star rating — different
+              approach for 1 star vs 5 stars.
+            </div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="ti ti-device-mobile" aria-hidden="true"></i>
+            </div>
+            <div class="feature-title">Works everywhere</div>
+            <div class="feature-desc">
+              Use on any device — phone, tablet, or desktop. Copy and paste
+              directly into Google.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="rr-reviews">
+        <div class="section-title">Loved by business owners</div>
+        <div class="section-sub">Real feedback from real customers</div>
+        <div class="reviews-grid">
+          <div class="review-card">
+            <div class="review-stars">★★★★★</div>
+            <div class="review-text">
+              "I used to spend 30 minutes a day on review replies. Now it takes
+              5 minutes total. This tool is a game changer."
+            </div>
+            <div class="review-author">
+              <div class="review-avatar">MK</div>
+              <div>
+                <div class="review-name">Maria K.</div>
+                <div class="review-biz">Restaurant owner, Sofia</div>
+              </div>
+            </div>
+          </div>
+          <div class="review-card">
+            <div class="review-stars">★★★★★</div>
+            <div class="review-text">
+              "The replies sound so natural — my customers can't tell they're AI
+              generated. Absolutely worth the subscription."
+            </div>
+            <div class="review-author">
+              <div class="review-avatar">TP</div>
+              <div>
+                <div class="review-name">Tom P.</div>
+                <div class="review-biz">Hotel manager, Plovdiv</div>
+              </div>
+            </div>
+          </div>
+          <div class="review-card">
+            <div class="review-stars">★★★★★</div>
+            <div class="review-text">
+              "Perfect for our small team. We manage 3 locations and ReviewReply
+              saves us hours every week."
+            </div>
+            <div class="review-author">
+              <div class="review-avatar">SD</div>
+              <div>
+                <div class="review-name">Stefan D.</div>
+                <div class="review-biz">Retail chain, Varna</div>
+              </div>
+            </div>
+          </div>
+          <div class="review-card">
+            <div class="review-stars">★★★★★</div>
+            <div class="review-text">
+              "Simple, fast, and always professional. My Google rating improved
+              since I started responding to every review."
+            </div>
+            <div class="review-author">
+              <div class="review-avatar">AN</div>
+              <div>
+                <div class="review-name">Ana N.</div>
+                <div class="review-biz">Beauty salon, Burgas</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="rr-pricing">
+        <div class="section-title">Simple pricing</div>
+        <div class="section-sub">Start free, upgrade when you're ready</div>
+        <div class="pricing-grid">
+          <div
+            class="price-card"
+            style="
+              border-color: rgba(132, 204, 22, 0.5);
+              background: rgba(132, 204, 22, 0.15);
+              overflow: hidden;
+            "
+          >
+            <div
+              style="
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 2px;
+                background: linear-gradient(90deg, #65a30d, #bef264);
+              "
+            ></div>
+            <div
+              style="
+                display: inline-block;
+                background: rgba(132, 204, 22, 0.2);
+                border: 0.5px solid rgba(132, 204, 22, 0.45);
+                color: #d9f99d;
+                font-size: 10px;
+                padding: 3px 10px;
+                border-radius: 100px;
+                margin-bottom: 10px;
+                position: relative;
+                z-index: 1;
+              "
+            >
+              No credit card needed
+            </div>
+            <div class="price-plan" style="position: relative; z-index: 1">
+              Free
+            </div>
+            <div class="price-amount">€0 <span>/month</span></div>
+            <div class="price-desc">Perfect for trying it out</div>
+            <ul class="price-features">
+              <li>
+                <i class="ti ti-check" aria-hidden="true"></i> 5 replies per
+                month
+              </li>
+              <li>
+                <i class="ti ti-check" aria-hidden="true"></i> All tone options
+              </li>
+              <li>
+                <i class="ti ti-check" aria-hidden="true"></i> Copy to clipboard
+              </li>
+            </ul>
+            <button
+              class="btn-plan"
+              style="
+                background: linear-gradient(135deg, #f59e0b, #ec4899);
+                border: none;
+                color: #fff;
+              "
+            >
+              Get started free
+            </button>
+          </div>
+          <div class="price-card featured">
+            <div class="popular-badge">Most popular</div>
+            <div class="price-plan">Pro Monthly</div>
+            <div class="price-amount">€9.99 <span>/month</span></div>
+            <div class="price-desc">For serious business owners</div>
+            <ul class="price-features">
+              <li>
+                <i class="ti ti-check" aria-hidden="true"></i> Unlimited replies
+              </li>
+              <li>
+                <i class="ti ti-check" aria-hidden="true"></i> All tone options
+              </li>
+              <li>
+                <i class="ti ti-check" aria-hidden="true"></i> Priority support
+              </li>
+              <li>
+                <i class="ti ti-check" aria-hidden="true"></i> Cancel anytime
+              </li>
+            </ul>
+            <button class="btn-plan featured">Start Pro — €9.99/mo</button>
+          </div>
+          <div class="price-card yearly">
+            <div class="save-badge">Save 17%</div>
+            <div class="price-plan">Pro Yearly</div>
+            <div class="price-amount">€99 <span>/year</span></div>
+            <div class="price-desc">Best value — 2 months free vs monthly</div>
+            <ul class="price-features">
+              <li class="pink">
+                <i class="ti ti-check" aria-hidden="true"></i> Unlimited replies
+              </li>
+              <li class="pink">
+                <i class="ti ti-check" aria-hidden="true"></i> All tone options
+              </li>
+              <li class="pink">
+                <i class="ti ti-check" aria-hidden="true"></i> Priority support
+              </li>
+              <li class="pink">
+                <i class="ti ti-check" aria-hidden="true"></i> Cancel anytime
+              </li>
+            </ul>
+            <button class="btn-plan yearly-btn">Start Yearly — €99/yr</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="rr-cta">
+        <h2>Ready to save hours every week?</h2>
+        <p>Join hundreds of businesses already using ReviewReply</p>
+        <button
+          class="btn-hero"
+          onclick="sendPrompt('How do I get started with ReviewReply?')"
+        >
+          Start for free today →
+        </button>
+      </section>
+
+      <footer class="rr-footer">
+        © 2026 ReviewReply. All rights reserved.
+      </footer>
+    </div>
+  </body>
+</html>
