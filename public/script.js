@@ -290,6 +290,7 @@ async function generateReply() {
     if (count >= FREE_LIMIT) {
       // Show register modal
       document.getElementById("loginRequiredModal").classList.add("active");
+      if (typeof setLang === "function") setLang(window.currentLang || "en");
       // Update modal text
       const modal = document.getElementById("loginRequiredModal");
       const h2 = modal.querySelector("h2");
@@ -367,6 +368,7 @@ window.selectPlan = function (plan) {
 window.checkout = async function (plan) {
   if (!currentUser) {
     document.getElementById("loginRequiredModal").classList.add("active");
+    if (typeof setLang === "function") setLang(window.currentLang || "en");
     return;
   }
   if (window.currentLang === "bg") {
