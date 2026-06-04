@@ -295,8 +295,16 @@ async function generateReply() {
       const modal = document.getElementById("loginRequiredModal");
       const h2 = modal.querySelector("h2");
       const p = modal.querySelector(".modal-subtitle");
-      if (h2) h2.textContent = "You've used all 6 free replies!";
-      if (p) p.textContent = "Register for free to get more replies.";
+      if (h2)
+        h2.textContent =
+          window.currentLang === "bg"
+            ? "Използвал си всичките 6 безплатни отговора!"
+            : "You've used all 6 free replies!";
+      if (p)
+        p.textContent =
+          window.currentLang === "bg"
+            ? "Регистрирай се безплатно за още отговори."
+            : "Register for free to get more replies.";
       return;
     }
     if (window.currentLang === "bg") {
