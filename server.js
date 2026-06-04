@@ -179,10 +179,6 @@ app.post("/api/reply", async (req, res) => {
       return res.status(400).json({ error: "Review required" });
     }
 
-    const langInstruction =
-      window.currentLang === "bg"
-        ? "Reply in Bulgarian language."
-        : "Reply in English language.";
     const { lang } = req.body;
     const langText =
       lang === "bg"
@@ -193,8 +189,7 @@ app.post("/api/reply", async (req, res) => {
 Tone: ${tone || "friendly"}
 ${langText}
 
-Tone: ${tone || "friendly"}
-${langInstruction}
+
 
 Rules:
 - natural human tone
