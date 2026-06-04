@@ -279,7 +279,12 @@ async function generateReply() {
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ review, rating, tone }),
+        body: JSON.stringify({
+          review,
+          rating,
+          tone,
+          lang: window.currentLang || "en",
+        }),
       },
     );
 

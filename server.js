@@ -179,9 +179,22 @@ app.post("/api/reply", async (req, res) => {
       return res.status(400).json({ error: "Review required" });
     }
 
+    const langInstruction =
+      window.currentLang === "bg"
+        ? "Reply in Bulgarian language."
+        : "Reply in English language.";
+    const { review, tone, uid, lang } = req.body;
+    const langText =
+      lang === "bg"
+        ? "Reply in Bulgarian language."
+        : "Reply in English language.";
     const prompt = `You are a business owner replying to a Google review.
 
 Tone: ${tone || "friendly"}
+${langText}
+
+Tone: ${tone || "friendly"}
+${langInstruction}
 
 Rules:
 - natural human tone
