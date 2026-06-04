@@ -7,6 +7,8 @@ let currentUser = null;
 let userData = null;
 let isLoginMode = false;
 
+const FREE_LIMIT = 6;
+
 /* ===================== */
 /* FIREBASE IMPORTS */
 /* ===================== */
@@ -43,6 +45,30 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 /* ===================== */
+/* GUEST USAGE TRACKING */
+/* ===================== */
+function getGuestCount() {
+  return parseInt(localStorage.getItem("guestCount") || "0");
+}
+
+function incrementGuestCount() {
+  const count = getGuestCount() + 1;
+  localStorage.setItem("guestCount", count);
+  return count;
+}
+
+function updateGuestCounter() {
+  const remaining = FREE_LIMIT - getGuestCount();
+  const btn = document.getElementById("generateBtn");
+  if (btn && !currentUser) {
+    btn.textContent =
+      remaining > 0
+        ? `✨ Generate Reply for Free (${remaining} left)`
+        : "✨ Register to continue";
+  }
+}
+
+/* ===================== */
 /* NAVBAR RENDERER */
 /* ===================== */
 function renderNavbar(user, data = null) {
@@ -66,6 +92,7 @@ function renderNavbar(user, data = null) {
     `;
     document.getElementById("loginBtn").onclick = () => openModal(true);
     document.getElementById("registerBtn").onclick = () => openModal(false);
+    updateGuestCounter();
   }
 }
 
@@ -82,6 +109,9 @@ onAuthStateChanged(auth, async (user) => {
       userData = snap.data();
     }
     renderNavbar(user, userData);
+    // Reset generate button text for logged in users
+    const btn = document.getElementById("generateBtn");
+    if (btn) btn.textContent = "✨ Generate Reply for Free";
   } else {
     userData = null;
     renderNavbar(null);
@@ -108,13 +138,11 @@ function updateModalUI() {
   if (isLoginMode) {
     title.textContent = "Welcome Back";
     authBtn.textContent = "Login";
-    // When in login mode → show "Don't have an account? Register"
     switchText.childNodes[0].textContent = "Don't have an account? ";
     switchLink.textContent = "Register";
   } else {
     title.textContent = "Create Account";
     authBtn.textContent = "Create Account";
-    // When in register mode → show "Already have an account? Log in"
     switchText.childNodes[0].textContent = "Already have an account? ";
     switchLink.textContent = "Log in";
   }
@@ -129,21 +157,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const authBtn = document.getElementById("authSubmitBtn");
   const switchLink = document.getElementById("switchAuthMode");
 
-  // Close main modal
   closeBtn.onclick = () => modal.classList.remove("active");
 
-  // Enter key submits the form
   document.getElementById("registerModal").addEventListener("keydown", (e) => {
     if (e.key === "Enter") authBtn.click();
   });
 
-  // Switch between login / register inside modal
   switchLink.onclick = () => {
     isLoginMode = !isLoginMode;
     updateModalUI();
   };
 
-  // Auth submit
   authBtn.onclick = async () => {
     const email = document.getElementById("emailInput").value.trim();
     const password = document.getElementById("passwordInput").value.trim();
@@ -193,7 +217,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // Login Required modal buttons
   document.getElementById("closeLoginRequired").onclick = () => {
     document.getElementById("loginRequiredModal").classList.remove("active");
   };
@@ -208,7 +231,6 @@ document.addEventListener("DOMContentLoaded", () => {
     openModal(false);
   };
 
-  // Stars
   document.querySelectorAll(".star").forEach((star) => {
     star.addEventListener("click", () => {
       rating = parseInt(star.dataset.value);
@@ -218,8 +240,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Generate button
   document.getElementById("generateBtn").onclick = generateReply;
+  updateGuestCounter();
 });
 
 /* ===================== */
@@ -255,20 +277,31 @@ function showSuccessMessage(text) {
 /* REPLY GENERATOR */
 /* ===================== */
 async function generateReply() {
-  // Not logged in → show nice modal instead of alert
-  if (!currentUser) {
-    document.getElementById("loginRequiredModal").classList.add("active");
-    return;
-  }
-
-  if (!userData) return alert("User data not loaded, please try again.");
-
   const review = document.getElementById("reviewInput").value.trim();
   const tone = document.getElementById("toneSelect").value;
   const output = document.getElementById("outputBox");
   const loading = document.getElementById("loading");
 
   if (!review) return alert("Please paste a review first.");
+
+  // Guest user - check limit
+  if (!currentUser) {
+    const count = getGuestCount();
+    if (count >= FREE_LIMIT) {
+      // Show register modal
+      document.getElementById("loginRequiredModal").classList.add("active");
+      // Update modal text
+      const modal = document.getElementById("loginRequiredModal");
+      const h2 = modal.querySelector("h2");
+      const p = modal.querySelector(".modal-subtitle");
+      if (h2) h2.textContent = "You've used all 10 free replies!";
+      if (p) p.textContent = "Register for free to get more replies.";
+      return;
+    }
+  }
+
+  if (currentUser && !userData)
+    return alert("User data not loaded, please try again.");
 
   loading.style.display = "block";
   output.textContent = "";
@@ -284,12 +317,19 @@ async function generateReply() {
           rating,
           tone,
           lang: window.currentLang || "en",
+          uid: currentUser?.uid || null,
         }),
       },
     );
 
     const data = await res.json();
     output.textContent = data.reply || "No response received.";
+
+    // Increment guest count after successful reply
+    if (!currentUser) {
+      incrementGuestCount();
+      updateGuestCounter();
+    }
   } catch (err) {
     output.textContent = "Error connecting to server.";
   } finally {
