@@ -264,25 +264,26 @@ function setLang(lang) {
   if (ta) ta.placeholder = t.textareaPh;
   const ob = document.getElementById("outputBox");
   if (ob && ob.textContent.trim().length < 60) ob.textContent = t.outputBox;
-}
-// Translate login required modal
-if (lang === "bg") {
-  const h2 = document.querySelector("#loginRequiredModal h2");
-  const p = document.querySelector("#loginRequiredModal .modal-subtitle");
-  const loginBtn = document.getElementById("goToLoginBtn");
-  const regBtn = document.getElementById("goToRegisterBtn");
-  if (h2) h2.textContent = "Необходима е регистрация";
-  if (p) p.textContent = "Влез или създай акаунт за да генерираш отговори.";
-  if (loginBtn) loginBtn.textContent = "Вход";
-  if (regBtn) regBtn.textContent = "Регистрация";
-} else {
-  const h2 = document.querySelector("#loginRequiredModal h2");
-  const p = document.querySelector("#loginRequiredModal .modal-subtitle");
-  const loginBtn = document.getElementById("goToLoginBtn");
-  const regBtn = document.getElementById("goToRegisterBtn");
-  if (h2) h2.textContent = "Login Required";
-  if (p)
-    p.textContent = "Please log in or create an account to generate replies.";
-  if (loginBtn) loginBtn.textContent = "Login";
-  if (regBtn) regBtn.textContent = "Register";
+
+  // Translate login required modal
+  if (lang === "bg") {
+    const h2 = document.querySelector("#loginRequiredModal h2");
+    const p = document.querySelector("#loginRequiredModal .modal-subtitle");
+    const loginBtn = document.getElementById("goToLoginBtn");
+    const regBtn = document.getElementById("goToRegisterBtn");
+    if (h2) h2.textContent = "Необходима е регистрация";
+    if (p) p.textContent = "Влез или създай акаунт за да генерираш отговори.";
+    if (loginBtn) loginBtn.textContent = "Вход";
+    if (regBtn) regBtn.textContent = "Регистрация";
+  } else {
+    const h2 = document.querySelector("#loginRequiredModal h2");
+    const p = document.querySelector("#loginRequiredModal .modal-subtitle");
+    const loginBtn = document.getElementById("goToLoginBtn");
+    const regBtn = document.getElementById("goToRegisterBtn");
+    if (h2) h2.textContent = "Login Required";
+    if (p)
+      p.textContent = "Please log in or create an account to generate replies.";
+    if (loginBtn) loginBtn.textContent = "Login";
+    if (regBtn) regBtn.textContent = "Register";
+  }
 }
