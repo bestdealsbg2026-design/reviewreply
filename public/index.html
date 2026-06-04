@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ReviewReply AI</title>
-
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.29.0/dist/tabler-icons.min.css"
@@ -15,7 +14,6 @@
         padding: 0;
         box-sizing: border-box;
       }
-
       body {
         background: #070710;
         color: #fff;
@@ -23,7 +21,6 @@
         font-weight: 400;
         overflow-x: hidden;
       }
-
       .rr-nav {
         display: flex;
         justify-content: space-between;
@@ -35,7 +32,6 @@
         top: 0;
         z-index: 100;
       }
-
       .rr-logo {
         font-size: 28px;
         font-weight: 500;
@@ -45,13 +41,11 @@
       .rr-logo span {
         color: #8b5cf6;
       }
-
       .nav-actions {
         display: flex;
         gap: 14px;
         align-items: center;
       }
-
       .nav-btn {
         display: inline-flex;
         align-items: center;
@@ -102,9 +96,34 @@
         color: #fbbf24;
         border: 0.5px solid rgba(251, 191, 36, 0.3);
       }
-
       .auth-message {
         display: none;
+      }
+
+      /* LANG SWITCHER */
+      .lang-switcher {
+        display: flex;
+        gap: 4px;
+        background: rgba(255, 255, 255, 0.06);
+        border: 0.5px solid rgba(255, 255, 255, 0.12);
+        border-radius: 8px;
+        padding: 3px;
+      }
+      .lang-btn {
+        background: transparent;
+        border: none;
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-family: "Times New Roman", Times, serif;
+        transition: 0.2s;
+      }
+      .lang-btn.active {
+        background: #8b5cf6;
+        color: #fff;
       }
 
       .rr-hero {
@@ -114,7 +133,6 @@
         margin: 0 auto;
         position: relative;
       }
-
       .hero-glow {
         position: absolute;
         top: 0;
@@ -130,7 +148,6 @@
         );
         pointer-events: none;
       }
-
       .rr-badge {
         display: inline-block;
         background: rgba(139, 92, 246, 0.12);
@@ -142,7 +159,6 @@
         margin-bottom: 24px;
         position: relative;
       }
-
       .rr-hero h1 {
         font-size: 48px;
         font-weight: 500;
@@ -152,14 +168,12 @@
         color: #fff;
         position: relative;
       }
-
       .grad-text {
         background: linear-gradient(90deg, #818cf8, #a78bfa, #e879f9);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
       }
-
       .rr-hero p {
         font-size: 16px;
         color: rgba(255, 255, 255, 0.5);
@@ -167,7 +181,6 @@
         margin-bottom: 36px;
         position: relative;
       }
-
       .rr-hero-btns {
         display: flex;
         gap: 20px;
@@ -175,7 +188,6 @@
         flex-wrap: wrap;
         position: relative;
       }
-
       .btn-hero {
         background: linear-gradient(135deg, #8b5cf6, #6366f1);
         border: none;
@@ -188,7 +200,6 @@
         height: 42px;
         width: 160px;
       }
-
       .btn-hero-outline {
         background: transparent;
         border: 0.5px solid rgba(255, 255, 255, 0.25);
@@ -197,7 +208,6 @@
         border-radius: 10px;
         font-size: 15px;
         cursor: pointer;
-
         height: 42px;
         width: 160px;
       }
@@ -207,7 +217,6 @@
         max-width: 680px;
         padding: 0 40px;
       }
-
       .demo-inner {
         background: rgba(255, 255, 255, 0.03);
         border: 0.5px solid rgba(255, 255, 255, 0.08);
@@ -216,7 +225,6 @@
         position: relative;
         overflow: hidden;
       }
-
       .demo-inner::before {
         content: "";
         position: absolute;
@@ -232,7 +240,6 @@
           transparent
         );
       }
-
       .demo-label {
         font-size: 11px;
         color: rgba(255, 255, 255, 0.3);
@@ -240,7 +247,6 @@
         letter-spacing: 1px;
         margin-bottom: 12px;
       }
-
       .demo-review {
         background: rgba(255, 255, 255, 0.05);
         border: 0.5px solid rgba(255, 255, 255, 0.08);
@@ -251,7 +257,6 @@
         margin-bottom: 14px;
         line-height: 1.6;
       }
-
       .demo-stars {
         color: #f59e0b;
         font-size: 14px;
@@ -263,7 +268,6 @@
         font-size: 20px;
         margin: 10px 0;
       }
-
       .demo-reply {
         background: rgba(139, 92, 246, 0.08);
         border: 0.5px solid rgba(139, 92, 246, 0.25);
@@ -273,7 +277,6 @@
         color: rgba(255, 255, 255, 0.75);
         line-height: 1.6;
       }
-
       .demo-reply-label {
         font-size: 10px;
         color: #a78bfa;
@@ -288,7 +291,6 @@
         margin: 0 auto 60px;
         padding: 0 40px;
       }
-
       .stats-box {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -297,7 +299,6 @@
         border-radius: 16px;
         overflow: hidden;
       }
-
       .stat-item {
         text-align: center;
         padding: 32px 20px;
@@ -306,7 +307,6 @@
       .stat-item:last-child {
         border-right: none;
       }
-
       .stat-num {
         font-size: 36px;
         font-weight: 300;
@@ -316,7 +316,6 @@
         -webkit-text-fill-color: transparent;
         background-clip: text;
       }
-
       .stat-label {
         font-size: 12px;
         color: rgba(255, 255, 255, 0.35);
@@ -328,7 +327,6 @@
         max-width: 760px;
         margin: 0 auto;
       }
-
       .section-title {
         text-align: center;
         font-size: 28px;
@@ -343,13 +341,11 @@
         color: rgba(255, 255, 255, 0.35);
         margin-bottom: 32px;
       }
-
       .features-grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 14px;
       }
-
       .feature-card {
         background: rgba(255, 255, 255, 0.03);
         border: 0.5px solid rgba(255, 255, 255, 0.07);
@@ -358,7 +354,6 @@
         position: relative;
         overflow: hidden;
       }
-
       .feature-card::before {
         content: "";
         position: absolute;
@@ -373,7 +368,6 @@
           transparent
         );
       }
-
       .feature-icon {
         width: 38px;
         height: 38px;
@@ -386,7 +380,6 @@
         color: #a78bfa;
         font-size: 18px;
       }
-
       .feature-title {
         font-size: 14px;
         font-weight: 500;
@@ -404,14 +397,12 @@
         max-width: 760px;
         margin: 0 auto;
       }
-
       .reviews-grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 14px;
         margin-top: 32px;
       }
-
       .review-card {
         background: rgba(255, 255, 255, 0.03);
         border: 0.5px solid rgba(255, 255, 255, 0.07);
@@ -420,7 +411,6 @@
         position: relative;
         overflow: hidden;
       }
-
       .review-card::after {
         content: "";
         position: absolute;
@@ -431,7 +421,6 @@
         background: linear-gradient(0deg, rgba(59, 7, 100, 0.15), transparent);
         pointer-events: none;
       }
-
       .review-stars {
         color: #f59e0b;
         font-size: 13px;
@@ -448,7 +437,6 @@
         align-items: center;
         gap: 10px;
       }
-
       .review-avatar {
         width: 30px;
         height: 30px;
@@ -462,7 +450,6 @@
         color: #fff;
         flex-shrink: 0;
       }
-
       .review-name {
         font-size: 12px;
         font-weight: 500;
@@ -478,14 +465,12 @@
         max-width: 760px;
         margin: 0 auto;
       }
-
       .pricing-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 14px;
         margin-top: 32px;
       }
-
       .price-card {
         background: rgba(255, 255, 255, 0.03);
         border: 0.5px solid rgba(255, 255, 255, 0.08);
@@ -497,7 +482,6 @@
         text-align: center;
         overflow: hidden;
       }
-
       .price-card.featured {
         border-color: rgba(139, 92, 246, 0.45);
         background: rgba(139, 92, 246, 0.07);
@@ -524,7 +508,6 @@
         height: 2px;
         background: linear-gradient(90deg, #8b5cf6, #ec4899, #ef4444);
       }
-
       .popular-badge {
         display: inline-block;
         background: rgba(139, 92, 246, 0.2);
@@ -545,7 +528,6 @@
         border-radius: 100px;
         margin-bottom: 10px;
       }
-
       .price-plan {
         font-size: 11px;
         color: rgba(255, 255, 255, 0.35);
@@ -571,7 +553,6 @@
         margin: 8px 0 18px;
         line-height: 1.5;
       }
-
       .price-features {
         list-style: none;
         margin-bottom: 20px;
@@ -594,7 +575,6 @@
       .price-features li.pink i {
         color: #ec4899;
       }
-
       .btn-plan {
         width: 100%;
         padding: 11px;
@@ -661,7 +641,6 @@
         color: rgba(255, 255, 255, 0.15);
       }
 
-      /* APP CARD */
       .rr-app {
         margin: 0 auto 60px;
         max-width: 680px;
@@ -776,7 +755,6 @@
         color: rgba(255, 255, 255, 0.8);
       }
 
-      /* MODALS */
       .modal-overlay {
         position: fixed;
         inset: 0;
@@ -908,20 +886,26 @@
   <body>
     <nav class="rr-nav">
       <div class="rr-logo">Review<span>Reply</span></div>
-      <div class="nav-actions" id="navActions"></div>
+      <div style="display: flex; align-items: center; gap: 12px">
+        <div class="lang-switcher">
+          <button class="lang-btn active" onclick="setLang('en')">EN</button>
+          <button class="lang-btn" onclick="setLang('bg')">BG</button>
+        </div>
+        <div class="nav-actions" id="navActions"></div>
+      </div>
     </nav>
 
     <p id="authMessage" class="auth-message"></p>
 
     <section class="rr-hero">
       <div class="hero-glow"></div>
-      <div class="rr-badge">AI-powered review management</div>
-      <h1>
+      <div class="rr-badge" id="t-badge">AI-powered review management</div>
+      <h1 id="t-h1">
         Reply to reviews in<br /><span class="grad-text"
           >5 seconds with AI</span
         >
       </h1>
-      <p>
+      <p id="t-hero-p">
         Stop spending hours writing responses to Google reviews. ReviewReply
         generates professional, personalized replies instantly — so you can
         focus on running your business.
@@ -936,27 +920,33 @@
 
     <div class="rr-demo" id="demoSection">
       <div class="demo-inner">
-        <div class="demo-label">Live demo</div>
+        <div class="demo-label" id="t-demo-label">Live demo</div>
         <div class="demo-review">
           <div class="demo-stars">★★★★★</div>
-          "Great place! Food was amazing and staff very friendly. Will
-          definitely come back!"
+          <span id="t-demo-review"
+            >"Great place! Food was amazing and staff very friendly. Will
+            definitely come back!"</span
+          >
         </div>
         <div class="demo-arrow">↓</div>
         <div class="demo-reply">
-          <div class="demo-reply-label">AI generated reply</div>
-          Thank you so much for your kind words — we're thrilled to hear you
-          enjoyed the food and had a great experience with our team! We look
-          forward to welcoming you back soon.
+          <div class="demo-reply-label" id="t-demo-reply-label">
+            AI generated reply
+          </div>
+          <span id="t-demo-reply"
+            >Thank you so much for your kind words — we are thrilled to hear you
+            enjoyed the food and had a great experience with our team! We look
+            forward to welcoming you back soon.</span
+          >
         </div>
       </div>
     </div>
 
     <div class="rr-app" id="appCard">
       <div class="demo-inner">
-        <div class="demo-label">Generate your reply</div>
+        <div class="demo-label" id="t-gen-label">Generate your reply</div>
         <div class="app-field">
-          <label>📋 Paste a review</label>
+          <label id="t-paste-label">📋 Paste a review</label>
           <textarea
             id="reviewInput"
             rows="4"
@@ -965,16 +955,16 @@
         </div>
         <div class="app-row">
           <div class="app-field">
-            <label>🎨 Reply Tone</label>
+            <label id="t-tone-label">🎨 Reply Tone</label>
             <select id="toneSelect">
-              <option value="Professional">Professional</option>
-              <option value="Friendly">Friendly</option>
-              <option value="Warm">Warm</option>
-              <option value="Apologetic">Apologetic</option>
+              <option value="Professional" id="t-opt1">Professional</option>
+              <option value="Friendly" id="t-opt2">Friendly</option>
+              <option value="Warm" id="t-opt3">Warm</option>
+              <option value="Apologetic" id="t-opt4">Apologetic</option>
             </select>
           </div>
           <div class="app-field">
-            <label>Review Rating</label>
+            <label id="t-rating-label">Review Rating</label>
             <div class="stars" id="stars">
               <span class="star" data-value="1">★</span>
               <span class="star" data-value="2">★</span>
@@ -989,8 +979,10 @@
         </button>
         <div class="loading" id="loading">Generating your reply...</div>
         <div class="output-header">
-          <label>💬 Generated Reply</label>
-          <button class="copy-btn" onclick="copyReply()">Copy</button>
+          <label id="t-output-label">💬 Generated Reply</label>
+          <button class="copy-btn" id="t-copy-btn" onclick="copyReply()">
+            Copy
+          </button>
         </div>
         <div id="outputBox" class="output-box">
           Your generated reply will appear here...
@@ -1002,61 +994,53 @@
       <div class="stats-box">
         <div class="stat-item">
           <div class="stat-num">5 sec</div>
-          <div class="stat-label">Average reply time</div>
+          <div class="stat-label" id="t-stat1">Average reply time</div>
         </div>
         <div class="stat-item">
           <div class="stat-num">500+</div>
-          <div class="stat-label">Businesses using it</div>
+          <div class="stat-label" id="t-stat2">Businesses using it</div>
         </div>
         <div class="stat-item">
           <div class="stat-num">98%</div>
-          <div class="stat-label">Satisfaction rate</div>
+          <div class="stat-label" id="t-stat3">Satisfaction rate</div>
         </div>
       </div>
     </div>
 
     <section class="rr-features">
-      <div class="section-title">Everything you need</div>
-      <div class="section-sub">
+      <div class="section-title" id="t-feat-title">Everything you need</div>
+      <div class="section-sub" id="t-feat-sub">
         Designed for any business with Google reviews
       </div>
       <div class="features-grid">
         <div class="feature-card">
-          <div class="feature-icon">
-            <i class="ti ti-bolt" aria-hidden="true"></i>
-          </div>
-          <div class="feature-title">Instant AI replies</div>
-          <div class="feature-desc">
+          <div class="feature-icon"><i class="ti ti-bolt"></i></div>
+          <div class="feature-title" id="t-f1-title">Instant AI replies</div>
+          <div class="feature-desc" id="t-f1-desc">
             Generate professional responses in seconds. No more staring at a
             blank screen wondering what to write.
           </div>
         </div>
         <div class="feature-card">
-          <div class="feature-icon">
-            <i class="ti ti-adjustments" aria-hidden="true"></i>
-          </div>
-          <div class="feature-title">Custom tone</div>
-          <div class="feature-desc">
+          <div class="feature-icon"><i class="ti ti-adjustments"></i></div>
+          <div class="feature-title" id="t-f2-title">Custom tone</div>
+          <div class="feature-desc" id="t-f2-desc">
             Choose from friendly, professional, or formal tones to match your
             brand's voice perfectly.
           </div>
         </div>
         <div class="feature-card">
-          <div class="feature-icon">
-            <i class="ti ti-star" aria-hidden="true"></i>
-          </div>
-          <div class="feature-title">Star rating aware</div>
-          <div class="feature-desc">
+          <div class="feature-icon"><i class="ti ti-star"></i></div>
+          <div class="feature-title" id="t-f3-title">Star rating aware</div>
+          <div class="feature-desc" id="t-f3-desc">
             The AI adapts its response based on the star rating — different
             approach for 1 star vs 5 stars.
           </div>
         </div>
         <div class="feature-card">
-          <div class="feature-icon">
-            <i class="ti ti-device-mobile" aria-hidden="true"></i>
-          </div>
-          <div class="feature-title">Works everywhere</div>
-          <div class="feature-desc">
+          <div class="feature-icon"><i class="ti ti-device-mobile"></i></div>
+          <div class="feature-title" id="t-f4-title">Works everywhere</div>
+          <div class="feature-desc" id="t-f4-desc">
             Use on any device — phone, tablet, or desktop. Copy and paste
             directly into Google.
           </div>
@@ -1065,12 +1049,14 @@
     </section>
 
     <section class="rr-reviews">
-      <div class="section-title">Loved by business owners</div>
-      <div class="section-sub">Real feedback from real customers</div>
+      <div class="section-title" id="t-rev-title">Loved by business owners</div>
+      <div class="section-sub" id="t-rev-sub">
+        Real feedback from real customers
+      </div>
       <div class="reviews-grid">
         <div class="review-card">
           <div class="review-stars">★★★★★</div>
-          <div class="review-text">
+          <div class="review-text" id="t-r1">
             "I used to spend 30 minutes a day on review replies. Now it takes 5
             minutes total. This tool is a game changer."
           </div>
@@ -1078,27 +1064,29 @@
             <div class="review-avatar">MK</div>
             <div>
               <div class="review-name">Maria K.</div>
-              <div class="review-biz">Restaurant owner, Sofia</div>
+              <div class="review-biz" id="t-r1-biz">
+                Restaurant owner, Sofia
+              </div>
             </div>
           </div>
         </div>
         <div class="review-card">
           <div class="review-stars">★★★★★</div>
-          <div class="review-text">
-            "The replies sound so natural — my customers can't tell they're AI
+          <div class="review-text" id="t-r2">
+            "The replies sound so natural — my customers cannot tell they are AI
             generated. Absolutely worth the subscription."
           </div>
           <div class="review-author">
             <div class="review-avatar">TP</div>
             <div>
               <div class="review-name">Tom P.</div>
-              <div class="review-biz">Hotel manager, Plovdiv</div>
+              <div class="review-biz" id="t-r2-biz">Hotel manager, Plovdiv</div>
             </div>
           </div>
         </div>
         <div class="review-card">
           <div class="review-stars">★★★★★</div>
-          <div class="review-text">
+          <div class="review-text" id="t-r3">
             "Perfect for our small team. We manage 3 locations and ReviewReply
             saves us hours every week."
           </div>
@@ -1106,13 +1094,13 @@
             <div class="review-avatar">SD</div>
             <div>
               <div class="review-name">Stefan D.</div>
-              <div class="review-biz">Retail chain, Varna</div>
+              <div class="review-biz" id="t-r3-biz">Retail chain, Varna</div>
             </div>
           </div>
         </div>
         <div class="review-card">
           <div class="review-stars">★★★★★</div>
-          <div class="review-text">
+          <div class="review-text" id="t-r4">
             "Simple, fast, and always professional. My Google rating improved
             since I started responding to every review."
           </div>
@@ -1120,7 +1108,7 @@
             <div class="review-avatar">AN</div>
             <div>
               <div class="review-name">Ana N.</div>
-              <div class="review-biz">Beauty salon, Burgas</div>
+              <div class="review-biz" id="t-r4-biz">Beauty salon, Burgas</div>
             </div>
           </div>
         </div>
@@ -1128,8 +1116,10 @@
     </section>
 
     <section class="rr-pricing">
-      <div class="section-title">Simple pricing</div>
-      <div class="section-sub">Start free, upgrade when you're ready</div>
+      <div class="section-title" id="t-price-title">Simple pricing</div>
+      <div class="section-sub" id="t-price-sub">
+        Start free, upgrade when you are ready
+      </div>
       <div class="pricing-grid">
         <div
           class="price-card"
@@ -1162,23 +1152,33 @@
               position: relative;
               z-index: 1;
             "
+            id="t-free-badge"
           >
             No credit card needed
           </div>
-          <div class="price-plan" style="position: relative; z-index: 1">
+          <div
+            class="price-plan"
+            style="position: relative; z-index: 1"
+            id="t-free-plan"
+          >
             Free
           </div>
-          <div class="price-amount">€0 <span>/month</span></div>
-          <div class="price-desc">Perfect for trying it out</div>
+          <div class="price-amount">€0 <span id="t-mo1">/month</span></div>
+          <div class="price-desc" id="t-free-desc">
+            Perfect for trying it out
+          </div>
           <ul class="price-features">
             <li>
-              <i class="ti ti-check" aria-hidden="true"></i> 5 replies per month
+              <i class="ti ti-check"></i>
+              <span id="t-pf1">5 replies per month</span>
             </li>
             <li>
-              <i class="ti ti-check" aria-hidden="true"></i> All tone options
+              <i class="ti ti-check"></i>
+              <span id="t-pf2">All tone options</span>
             </li>
             <li>
-              <i class="ti ti-check" aria-hidden="true"></i> Copy to clipboard
+              <i class="ti ti-check"></i>
+              <span id="t-pf3">Copy to clipboard</span>
             </li>
           </ul>
           <button
@@ -1188,53 +1188,73 @@
               border: none;
               color: #fff;
             "
+            id="t-free-btn"
           >
             Get started free
           </button>
         </div>
         <div class="price-card featured">
-          <div class="popular-badge">Most popular</div>
-          <div class="price-plan">Pro Monthly</div>
-          <div class="price-amount">€9.99 <span>/month</span></div>
-          <div class="price-desc">For serious business owners</div>
+          <div class="popular-badge" id="t-pop-badge">Most popular</div>
+          <div class="price-plan" id="t-pro-plan">Pro Monthly</div>
+          <div class="price-amount">€9.99 <span id="t-mo2">/month</span></div>
+          <div class="price-desc" id="t-pro-desc">
+            For serious business owners
+          </div>
           <ul class="price-features">
             <li>
-              <i class="ti ti-check" aria-hidden="true"></i> Unlimited replies
+              <i class="ti ti-check"></i>
+              <span id="t-pf4">Unlimited replies</span>
             </li>
             <li>
-              <i class="ti ti-check" aria-hidden="true"></i> All tone options
+              <i class="ti ti-check"></i>
+              <span id="t-pf5">All tone options</span>
             </li>
             <li>
-              <i class="ti ti-check" aria-hidden="true"></i> Priority support
+              <i class="ti ti-check"></i>
+              <span id="t-pf6">Priority support</span>
             </li>
             <li>
-              <i class="ti ti-check" aria-hidden="true"></i> Cancel anytime
+              <i class="ti ti-check"></i> <span id="t-pf7">Cancel anytime</span>
             </li>
           </ul>
-          <button class="btn-plan featured" onclick="checkout('monthly')">
+          <button
+            class="btn-plan featured"
+            onclick="checkout('monthly')"
+            id="t-pro-btn"
+          >
             Start Pro — €9.99/mo
           </button>
         </div>
         <div class="price-card yearly">
-          <div class="save-badge">Save 17%</div>
-          <div class="price-plan">Pro Yearly</div>
-          <div class="price-amount">€99 <span>/year</span></div>
-          <div class="price-desc">Best value — 2 months free vs monthly</div>
+          <div class="save-badge" id="t-save-badge">Save 17%</div>
+          <div class="price-plan" id="t-yr-plan">Pro Yearly</div>
+          <div class="price-amount">€99 <span id="t-yr1">/year</span></div>
+          <div class="price-desc" id="t-yr-desc">
+            Best value — 2 months free vs monthly
+          </div>
           <ul class="price-features">
             <li class="pink">
-              <i class="ti ti-check" aria-hidden="true"></i> Unlimited replies
+              <i class="ti ti-check"></i>
+              <span id="t-pf8">Unlimited replies</span>
             </li>
             <li class="pink">
-              <i class="ti ti-check" aria-hidden="true"></i> All tone options
+              <i class="ti ti-check"></i>
+              <span id="t-pf9">All tone options</span>
             </li>
             <li class="pink">
-              <i class="ti ti-check" aria-hidden="true"></i> Priority support
+              <i class="ti ti-check"></i>
+              <span id="t-pf10">Priority support</span>
             </li>
             <li class="pink">
-              <i class="ti ti-check" aria-hidden="true"></i> Cancel anytime
+              <i class="ti ti-check"></i>
+              <span id="t-pf11">Cancel anytime</span>
             </li>
           </ul>
-          <button class="btn-plan yearly-btn" onclick="checkout('yearly')">
+          <button
+            class="btn-plan yearly-btn"
+            onclick="checkout('yearly')"
+            id="t-yr-btn"
+          >
             Start Yearly — €99/yr
           </button>
         </div>
@@ -1242,14 +1262,13 @@
     </section>
 
     <section class="rr-cta">
-      <h2>Ready to save hours every week?</h2>
-      <p>Join hundreds of businesses already using ReviewReply</p>
+      <h2 id="t-cta-h2">Ready to save hours every week?</h2>
+      <p id="t-cta-p">Join hundreds of businesses already using ReviewReply</p>
       <button class="btn-hero" id="ctaTryBtn">Start for free today →</button>
     </section>
 
     <footer class="rr-footer">© 2026 ReviewReply. All rights reserved.</footer>
 
-    <!-- AUTH MODAL -->
     <div class="modal-overlay" id="registerModal">
       <div class="register-modal">
         <button class="close-modal" id="closeModalBtn">×</button>
@@ -1303,6 +1322,7 @@
     </div>
 
     <script type="module" src="script.js"></script>
+    <script src="lang.js"></script>
     <script>
       document.getElementById("heroTryBtn").onclick = () => {
         document.getElementById("demoSection").style.display = "none";
