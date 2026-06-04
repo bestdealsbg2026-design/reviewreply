@@ -294,7 +294,7 @@ async function generateReply() {
       const modal = document.getElementById("loginRequiredModal");
       const h2 = modal.querySelector("h2");
       const p = modal.querySelector(".modal-subtitle");
-      if (h2) h2.textContent = "You've used all 10 free replies!";
+      if (h2) h2.textContent = "You've used all 6 free replies!";
       if (p) p.textContent = "Register for free to get more replies.";
       return;
     }
