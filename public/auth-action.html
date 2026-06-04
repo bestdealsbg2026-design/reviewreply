@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ReviewReply AI - Verifying...</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: "Segoe UI", sans-serif;
+        background: #f0f4f8;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
+      .box {
+        background: white;
+        padding: 40px;
+        border-radius: 16px;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+        text-align: center;
+        max-width: 400px;
+        width: 90%;
+      }
+      .logo {
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 20px;
+      }
+      .logo span {
+        color: #4f46e5;
+      }
+      h2 {
+        margin-bottom: 10px;
+        color: #1a202c;
+      }
+      p {
+        color: #64748b;
+        font-size: 14px;
+        line-height: 1.6;
+      }
+      .spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px solid #e2e8f0;
+        border-top: 4px solid #4f46e5;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 20px auto;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .success {
+        color: #10b981;
+        font-size: 48px;
+        margin: 20px 0;
+      }
+      .error {
+        color: #ef4444;
+        font-size: 48px;
+        margin: 20px 0;
+      }
+      .btn {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 12px 24px;
+        background: #4f46e5;
+        color: white;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box">
+      <div class="logo">Review<span>Reply</span> AI</div>
+      <div id="content">
+        <div class="spinner"></div>
+        <h2>Verifying your email...</h2>
+        <p>Please wait a moment.</p>
+      </div>
+    </div>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+      import {
+        getAuth,
+        applyActionCode,
+      } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyDHFzrQkaTZU2sjOxVT1Vympw9QiH-IBKI",
+        authDomain: "replypilot-d0ca7.firebaseapp.com",
+        projectId: "replypilot-d0ca7",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+
+      const params = new URLSearchParams(window.location.search);
+      const mode = params.get("mode");
+      const oobCode = params.get("oobCode");
+      const content = document.getElementById("content");
+
+      if (mode === "verifyEmail" && oobCode) {
+        applyActionCode(auth, oobCode)
+          .then(() => {
+            content.innerHTML = `
+              <div class="success">✅</div>
+              <h2>Email Verified!</h2>
+              <p>Your email has been verified successfully. You can now log in.</p>
+              <a href="/" class="btn">Go to App →</a>
+            `;
+          })
+          .catch((err) => {
+            content.innerHTML = `
+              <div class="error">❌</div>
+              <h2>Verification Failed</h2>
+              <p>The link may have expired. Please try registering again.</p>
+              <a href="/" class="btn">Go to App →</a>
+            `;
+          });
+      } else {
+        content.innerHTML = `
+          <div class="error">❌</div>
+          <h2>Invalid Link</h2>
+          <p>This link is not valid.</p>
+          <a href="/" class="btn">Go to App →</a>
+        `;
+      }
+    </script>
+  </body>
+</html>

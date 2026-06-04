@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ReviewReply AI</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <!-- NAVBAR -->
+    <div class="navbar">
+      <div class="logo">Review<span>Reply</span> AI</div>
+
+      <div class="nav-actions" id="navActions">
+        <!-- Buttons injected by JS based on auth state -->
+      </div>
+    </div>
+
+    <p id="authMessage" class="auth-message"></p>
+
+    <!-- HERO -->
+    <div class="hero">
+      <h1>Review<span>Reply</span> AI</h1>
+      <p class="main-subtitle">Turn reviews into professional replies in seconds</p>
+      <p class="secondary-subtitle">Save time and respond to every customer review effortlessly</p>
+    </div>
+
+    <!-- MAIN CARD -->
+    <div class="card">
+      <div class="section">
+        <label>📋 Try it: paste a review or use the example below</label>
+        <textarea id="reviewInput" rows="5" placeholder="Example: The room was dirty and staff was rude."></textarea>
+      </div>
+
+      <div class="section">
+        <label>🎨 Select Reply Tone</label>
+        <select id="toneSelect">
+          <option value="Professional">Professional</option>
+          <option value="Friendly">Friendly</option>
+          <option value="Warm">Warm</option>
+          <option value="Apologetic">Apologetic</option>
+        </select>
+      </div>
+
+      <div class="section">
+        <label>Review Rating</label>
+        <div class="stars" id="stars">
+          <span class="star" data-value="1">★</span>
+          <span class="star" data-value="2">★</span>
+          <span class="star" data-value="3">★</span>
+          <span class="star" data-value="4">★</span>
+          <span class="star" data-value="5">★</span>
+        </div>
+      </div>
+
+      <div class="section">
+        <button id="generateBtn" class="generate-btn">✨ Generate Reply for Free</button>
+      </div>
+
+      <div class="loading" id="loading">Generating your reply...</div>
+
+      <div class="output-header">
+        <label style="margin: 0">💬 Generated Reply</label>
+        <button class="copy-btn" onclick="copyReply()">Copy</button>
+      </div>
+
+      <div id="outputBox" class="output-box">Your generated reply will appear here...</div>
+    </div>
+
+    <!-- PRICING -->
+    <div class="pricing">
+      <h2>Simple Pricing</h2>
+      <p class="pricing-sub">Start free. Upgrade when you need more replies.</p>
+
+      <div class="pricing-wrapper">
+        <div class="pricing-card monthly popular" onclick="selectPlan('monthly')">
+          <h3>Monthly</h3>
+          <div class="price">€9.99 <span>/month</span></div>
+          <div class="pricing-list">
+            ✓ Unlimited AI replies<br />
+            ✓ Human-like responses<br />
+            ✓ Multiple tones<br />
+            ✓ Fast generation
+          </div>
+          <button class="pricing-btn" onclick="event.stopPropagation(); checkout('monthly')">
+            Start Monthly Plan
+          </button>
+        </div>
+
+        <div class="pricing-card yearly" onclick="selectPlan('yearly')">
+          <h3>Yearly</h3>
+          <div class="price">€99 <span>/year</span></div>
+          <div class="pricing-list">
+            ✓ Everything in Monthly<br />
+            ✓ Save money yearly<br />
+            ✓ Priority updates<br />
+            ✓ Best value
+          </div>
+          <button class="pricing-btn" onclick="event.stopPropagation(); checkout('yearly')">
+            Get Yearly Plan
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- AUTH MODAL (Register / Login) -->
+    <div class="modal-overlay" id="registerModal">
+      <div class="register-modal">
+        <button class="close-modal" id="closeModalBtn">×</button>
+
+        <div class="modal-header">
+          <h2 id="authTitle">Create Account</h2>
+          <p class="modal-subtitle" id="authSubtitle">Start generating smarter review replies.</p>
+        </div>
+
+        <div class="modal-body">
+          <input id="emailInput" class="modal-input" type="email" placeholder="Email" />
+          <input id="passwordInput" class="modal-input" type="password" placeholder="Password (min 6 chars, include a number)" />
+          <button class="modal-register-btn" id="authSubmitBtn">Create Account</button>
+
+          <p class="switch-auth" id="switchAuthText">
+            Already have an account? <span id="switchAuthMode">Log in</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- LOGIN REQUIRED MODAL (instead of alert) -->
+    <div class="modal-overlay" id="loginRequiredModal">
+      <div class="register-modal">
+        <button class="close-modal" id="closeLoginRequired">×</button>
+        <div class="modal-header">
+          <h2>Login Required</h2>
+          <p class="modal-subtitle">Please log in or create an account to generate replies.</p>
+        </div>
+        <div class="modal-body">
+          <button class="modal-register-btn" id="goToLoginBtn">Login</button>
+          <p class="switch-auth">
+            No account yet? <span id="goToRegisterBtn">Register</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUCCESS -->
+    <div id="successModal" class="success-modal">
+      <div class="success-box">🎉 Registration successful!</div>
+    </div>
+
+    <script type="module" src="script.js"></script>
+  </body>
+</html>

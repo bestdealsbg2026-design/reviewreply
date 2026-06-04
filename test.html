@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+  <body>
+    <button onclick="testAPI()">TEST API</button>
+
+    <h3>RESULT:</h3>
+    <pre id="out">Waiting...</pre>
+
+    <script>
+      async function testAPI() {
+        document.getElementById("out").textContent = "Calling API...";
+
+        try {
+          const res = await fetch("http://localhost:3000/api/reply", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              review: "Great food and service",
+              tone: "Friendly",
+            }),
+          });
+
+          const text = await res.text(); // важно: text, не json първо
+          document.getElementById("out").textContent = text;
+        } catch (err) {
+          document.getElementById("out").textContent = "ERROR: " + err.message;
+        }
+      }
+    </script>
+  </body>
+</html>
