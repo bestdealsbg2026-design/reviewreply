@@ -248,6 +248,7 @@ const elMap = {
 };
 
 function setLang(lang) {
+  window.currentLang = lang;
   document
     .querySelectorAll(".lang-btn")
     .forEach((b) => b.classList.remove("active"));
