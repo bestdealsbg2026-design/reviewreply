@@ -4,121 +4,274 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ReviewReply AI</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.29.0/dist/tabler-icons.min.css"
+    />
     <link rel="stylesheet" href="style.css" />
   </head>
-
   <body>
     <!-- NAVBAR -->
-    <div class="navbar">
-      <div class="logo">Review<span>Reply</span> AI</div>
-
-      <div class="nav-actions" id="navActions">
-        <!-- Buttons injected by JS based on auth state -->
-      </div>
-    </div>
+    <nav class="rr-nav">
+      <div class="rr-logo">Review<span>Reply</span></div>
+      <div class="nav-actions" id="navActions"></div>
+    </nav>
 
     <p id="authMessage" class="auth-message"></p>
 
     <!-- HERO -->
-    <div class="hero">
-      <h1>Review<span>Reply</span> AI</h1>
-      <p class="main-subtitle">Turn reviews into professional replies in seconds</p>
-      <p class="secondary-subtitle">Save time and respond to every customer review effortlessly</p>
-    </div>
-
-    <!-- MAIN CARD -->
-    <div class="card">
-      <div class="section">
-        <label>📋 Try it: paste a review or use the example below</label>
-        <textarea id="reviewInput" rows="5" placeholder="Example: The room was dirty and staff was rude."></textarea>
+    <section class="rr-hero">
+      <div class="hero-glow"></div>
+      <div class="rr-badge">AI-powered review management</div>
+      <h1>
+        Reply to reviews in<br /><span class="grad-text"
+          >5 seconds with AI</span
+        >
+      </h1>
+      <p>
+        Stop spending hours writing responses to Google reviews. ReviewReply
+        generates professional, personalized replies instantly — so you can
+        focus on running your business.
+      </p>
+      <div class="rr-hero-btns">
+        <button class="btn-hero" id="heroTryBtn">Try for free →</button>
+        <button class="btn-hero-outline" id="heroSeeBtn">
+          See how it works
+        </button>
       </div>
+    </section>
 
-      <div class="section">
-        <label>🎨 Select Reply Tone</label>
-        <select id="toneSelect">
-          <option value="Professional">Professional</option>
-          <option value="Friendly">Friendly</option>
-          <option value="Warm">Warm</option>
-          <option value="Apologetic">Apologetic</option>
-        </select>
-      </div>
+    <!-- DEMO / MAIN CARD -->
+    <div class="rr-section" id="appCard">
+      <div class="demo-inner">
+        <div class="demo-label">Generate your reply</div>
 
-      <div class="section">
-        <label>Review Rating</label>
-        <div class="stars" id="stars">
-          <span class="star" data-value="1">★</span>
-          <span class="star" data-value="2">★</span>
-          <span class="star" data-value="3">★</span>
-          <span class="star" data-value="4">★</span>
-          <span class="star" data-value="5">★</span>
+        <div class="app-field">
+          <label class="app-label">📋 Paste a review</label>
+          <textarea
+            id="reviewInput"
+            rows="4"
+            placeholder="Example: The room was dirty and staff was rude."
+          ></textarea>
+        </div>
+
+        <div class="app-row">
+          <div class="app-field half">
+            <label class="app-label">🎨 Reply Tone</label>
+            <select id="toneSelect">
+              <option value="Professional">Professional</option>
+              <option value="Friendly">Friendly</option>
+              <option value="Warm">Warm</option>
+              <option value="Apologetic">Apologetic</option>
+            </select>
+          </div>
+          <div class="app-field half">
+            <label class="app-label">Review Rating</label>
+            <div class="stars" id="stars">
+              <span class="star" data-value="1">★</span>
+              <span class="star" data-value="2">★</span>
+              <span class="star" data-value="3">★</span>
+              <span class="star" data-value="4">★</span>
+              <span class="star active" data-value="5">★</span>
+            </div>
+          </div>
+        </div>
+
+        <button id="generateBtn" class="btn-generate">
+          ✨ Generate Reply for Free
+        </button>
+
+        <div class="loading" id="loading">Generating your reply...</div>
+
+        <div class="output-header">
+          <label class="app-label" style="margin: 0">💬 Generated Reply</label>
+          <button class="copy-btn" onclick="copyReply()">Copy</button>
+        </div>
+        <div id="outputBox" class="output-box">
+          Your generated reply will appear here...
         </div>
       </div>
+    </div>
 
-      <div class="section">
-        <button id="generateBtn" class="generate-btn">✨ Generate Reply for Free</button>
+    <!-- STATS -->
+    <div class="rr-section">
+      <div class="stats-box">
+        <div class="stat-item">
+          <div
+            class="stat-num"
+            style="
+              background: linear-gradient(135deg, #818cf8, #e879f9);
+              -webkit-background-clip: text;
+              -webkit-text-fill-color: transparent;
+              background-clip: text;
+            "
+          >
+            5 sec
+          </div>
+          <div class="stat-label">Average reply time</div>
+        </div>
+        <div class="stat-item">
+          <div
+            class="stat-num"
+            style="
+              background: linear-gradient(135deg, #818cf8, #e879f9);
+              -webkit-background-clip: text;
+              -webkit-text-fill-color: transparent;
+              background-clip: text;
+            "
+          >
+            500+
+          </div>
+          <div class="stat-label">Businesses using it</div>
+        </div>
+        <div class="stat-item">
+          <div
+            class="stat-num"
+            style="
+              background: linear-gradient(135deg, #818cf8, #e879f9);
+              -webkit-background-clip: text;
+              -webkit-text-fill-color: transparent;
+              background-clip: text;
+            "
+          >
+            98%
+          </div>
+          <div class="stat-label">Satisfaction rate</div>
+        </div>
       </div>
-
-      <div class="loading" id="loading">Generating your reply...</div>
-
-      <div class="output-header">
-        <label style="margin: 0">💬 Generated Reply</label>
-        <button class="copy-btn" onclick="copyReply()">Copy</button>
-      </div>
-
-      <div id="outputBox" class="output-box">Your generated reply will appear here...</div>
     </div>
 
     <!-- PRICING -->
-    <div class="pricing">
-      <h2>Simple Pricing</h2>
-      <p class="pricing-sub">Start free. Upgrade when you need more replies.</p>
+    <div class="rr-section">
+      <div class="section-title">Simple pricing</div>
+      <div class="section-sub">Start free, upgrade when you're ready</div>
+      <div class="pricing-grid">
+        <div class="price-card free-card" onclick="selectPlan('free')">
+          <div class="free-top-bar"></div>
+          <div class="free-badge">No credit card needed</div>
+          <div class="price-plan">Free</div>
+          <div class="price-amount">€0 <span>/month</span></div>
+          <div class="price-desc">Perfect for trying it out</div>
+          <ul class="price-features">
+            <li>
+              <i class="ti ti-check" style="color: #a78bfa"></i> 5 replies per
+              month
+            </li>
+            <li>
+              <i class="ti ti-check" style="color: #a78bfa"></i> All tone
+              options
+            </li>
+            <li>
+              <i class="ti ti-check" style="color: #a78bfa"></i> Copy to
+              clipboard
+            </li>
+          </ul>
+          <button class="btn-plan btn-free-plan">Get started free</button>
+        </div>
 
-      <div class="pricing-wrapper">
-        <div class="pricing-card monthly popular" onclick="selectPlan('monthly')">
-          <h3>Monthly</h3>
-          <div class="price">€9.99 <span>/month</span></div>
-          <div class="pricing-list">
-            ✓ Unlimited AI replies<br />
-            ✓ Human-like responses<br />
-            ✓ Multiple tones<br />
-            ✓ Fast generation
-          </div>
-          <button class="pricing-btn" onclick="event.stopPropagation(); checkout('monthly')">
-            Start Monthly Plan
+        <div class="price-card featured" onclick="selectPlan('monthly')">
+          <div class="popular-badge">Most popular</div>
+          <div class="price-plan">Pro Monthly</div>
+          <div class="price-amount">€9.99 <span>/month</span></div>
+          <div class="price-desc">For serious business owners</div>
+          <ul class="price-features">
+            <li>
+              <i class="ti ti-check" style="color: #8b5cf6"></i> Unlimited
+              replies
+            </li>
+            <li>
+              <i class="ti ti-check" style="color: #8b5cf6"></i> All tone
+              options
+            </li>
+            <li>
+              <i class="ti ti-check" style="color: #8b5cf6"></i> Priority
+              support
+            </li>
+            <li>
+              <i class="ti ti-check" style="color: #8b5cf6"></i> Cancel anytime
+            </li>
+          </ul>
+          <button
+            class="btn-plan btn-monthly"
+            onclick="
+              event.stopPropagation();
+              checkout('monthly');
+            "
+          >
+            Start Pro — €9.99/mo
           </button>
         </div>
 
-        <div class="pricing-card yearly" onclick="selectPlan('yearly')">
-          <h3>Yearly</h3>
-          <div class="price">€99 <span>/year</span></div>
-          <div class="pricing-list">
-            ✓ Everything in Monthly<br />
-            ✓ Save money yearly<br />
-            ✓ Priority updates<br />
-            ✓ Best value
-          </div>
-          <button class="pricing-btn" onclick="event.stopPropagation(); checkout('yearly')">
-            Get Yearly Plan
+        <div class="price-card yearly-card" onclick="selectPlan('yearly')">
+          <div class="save-badge">Save 17%</div>
+          <div class="price-plan">Pro Yearly</div>
+          <div class="price-amount">€99 <span>/year</span></div>
+          <div class="price-desc">Best value — 2 months free vs monthly</div>
+          <ul class="price-features">
+            <li>
+              <i class="ti ti-check" style="color: #ec4899"></i> Unlimited
+              replies
+            </li>
+            <li>
+              <i class="ti ti-check" style="color: #ec4899"></i> All tone
+              options
+            </li>
+            <li>
+              <i class="ti ti-check" style="color: #ec4899"></i> Priority
+              support
+            </li>
+            <li>
+              <i class="ti ti-check" style="color: #ec4899"></i> Cancel anytime
+            </li>
+          </ul>
+          <button
+            class="btn-plan btn-yearly"
+            onclick="
+              event.stopPropagation();
+              checkout('yearly');
+            "
+          >
+            Start Yearly — €99/yr
           </button>
         </div>
       </div>
     </div>
 
-    <!-- AUTH MODAL (Register / Login) -->
+    <!-- CTA -->
+    <section class="rr-cta">
+      <h2>Ready to save hours every week?</h2>
+      <p>Join hundreds of businesses already using ReviewReply</p>
+      <button class="btn-hero" id="ctaTryBtn">Start for free today →</button>
+    </section>
+
+    <footer class="rr-footer">© 2026 ReviewReply. All rights reserved.</footer>
+
+    <!-- AUTH MODAL -->
     <div class="modal-overlay" id="registerModal">
       <div class="register-modal">
         <button class="close-modal" id="closeModalBtn">×</button>
-
         <div class="modal-header">
           <h2 id="authTitle">Create Account</h2>
-          <p class="modal-subtitle" id="authSubtitle">Start generating smarter review replies.</p>
+          <p class="modal-subtitle" id="authSubtitle">
+            Start generating smarter review replies.
+          </p>
         </div>
-
         <div class="modal-body">
-          <input id="emailInput" class="modal-input" type="email" placeholder="Email" />
-          <input id="passwordInput" class="modal-input" type="password" placeholder="Password (min 6 chars, include a number)" />
-          <button class="modal-register-btn" id="authSubmitBtn">Create Account</button>
-
+          <input
+            id="emailInput"
+            class="modal-input"
+            type="email"
+            placeholder="Email"
+          />
+          <input
+            id="passwordInput"
+            class="modal-input"
+            type="password"
+            placeholder="Password (min 6 chars, include a number)"
+          />
+          <button class="modal-register-btn" id="authSubmitBtn">
+            Create Account
+          </button>
           <p class="switch-auth" id="switchAuthText">
             Already have an account? <span id="switchAuthMode">Log in</span>
           </p>
@@ -126,13 +279,15 @@
       </div>
     </div>
 
-    <!-- LOGIN REQUIRED MODAL (instead of alert) -->
+    <!-- LOGIN REQUIRED MODAL -->
     <div class="modal-overlay" id="loginRequiredModal">
       <div class="register-modal">
         <button class="close-modal" id="closeLoginRequired">×</button>
         <div class="modal-header">
           <h2>Login Required</h2>
-          <p class="modal-subtitle">Please log in or create an account to generate replies.</p>
+          <p class="modal-subtitle">
+            Please log in or create an account to generate replies.
+          </p>
         </div>
         <div class="modal-body">
           <button class="modal-register-btn" id="goToLoginBtn">Login</button>
@@ -149,5 +304,19 @@
     </div>
 
     <script type="module" src="script.js"></script>
+    <script>
+      document.getElementById("heroTryBtn").onclick = () =>
+        document
+          .getElementById("appCard")
+          .scrollIntoView({ behavior: "smooth" });
+      document.getElementById("heroSeeBtn").onclick = () =>
+        document
+          .getElementById("appCard")
+          .scrollIntoView({ behavior: "smooth" });
+      document.getElementById("ctaTryBtn").onclick = () =>
+        document
+          .getElementById("appCard")
+          .scrollIntoView({ behavior: "smooth" });
+    </script>
   </body>
 </html>
