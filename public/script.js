@@ -282,7 +282,19 @@ async function generateReply() {
   const output = document.getElementById("outputBox");
   const loading = document.getElementById("loading");
 
-  if (!review) return alert("Please paste a review first.");
+  if (!review) {
+    const output = document.getElementById("outputBox");
+    output.style.color = "#f87171";
+    output.textContent =
+      window.currentLang === "bg"
+        ? "⚠️ Моля, постави ревю преди да генерираш отговор."
+        : "⚠️ Please paste a review first.";
+    setTimeout(() => {
+      output.style.color = "";
+      output.textContent = "";
+    }, 3000);
+    return;
+  }
 
   // Guest user - check limit
   if (!currentUser) {
@@ -317,8 +329,19 @@ async function generateReply() {
     }
   }
 
-  if (currentUser && !userData)
-    return alert("User data not loaded, please try again.");
+  if (currentUser && !userData) {
+    const output = document.getElementById("outputBox");
+    output.style.color = "#f87171";
+    output.textContent =
+      window.currentLang === "bg"
+        ? "⚠️ Данните не са заредени, опитай пак."
+        : "⚠️ User data not loaded, please try again.";
+    setTimeout(() => {
+      output.style.color = "";
+      output.textContent = "";
+    }, 3000);
+    return;
+  }
 
   loading.style.display = "block";
   output.textContent = "";
