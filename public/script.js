@@ -295,6 +295,11 @@ async function generateReply() {
     }, 3000);
     return;
   }
+  const noAccountEl = document.getElementById("noAccountText");
+  if (noAccountEl) {
+    noAccountEl.textContent =
+      window.currentLang === "bg" ? "Нямаш акаунт?" : "No account yet?";
+  }
 
   // Guest user - check limit
   if (!currentUser) {
