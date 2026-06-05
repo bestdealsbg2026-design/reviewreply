@@ -1303,25 +1303,64 @@
         </div>
       </div>
     </div>
-
     <div class="modal-overlay" id="loginRequiredModal">
-      <div class="register-modal">
+      <div class="register-modal" style="padding: 36px 40px 32px">
         <button class="close-modal" id="closeLoginRequired">×</button>
-        <div class="modal-header">
-          <h2>Login Required</h2>
-          <p class="modal-subtitle">
-            Please log in or create an account to generate replies.
+        <div class="modal-header" style="margin-bottom: 28px">
+          <h2
+            id="loginRequiredTitle"
+            style="font-size: 16px; color: rgba(255, 255, 255, 0.7)"
+          >
+            Използвал си всичките 6 безплатни отговора!
+          </h2>
+          <p
+            class="modal-subtitle"
+            id="loginRequiredSubtitle"
+            style="
+              font-size: 15px;
+              color: #fff;
+              font-weight: 600;
+              margin-top: 10px;
+            "
+          >
+            Регистрирай се безплатно за още отговори.
           </p>
         </div>
         <div class="modal-body">
-          <button class="modal-register-btn" id="goToLoginBtn">Login</button>
-          <p class="switch-auth">
-            No account yet? <span id="goToRegisterBtn">Register</span>
+          <button
+            class="modal-register-btn"
+            id="goToLoginBtn"
+            style="padding: 10px 16px; font-size: 14px"
+          >
+            Вход
+          </button>
+          <p
+            class="switch-auth"
+            style="
+              margin-top: 28px;
+              font-size: 15px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              gap: 10px;
+            "
+          >
+            <span style="color: #94a3b8" id="noAccountText">Нямаш акаунт?</span>
+            <span
+              id="goToRegisterBtn"
+              style="
+                font-size: 15px;
+                font-weight: 700;
+                color: #a78bfa;
+                cursor: pointer;
+                text-decoration: underline;
+              "
+              >Регистрация</span
+            >
           </p>
         </div>
       </div>
     </div>
-
     <div id="successModal" class="success-modal">
       <div class="success-box">🎉 Registration successful!</div>
     </div>
