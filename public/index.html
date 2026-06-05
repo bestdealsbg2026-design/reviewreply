@@ -587,19 +587,9 @@
         font-size: 13px;
         font-weight: 500;
         cursor: pointer;
-        border: 0.5px solid rgba(255, 255, 255, 0.15);
-        background: transparent;
-        color: rgba(255, 255, 255, 0.65);
-      }
-      .btn-plan.featured {
-        background: linear-gradient(135deg, #6366f1, #8b5cf6);
         border: none;
         color: #fff;
-      }
-      .btn-plan.yearly-btn {
-        background: linear-gradient(135deg, #8b5cf6, #ec4899);
-        border: none;
-        color: #fff;
+        background: linear-gradient(135deg, #f59e0b, #ec4899);
       }
 
       .rr-cta {
@@ -1044,10 +1034,9 @@
         </div>
         <div class="feature-card">
           <div class="feature-icon"><i class="ti ti-device-mobile"></i></div>
-          <div class="feature-title" id="t-f4-title">Works everywhere</div>
+          <div class="feature-title" id="t-f4-title">Works on desktop</div>
           <div class="feature-desc" id="t-f4-desc">
-            Use on any device — phone, tablet, or desktop. Copy and paste
-            directly into Google.
+            Currently available on desktop. Mobile version coming soon!
           </div>
         </div>
       </div>
@@ -1126,6 +1115,7 @@
         Start free, upgrade when you are ready
       </div>
       <div class="pricing-grid">
+        <!-- FREE PLAN -->
         <div
           class="price-card"
           style="
@@ -1174,93 +1164,106 @@
           </div>
           <ul class="price-features">
             <li>
-              <i class="ti ti-check"></i>
-              <span id="t-pf1">5 replies per month</span>
+              <i class="ti ti-check"></i
+              ><span id="t-pf1">6 replies per month</span>
             </li>
             <li>
-              <i class="ti ti-check"></i>
-              <span id="t-pf2">All tone options</span>
+              <i class="ti ti-check"></i
+              ><span id="t-pf2">All tone options</span>
             </li>
             <li>
-              <i class="ti ti-check"></i>
-              <span id="t-pf3">Copy to clipboard</span>
+              <i class="ti ti-check"></i
+              ><span id="t-pf3">Copy to clipboard</span>
             </li>
           </ul>
           <button
             class="btn-plan"
-            style="
-              background: linear-gradient(135deg, #f59e0b, #ec4899);
-              border: none;
-              color: #fff;
-            "
             id="t-free-btn"
+            onclick="
+              document.getElementById('demoSection').style.display = 'none';
+              document.getElementById('appCard').style.display = 'block';
+              document
+                .getElementById('appCard')
+                .scrollIntoView({ behavior: 'smooth' });
+            "
           >
             Get started free
           </button>
         </div>
+
+        <!-- MONTHLY PLAN -->
         <div class="price-card featured">
           <div class="popular-badge" id="t-pop-badge">Most popular</div>
-          <div class="price-plan" id="t-pro-plan">Pro Monthly</div>
+          <div class="price-plan" id="t-pro-plan">Monthly</div>
           <div class="price-amount">€9.99 <span id="t-mo2">/month</span></div>
-          <div class="price-desc" id="t-pro-desc">
-            For serious business owners
-          </div>
+          <div class="price-desc" id="t-pro-desc">For businesses</div>
           <ul class="price-features">
             <li>
-              <i class="ti ti-check"></i>
-              <span id="t-pf4">Unlimited replies</span>
+              <i class="ti ti-check"></i
+              ><span id="t-pf4">Unlimited replies</span>
             </li>
             <li>
-              <i class="ti ti-check"></i>
-              <span id="t-pf5">All tone options</span>
+              <i class="ti ti-check"></i
+              ><span id="t-pf5">All tone options</span>
             </li>
             <li>
-              <i class="ti ti-check"></i>
-              <span id="t-pf6">Priority support</span>
+              <i class="ti ti-check"></i
+              ><span id="t-pf6">Priority support</span>
             </li>
             <li>
-              <i class="ti ti-check"></i> <span id="t-pf7">Cancel anytime</span>
+              <i class="ti ti-check"></i><span id="t-pf7">Cancel anytime</span>
             </li>
           </ul>
           <button
-            class="btn-plan featured"
+            class="btn-plan"
             onclick="checkout('monthly')"
             id="t-pro-btn"
+            style="
+              background: linear-gradient(135deg, #6366f1, #8b5cf6);
+              border: none;
+              color: #fff;
+            "
           >
-            Start Pro — €9.99/mo
+            Месечен — €9.99
           </button>
         </div>
+
+        <!-- YEARLY PLAN -->
         <div class="price-card yearly">
           <div class="save-badge" id="t-save-badge">Save 17%</div>
-          <div class="price-plan" id="t-yr-plan">Pro Yearly</div>
+          <div class="price-plan" id="t-yr-plan">Yearly</div>
           <div class="price-amount">€99 <span id="t-yr1">/year</span></div>
           <div class="price-desc" id="t-yr-desc">
             Best value — 2 months free vs monthly
           </div>
           <ul class="price-features">
             <li class="pink">
-              <i class="ti ti-check"></i>
-              <span id="t-pf8">Unlimited replies</span>
+              <i class="ti ti-check"></i
+              ><span id="t-pf8">Unlimited replies</span>
             </li>
             <li class="pink">
-              <i class="ti ti-check"></i>
-              <span id="t-pf9">All tone options</span>
+              <i class="ti ti-check"></i
+              ><span id="t-pf9">All tone options</span>
             </li>
             <li class="pink">
-              <i class="ti ti-check"></i>
-              <span id="t-pf10">Priority support</span>
+              <i class="ti ti-check"></i
+              ><span id="t-pf10">Priority support</span>
             </li>
             <li class="pink">
-              <i class="ti ti-check"></i>
-              <span id="t-pf11">Cancel anytime</span>
+              <i class="ti ti-check"></i><span id="t-pf11">Cancel anytime</span>
             </li>
           </ul>
           <button
-            class="btn-plan yearly-btn"
+            class="btn-plan"
             onclick="checkout('yearly')"
             id="t-yr-btn"
+            style="
+              background: linear-gradient(135deg, #8b5cf6, #ec4899);
+              border: none;
+              color: #fff;
+            "
           >
-            Start Yearly — €99/yr
+            Годишен — €99
           </button>
         </div>
       </div>
@@ -1274,6 +1277,7 @@
 
     <footer class="rr-footer">© 2026 ReviewReply. All rights reserved.</footer>
 
+    <!-- REGISTER MODAL -->
     <div class="modal-overlay" id="registerModal">
       <div class="register-modal">
         <button class="close-modal" id="closeModalBtn">×</button>
@@ -1303,6 +1307,8 @@
         </div>
       </div>
     </div>
+
+    <!-- LOGIN REQUIRED MODAL -->
     <div class="modal-overlay" id="loginRequiredModal">
       <div class="register-modal" style="padding: 64px 32px 60px; width: 380px">
         <button class="close-modal" id="closeLoginRequired">×</button>
@@ -1326,7 +1332,7 @@
             id="loginRequiredTitle"
             style="font-size: 18px; color: #fff; line-height: 1.4"
           >
-            Използвал си всичките 6 безплатни отговора!
+            You've used all 6 free replies!
           </h2>
           <div
             style="
@@ -1346,7 +1352,7 @@
               margin-top: 0;
             "
           >
-            Регистрирай се безплатно за още отговори.
+            Subscribe to get more replies.
           </p>
         </div>
         <div class="modal-body">
@@ -1359,10 +1365,12 @@
               background: linear-gradient(135deg, #8b5cf6, #6366f1);
             "
           >
-            Вход
+            Login
           </button>
           <p class="switch-auth" style="margin-top: 24px; font-size: 14px">
-            <span style="color: #94a3b8" id="noAccountText">Нямаш акаунт?</span>
+            <span style="color: #94a3b8" id="noAccountText"
+              >No account yet?</span
+            >
             <span
               id="goToRegisterBtn"
               style="
@@ -1372,12 +1380,13 @@
                 cursor: pointer;
                 text-decoration: underline;
               "
-              >Регистрация</span
+              >Register</span
             >
           </p>
         </div>
       </div>
     </div>
+
     <div id="successModal" class="success-modal">
       <div class="success-box">🎉 Registration successful!</div>
     </div>
