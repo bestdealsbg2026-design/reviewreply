@@ -320,8 +320,8 @@ async function generateReply() {
       if (p)
         p.textContent =
           window.currentLang === "bg"
-            ? "Регистрирай се безплатно за още отговори."
-            : "Register for free to get more replies.";
+            ? "Абонирай се за още отговори."
+            : "Subscribe to get more replies.";
       return;
     }
     if (window.currentLang === "bg") {
