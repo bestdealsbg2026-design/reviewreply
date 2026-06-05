@@ -1304,20 +1304,46 @@
       </div>
     </div>
     <div class="modal-overlay" id="loginRequiredModal">
-      <div class="register-modal" style="padding: 56px 40px 52px">
+      <div class="register-modal" style="padding: 64px 32px 60px; width: 380px">
         <button class="close-modal" id="closeLoginRequired">×</button>
-        <div class="modal-header" style="margin-bottom: 28px">
-          <h2 id="loginRequiredTitle" style="font-size: 20px; color: #fff">
+        <div class="modal-header" style="margin-bottom: 32px">
+          <div
+            style="
+              width: 48px;
+              height: 48px;
+              background: rgba(139, 92, 246, 0.15);
+              border-radius: 50%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              margin: 0 auto 20px;
+              font-size: 22px;
+            "
+          >
+            🔒
+          </div>
+          <h2
+            id="loginRequiredTitle"
+            style="font-size: 18px; color: #fff; line-height: 1.4"
+          >
             Използвал си всичките 6 безплатни отговора!
           </h2>
+          <div
+            style="
+              width: 40px;
+              height: 1px;
+              background: rgba(139, 92, 246, 0.4);
+              margin: 20px auto;
+            "
+          ></div>
           <p
             class="modal-subtitle"
             id="loginRequiredSubtitle"
             style="
-              font-size: 15px;
-              color: #fff;
-              font-weight: 600;
-              margin-top: 10px;
+              font-size: 14px;
+              color: rgba(255, 255, 255, 0.55);
+              font-weight: 400;
+              margin-top: 0;
             "
           >
             Регистрирай се безплатно за още отговори.
@@ -1327,16 +1353,20 @@
           <button
             class="modal-register-btn"
             id="goToLoginBtn"
-            style="padding: 10px 16px; font-size: 14px"
+            style="
+              padding: 10px 16px;
+              font-size: 14px;
+              background: linear-gradient(135deg, #8b5cf6, #6366f1);
+            "
           >
             Вход
           </button>
-          <p class="switch-auth" style="margin-top: 28px; font-size: 15px">
+          <p class="switch-auth" style="margin-top: 24px; font-size: 14px">
             <span style="color: #94a3b8" id="noAccountText">Нямаш акаунт?</span>
             <span
               id="goToRegisterBtn"
               style="
-                font-size: 15px;
+                font-size: 14px;
                 font-weight: 700;
                 color: #a78bfa;
                 cursor: pointer;
