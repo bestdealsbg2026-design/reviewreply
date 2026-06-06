@@ -270,25 +270,46 @@ function setLang(lang) {
   if (loginBtn) loginBtn.textContent = lang === "bg" ? "Вход" : "Login";
   if (registerBtn)
     registerBtn.textContent = lang === "bg" ? "Регистрация" : "Register";
+
+  // Translate register modal
+  const modalSubtitle = document.querySelector(
+    "#registerModal .modal-subtitle",
+  );
+  const emailInput = document.getElementById("emailInput");
+  const passwordInput = document.getElementById("passwordInput");
+  if (lang === "bg") {
+    if (modalSubtitle)
+      modalSubtitle.textContent = "Генерирай по-умни отговори на ревюта.";
+    if (emailInput) emailInput.placeholder = "Имейл";
+    if (passwordInput)
+      passwordInput.placeholder = "Парола (мин. 6 знака, включи число)";
+  } else {
+    if (modalSubtitle)
+      modalSubtitle.textContent = "Start generating smarter review replies.";
+    if (emailInput) emailInput.placeholder = "Email";
+    if (passwordInput)
+      passwordInput.placeholder = "Password (min 6 chars, include a number)";
+  }
+
   // Translate login required modal
   if (lang === "bg") {
     const h2 = document.querySelector("#loginRequiredModal h2");
     const p = document.querySelector("#loginRequiredModal .modal-subtitle");
-    const loginBtn = document.getElementById("goToLoginBtn");
+    const goLoginBtn = document.getElementById("goToLoginBtn");
     const regBtn = document.getElementById("goToRegisterBtn");
     if (h2) h2.textContent = "Необходима е регистрация";
     if (p) p.textContent = "Влез или създай акаунт за да генерираш отговори.";
-    if (loginBtn) loginBtn.textContent = "Вход";
+    if (goLoginBtn) goLoginBtn.textContent = "Вход";
     if (regBtn) regBtn.textContent = "Регистрация";
   } else {
     const h2 = document.querySelector("#loginRequiredModal h2");
     const p = document.querySelector("#loginRequiredModal .modal-subtitle");
-    const loginBtn = document.getElementById("goToLoginBtn");
+    const goLoginBtn = document.getElementById("goToLoginBtn");
     const regBtn = document.getElementById("goToRegisterBtn");
     if (h2) h2.textContent = "Login Required";
     if (p)
       p.textContent = "Please log in or create an account to generate replies.";
-    if (loginBtn) loginBtn.textContent = "Login";
+    if (goLoginBtn) goLoginBtn.textContent = "Login";
     if (regBtn) regBtn.textContent = "Register";
   }
 }
