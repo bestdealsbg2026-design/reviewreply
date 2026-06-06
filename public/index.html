@@ -855,10 +855,39 @@
 
       @media (max-width: 640px) {
         .rr-nav {
-          padding: 14px 20px;
+          padding: 10px 14px;
+          gap: 8px;
+        }
+        .rr-logo {
+          font-size: 20px;
+        }
+        .lang-switcher {
+          padding: 2px;
+        }
+        .lang-btn {
+          padding: 3px 7px;
+          font-size: 11px;
+        }
+        .nav-actions {
+          gap: 6px;
+        }
+        .nav-btn {
+          width: 60px;
+          height: 30px;
+          font-size: 11px;
+        }
+        .nav-email {
+          display: none;
+        }
+        .nav-plan {
+          display: none;
         }
         .rr-hero h1 {
-          font-size: 34px;
+          font-size: 32px;
+        }
+        .rr-hero-btns {
+          flex-direction: column;
+          align-items: center;
         }
         .pricing-grid {
           grid-template-columns: 1fr;
@@ -872,8 +901,27 @@
         .app-row {
           flex-direction: column;
         }
-        .nav-email {
-          display: none;
+        .stats-box {
+          grid-template-columns: 1fr !important;
+          overflow: visible !important;
+        }
+        .stat-item {
+          border-right: none !important;
+          border-bottom: 0.5px solid rgba(255, 255, 255, 0.08);
+          padding: 20px !important;
+        }
+        .stat-item:last-child {
+          border-bottom: none;
+        }
+        .modal-overlay {
+          padding: 20px;
+          align-items: center;
+        }
+        .register-modal {
+          width: 100% !important;
+          max-width: 100% !important;
+          padding: 32px 20px !important;
+          box-sizing: border-box;
         }
       }
     </style>
