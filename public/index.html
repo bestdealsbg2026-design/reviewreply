@@ -852,6 +852,11 @@
         border-radius: 12px;
         font-weight: 600;
       }
+      .nav-left {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
 
       @media (max-width: 640px) {
         .rr-nav {
@@ -923,12 +928,25 @@
           padding: 32px 20px !important;
           box-sizing: border-box;
         }
+        .nav-left {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 4px;
+        }
+        .lang-switcher {
+          padding: 2px;
+        }
+        .lang-btn {
+          padding: 2px 8px;
+          font-size: 11px;
+        }
       }
     </style>
   </head>
   <body>
     <nav class="rr-nav">
-      <div style="display: flex; align-items: center; gap: 16px">
+      <div class="nav-left">
         <div class="rr-logo">Review<span>Reply</span></div>
         <div class="lang-switcher">
           <button class="lang-btn active" onclick="setLang('en')">EN</button>
@@ -937,7 +955,6 @@
       </div>
       <div class="nav-actions" id="navActions"></div>
     </nav>
-
     <p id="authMessage" class="auth-message"></p>
 
     <section class="rr-hero">
