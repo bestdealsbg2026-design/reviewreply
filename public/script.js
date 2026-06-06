@@ -368,7 +368,9 @@ async function generateReply() {
     );
 
     const data = await res.json();
-    output.textContent = data.reply || "No response received.";
+    const stars = "⭐".repeat(rating);
+    output.textContent =
+      stars + "\n\n" + (data.reply || "No response received.");
 
     // Increment guest count after successful reply
     if (!currentUser) {
