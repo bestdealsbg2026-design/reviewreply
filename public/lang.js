@@ -264,6 +264,12 @@ function setLang(lang) {
   const ob = document.getElementById("outputBox");
   if (ob && ob.textContent.trim().length < 60) ob.textContent = t.outputBox;
 
+  // Update navbar buttons if not logged in
+  const loginBtn = document.getElementById("loginBtn");
+  const registerBtn = document.getElementById("registerBtn");
+  if (loginBtn) loginBtn.textContent = lang === "bg" ? "Вход" : "Login";
+  if (registerBtn)
+    registerBtn.textContent = lang === "bg" ? "Регистрация" : "Register";
   // Translate login required modal
   if (lang === "bg") {
     const h2 = document.querySelector("#loginRequiredModal h2");

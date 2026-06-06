@@ -86,10 +86,11 @@ function renderNavbar(user, data = null) {
     `;
     document.getElementById("logoutBtn").onclick = () => signOut(auth);
   } else {
+    const lang = window.currentLang || "en";
     nav.innerHTML = `
-      <button class="nav-btn outline" id="loginBtn">Login</button>
-      <button class="nav-btn filled" id="registerBtn">Register</button>
-    `;
+  <button class="nav-btn outline" id="loginBtn">${lang === "bg" ? "Вход" : "Login"}</button>
+  <button class="nav-btn filled" id="registerBtn">${lang === "bg" ? "Регистрация" : "Register"}</button>
+`;
     document.getElementById("loginBtn").onclick = () => openModal(true);
     document.getElementById("registerBtn").onclick = () => openModal(false);
     updateGuestCounter();
