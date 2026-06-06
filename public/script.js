@@ -135,20 +135,24 @@ function updateModalUI() {
   const authBtn = document.getElementById("authSubmitBtn");
   const switchText = document.getElementById("switchAuthText");
   const switchLink = document.getElementById("switchAuthMode");
+  const isBg = window.currentLang === "bg";
 
   if (isLoginMode) {
-    title.textContent = "Welcome Back";
-    authBtn.textContent = "Login";
-    switchText.childNodes[0].textContent = "Don't have an account? ";
-    switchLink.textContent = "Register";
+    title.textContent = isBg ? "Добре дошъл" : "Welcome Back";
+    authBtn.textContent = isBg ? "Вход" : "Login";
+    switchText.childNodes[0].textContent = isBg
+      ? "Нямаш акаунт? "
+      : "Don't have an account? ";
+    switchLink.textContent = isBg ? "Регистрация" : "Register";
   } else {
-    title.textContent = "Create Account";
-    authBtn.textContent = "Create Account";
-    switchText.childNodes[0].textContent = "Already have an account? ";
-    switchLink.textContent = "Log in";
+    title.textContent = isBg ? "Създай акаунт" : "Create Account";
+    authBtn.textContent = isBg ? "Създай акаунт" : "Create Account";
+    switchText.childNodes[0].textContent = isBg
+      ? "Вече имаш акаунт? "
+      : "Already have an account? ";
+    switchLink.textContent = isBg ? "Влез" : "Log in";
   }
 }
-
 /* ===================== */
 /* DOM READY */
 /* ===================== */
