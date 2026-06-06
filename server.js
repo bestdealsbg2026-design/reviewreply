@@ -173,7 +173,7 @@ app.post("/api/reply", async (req, res) => {
   console.log("BODY:", req.body);
 
   try {
-    const { review, tone, uid } = req.body;
+    const { review, tone, uid, rating } = req.body;
     if (uid) await checkAndResetUsage(uid);
 
     if (!review) {
@@ -188,6 +188,7 @@ app.post("/api/reply", async (req, res) => {
     const prompt = `You are a business owner replying to a Google review.
 
 Tone: ${tone || "friendly"}
+Rating: ${rating || 5} out of 5 stars
 ${langText}
 
 
