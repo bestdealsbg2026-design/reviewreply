@@ -724,7 +724,9 @@ body {
     flex-shrink: 0;
   }
   .nav-btn {
-    width: 62px;
+    width: auto;
+    min-width: 60px;
+    padding: 0 8px;
     height: 30px;
     font-size: 11px;
   }

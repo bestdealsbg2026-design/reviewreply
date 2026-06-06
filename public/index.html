@@ -615,7 +615,10 @@
       .rr-cta::before {
         content: "";
         position: absolute;
-        top: 0; left: 0; right: 0; bottom: 0;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
         background: radial-gradient(
           ellipse at center bottom,
           rgba(139, 92, 246, 0.15) 0%,
@@ -662,7 +665,8 @@
         color: rgba(255, 255, 255, 0.6);
         margin-bottom: 8px;
       }
-      textarea, select {
+      textarea,
+      select {
         width: 100%;
         padding: 12px;
         background: rgba(255, 255, 255, 0.05);
@@ -674,15 +678,26 @@
         resize: vertical;
         font-family: "Times New Roman", Times, serif;
       }
-      textarea { min-height: 110px; }
-      textarea:focus, select:focus { border-color: rgba(139, 92, 246, 0.5); }
-      select option { background: #1e1b4b; color: #fff; }
+      textarea {
+        min-height: 110px;
+      }
+      textarea:focus,
+      select:focus {
+        border-color: rgba(139, 92, 246, 0.5);
+      }
+      select option {
+        background: #1e1b4b;
+        color: #fff;
+      }
       .app-row {
         display: flex;
         gap: 16px;
         margin-bottom: 14px;
       }
-      .app-row .app-field { flex: 1; margin-bottom: 0; }
+      .app-row .app-field {
+        flex: 1;
+        margin-bottom: 0;
+      }
       .stars {
         display: flex;
         gap: 6px;
@@ -694,7 +709,9 @@
         color: rgba(255, 255, 255, 0.2);
         transition: 0.2s;
       }
-      .star.active { color: #fbbf24; }
+      .star.active {
+        color: #fbbf24;
+      }
       .btn-generate {
         width: 100%;
         padding: 14px;
@@ -760,7 +777,9 @@
         padding: 20px;
         box-sizing: border-box;
       }
-      .modal-overlay.active { display: flex; }
+      .modal-overlay.active {
+        display: flex;
+      }
       .register-modal {
         width: 420px;
         background: #111827;
@@ -772,9 +791,19 @@
         border: 0.5px solid rgba(255, 255, 255, 0.1);
         box-sizing: border-box;
       }
-      .register-modal h2 { color: #fff; margin-bottom: 10px; }
-      .modal-header { text-align: center; margin-bottom: 20px; }
-      .modal-subtitle { margin-top: 6px; font-size: 13px; color: #94a3b8; }
+      .register-modal h2 {
+        color: #fff;
+        margin-bottom: 10px;
+      }
+      .modal-header {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .modal-subtitle {
+        margin-top: 6px;
+        font-size: 13px;
+        color: #94a3b8;
+      }
       .modal-input {
         width: 100%;
         padding: 14px;
@@ -834,7 +863,9 @@
         background: rgba(0, 0, 0, 0.75);
         z-index: 99999;
       }
-      #successModal.active { display: flex; }
+      #successModal.active {
+        display: flex;
+      }
       .success-box {
         background: #1e1b4b;
         border: 0.5px solid rgba(139, 92, 246, 0.4);
@@ -873,25 +904,46 @@
           height: 30px;
           font-size: 11px;
         }
-        .nav-email { display: none; }
-        .nav-plan { display: none; }
+        .nav-email {
+          display: none;
+        }
+        .nav-plan {
+          display: none;
+        }
         .rr-hero {
           padding: 50px 20px 40px;
         }
-        .rr-hero h1 { font-size: 32px; }
-        .rr-hero p { font-size: 14px; }
+        .rr-hero h1 {
+          font-size: 32px;
+        }
+        .rr-hero p {
+          font-size: 14px;
+        }
         .rr-hero-btns {
           flex-direction: column;
           align-items: center;
         }
-        .rr-demo, .rr-app, .rr-stats, .rr-features, .rr-reviews, .rr-pricing {
+        .rr-demo,
+        .rr-app,
+        .rr-stats,
+        .rr-features,
+        .rr-reviews,
+        .rr-pricing {
           padding-left: 16px;
           padding-right: 16px;
         }
-        .pricing-grid { grid-template-columns: 1fr; }
-        .features-grid { grid-template-columns: 1fr; }
-        .reviews-grid { grid-template-columns: 1fr; }
-        .app-row { flex-direction: column; }
+        .pricing-grid {
+          grid-template-columns: 1fr;
+        }
+        .features-grid {
+          grid-template-columns: 1fr;
+        }
+        .reviews-grid {
+          grid-template-columns: 1fr;
+        }
+        .app-row {
+          flex-direction: column;
+        }
         .stats-box {
           grid-template-columns: 1fr !important;
           overflow: visible !important;
@@ -901,8 +953,12 @@
           border-bottom: 0.5px solid rgba(255, 255, 255, 0.08);
           padding: 20px !important;
         }
-        .stat-item:last-child { border-bottom: none; }
-        .demo-inner { padding: 18px; }
+        .stat-item:last-child {
+          border-bottom: none;
+        }
+        .demo-inner {
+          padding: 18px;
+        }
         .modal-overlay {
           padding: 16px;
           align-items: center;
@@ -934,7 +990,9 @@
       <div class="hero-glow"></div>
       <div class="rr-badge" id="t-badge">AI-powered review management</div>
       <h1 id="t-h1">
-        Reply to reviews in<br /><span class="grad-text">5 seconds with AI</span>
+        Reply to reviews in<br /><span class="grad-text"
+          >5 seconds with AI</span
+        >
       </h1>
       <p id="t-hero-p">
         Stop spending hours writing responses to Google reviews. ReviewReply
@@ -943,7 +1001,9 @@
       </p>
       <div class="rr-hero-btns">
         <button class="btn-hero" id="heroTryBtn">Try for free →</button>
-        <button class="btn-hero-outline" id="heroSeeBtn">See how it works</button>
+        <button class="btn-hero-outline" id="heroSeeBtn">
+          See how it works
+        </button>
       </div>
     </section>
 
@@ -952,12 +1012,21 @@
         <div class="demo-label" id="t-demo-label">Live demo</div>
         <div class="demo-review">
           <div class="demo-stars">★★★★★</div>
-          <span id="t-demo-review">"Great place! Food was amazing and staff very friendly. Will definitely come back!"</span>
+          <span id="t-demo-review"
+            >"Great place! Food was amazing and staff very friendly. Will
+            definitely come back!"</span
+          >
         </div>
         <div class="demo-arrow">↓</div>
         <div class="demo-reply">
-          <div class="demo-reply-label" id="t-demo-reply-label">AI generated reply</div>
-          <span id="t-demo-reply">Thank you so much for your kind words — we are thrilled to hear you enjoyed the food and had a great experience with our team! We look forward to welcoming you back soon.</span>
+          <div class="demo-reply-label" id="t-demo-reply-label">
+            AI generated reply
+          </div>
+          <span id="t-demo-reply"
+            >Thank you so much for your kind words — we are thrilled to hear you
+            enjoyed the food and had a great experience with our team! We look
+            forward to welcoming you back soon.</span
+          >
         </div>
       </div>
     </div>
@@ -967,7 +1036,11 @@
         <div class="demo-label" id="t-gen-label">Generate your reply</div>
         <div class="app-field">
           <label id="t-paste-label">📋 Paste a review</label>
-          <textarea id="reviewInput" rows="4" placeholder="Example: The room was dirty and staff was rude."></textarea>
+          <textarea
+            id="reviewInput"
+            rows="4"
+            placeholder="Example: The room was dirty and staff was rude."
+          ></textarea>
         </div>
         <div class="app-row">
           <div class="app-field">
@@ -990,13 +1063,19 @@
             </div>
           </div>
         </div>
-        <button id="generateBtn" class="btn-generate">✨ Generate Reply for Free</button>
+        <button id="generateBtn" class="btn-generate">
+          ✨ Generate Reply for Free
+        </button>
         <div class="loading" id="loading">Generating your reply...</div>
         <div class="output-header">
           <label id="t-output-label">💬 Generated Reply</label>
-          <button class="copy-btn" id="t-copy-btn" onclick="copyReply()">Copy</button>
+          <button class="copy-btn" id="t-copy-btn" onclick="copyReply()">
+            Copy
+          </button>
         </div>
-        <div id="outputBox" class="output-box">Your generated reply will appear here...</div>
+        <div id="outputBox" class="output-box">
+          Your generated reply will appear here...
+        </div>
       </div>
     </div>
 
@@ -1019,49 +1098,72 @@
 
     <section class="rr-features">
       <div class="section-title" id="t-feat-title">Everything you need</div>
-      <div class="section-sub" id="t-feat-sub">Designed for any business with Google reviews</div>
+      <div class="section-sub" id="t-feat-sub">
+        Designed for any business with Google reviews
+      </div>
       <div class="features-grid">
         <div class="feature-card">
           <div class="feature-icon"><i class="ti ti-bolt"></i></div>
           <div class="feature-title" id="t-f1-title">Instant AI replies</div>
-          <div class="feature-desc" id="t-f1-desc">Generate professional responses in seconds. No more staring at a blank screen wondering what to write.</div>
+          <div class="feature-desc" id="t-f1-desc">
+            Generate professional responses in seconds. No more staring at a
+            blank screen wondering what to write.
+          </div>
         </div>
         <div class="feature-card">
           <div class="feature-icon"><i class="ti ti-adjustments"></i></div>
           <div class="feature-title" id="t-f2-title">Custom tone</div>
-          <div class="feature-desc" id="t-f2-desc">Choose from friendly, professional, or formal tones to match your brand's voice perfectly.</div>
+          <div class="feature-desc" id="t-f2-desc">
+            Choose from friendly, professional, or formal tones to match your
+            brand's voice perfectly.
+          </div>
         </div>
         <div class="feature-card">
           <div class="feature-icon"><i class="ti ti-star"></i></div>
           <div class="feature-title" id="t-f3-title">Star rating aware</div>
-          <div class="feature-desc" id="t-f3-desc">The AI adapts its response based on the star rating — different approach for 1 star vs 5 stars.</div>
+          <div class="feature-desc" id="t-f3-desc">
+            The AI adapts its response based on the star rating — different
+            approach for 1 star vs 5 stars.
+          </div>
         </div>
         <div class="feature-card">
           <div class="feature-icon"><i class="ti ti-device-mobile"></i></div>
           <div class="feature-title" id="t-f4-title">Works on desktop</div>
-          <div class="feature-desc" id="t-f4-desc">Currently available on desktop. Mobile version coming soon!</div>
+          <div class="feature-desc" id="t-f4-desc">
+            Currently available on desktop. Mobile version coming soon!
+          </div>
         </div>
       </div>
     </section>
 
     <section class="rr-reviews">
       <div class="section-title" id="t-rev-title">Loved by business owners</div>
-      <div class="section-sub" id="t-rev-sub">Real feedback from real customers</div>
+      <div class="section-sub" id="t-rev-sub">
+        Real feedback from real customers
+      </div>
       <div class="reviews-grid">
         <div class="review-card">
           <div class="review-stars">★★★★★</div>
-          <div class="review-text" id="t-r1">"I used to spend 30 minutes a day on review replies. Now it takes 5 minutes total. This tool is a game changer."</div>
+          <div class="review-text" id="t-r1">
+            "I used to spend 30 minutes a day on review replies. Now it takes 5
+            minutes total. This tool is a game changer."
+          </div>
           <div class="review-author">
             <div class="review-avatar">MK</div>
             <div>
               <div class="review-name">Maria K.</div>
-              <div class="review-biz" id="t-r1-biz">Restaurant owner, Sofia</div>
+              <div class="review-biz" id="t-r1-biz">
+                Restaurant owner, Sofia
+              </div>
             </div>
           </div>
         </div>
         <div class="review-card">
           <div class="review-stars">★★★★★</div>
-          <div class="review-text" id="t-r2">"The replies sound so natural — my customers cannot tell they are AI generated. Absolutely worth the subscription."</div>
+          <div class="review-text" id="t-r2">
+            "The replies sound so natural — my customers cannot tell they are AI
+            generated. Absolutely worth the subscription."
+          </div>
           <div class="review-author">
             <div class="review-avatar">TP</div>
             <div>
@@ -1072,7 +1174,10 @@
         </div>
         <div class="review-card">
           <div class="review-stars">★★★★★</div>
-          <div class="review-text" id="t-r3">"Perfect for our small team. We manage 3 locations and ReviewReply saves us hours every week."</div>
+          <div class="review-text" id="t-r3">
+            "Perfect for our small team. We manage 3 locations and ReviewReply
+            saves us hours every week."
+          </div>
           <div class="review-author">
             <div class="review-avatar">SD</div>
             <div>
@@ -1083,7 +1188,10 @@
         </div>
         <div class="review-card">
           <div class="review-stars">★★★★★</div>
-          <div class="review-text" id="t-r4">"Simple, fast, and always professional. My Google rating improved since I started responding to every review."</div>
+          <div class="review-text" id="t-r4">
+            "Simple, fast, and always professional. My Google rating improved
+            since I started responding to every review."
+          </div>
           <div class="review-author">
             <div class="review-avatar">AN</div>
             <div>
@@ -1097,21 +1205,84 @@
 
     <section class="rr-pricing">
       <div class="section-title" id="t-price-title">Simple pricing</div>
-      <div class="section-sub" id="t-price-sub">Start free, upgrade when you are ready</div>
+      <div class="section-sub" id="t-price-sub">
+        Start free, upgrade when you are ready
+      </div>
       <div class="pricing-grid">
         <!-- FREE PLAN -->
-        <div class="price-card" style="border-color: rgba(132, 204, 22, 0.5); background: rgba(132, 204, 22, 0.15); overflow: hidden;">
-          <div style="position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, #65a30d, #bef264);"></div>
-          <div style="display: inline-block; background: rgba(132, 204, 22, 0.2); border: 0.5px solid rgba(132, 204, 22, 0.45); color: #d9f99d; font-size: 10px; padding: 3px 10px; border-radius: 100px; margin-bottom: 10px; position: relative; z-index: 1;" id="t-free-badge">No credit card needed</div>
-          <div class="price-plan" style="position: relative; z-index: 1;" id="t-free-plan">Free</div>
+        <div
+          class="price-card"
+          style="
+            border-color: rgba(132, 204, 22, 0.5);
+            background: rgba(132, 204, 22, 0.15);
+            overflow: hidden;
+          "
+        >
+          <div
+            style="
+              position: absolute;
+              top: 0;
+              left: 0;
+              right: 0;
+              height: 2px;
+              background: linear-gradient(90deg, #65a30d, #bef264);
+            "
+          ></div>
+          <div
+            style="
+              display: inline-block;
+              background: rgba(132, 204, 22, 0.2);
+              border: 0.5px solid rgba(132, 204, 22, 0.45);
+              color: #d9f99d;
+              font-size: 10px;
+              padding: 3px 10px;
+              border-radius: 100px;
+              margin-bottom: 10px;
+              position: relative;
+              z-index: 1;
+            "
+            id="t-free-badge"
+          >
+            No credit card needed
+          </div>
+          <div
+            class="price-plan"
+            style="position: relative; z-index: 1"
+            id="t-free-plan"
+          >
+            Free
+          </div>
           <div class="price-amount">€0 <span id="t-mo1">/month</span></div>
-          <div class="price-desc" id="t-free-desc">Perfect for trying it out</div>
+          <div class="price-desc" id="t-free-desc">
+            Perfect for trying it out
+          </div>
           <ul class="price-features">
-            <li><i class="ti ti-check"></i><span id="t-pf1">6 replies per month</span></li>
-            <li><i class="ti ti-check"></i><span id="t-pf2">All tone options</span></li>
-            <li><i class="ti ti-check"></i><span id="t-pf3">Copy to clipboard</span></li>
+            <li>
+              <i class="ti ti-check"></i
+              ><span id="t-pf1">6 replies per month</span>
+            </li>
+            <li>
+              <i class="ti ti-check"></i
+              ><span id="t-pf2">All tone options</span>
+            </li>
+            <li>
+              <i class="ti ti-check"></i
+              ><span id="t-pf3">Copy to clipboard</span>
+            </li>
           </ul>
-          <button class="btn-plan" id="t-free-btn" onclick="document.getElementById('demoSection').style.display='none'; document.getElementById('appCard').style.display='block'; document.getElementById('appCard').scrollIntoView({behavior:'smooth'});">Get started free</button>
+          <button
+            class="btn-plan"
+            id="t-free-btn"
+            onclick="
+              document.getElementById('demoSection').style.display = 'none';
+              document.getElementById('appCard').style.display = 'block';
+              document
+                .getElementById('appCard')
+                .scrollIntoView({ behavior: 'smooth' });
+            "
+          >
+            Get started free
+          </button>
         </div>
 
         <!-- MONTHLY PLAN -->
@@ -1121,12 +1292,34 @@
           <div class="price-amount">€9.99 <span id="t-mo2">/month</span></div>
           <div class="price-desc" id="t-pro-desc">For businesses</div>
           <ul class="price-features">
-            <li><i class="ti ti-check"></i><span id="t-pf4">Unlimited replies</span></li>
-            <li><i class="ti ti-check"></i><span id="t-pf5">All tone options</span></li>
-            <li><i class="ti ti-check"></i><span id="t-pf6">Priority support</span></li>
-            <li><i class="ti ti-check"></i><span id="t-pf7">Cancel anytime</span></li>
+            <li>
+              <i class="ti ti-check"></i
+              ><span id="t-pf4">Unlimited replies</span>
+            </li>
+            <li>
+              <i class="ti ti-check"></i
+              ><span id="t-pf5">All tone options</span>
+            </li>
+            <li>
+              <i class="ti ti-check"></i
+              ><span id="t-pf6">Priority support</span>
+            </li>
+            <li>
+              <i class="ti ti-check"></i><span id="t-pf7">Cancel anytime</span>
+            </li>
           </ul>
-          <button class="btn-plan" onclick="checkout('monthly')" id="t-pro-btn" style="background: linear-gradient(135deg, #6366f1, #8b5cf6); border: none; color: #fff;">Месечен — €9.99</button>
+          <button
+            class="btn-plan"
+            onclick="checkout('monthly')"
+            id="t-pro-btn"
+            style="
+              background: linear-gradient(135deg, #6366f1, #8b5cf6);
+              border: none;
+              color: #fff;
+            "
+          >
+            Месечен — €9.99
+          </button>
         </div>
 
         <!-- YEARLY PLAN -->
@@ -1134,14 +1327,38 @@
           <div class="save-badge" id="t-save-badge">Save 17%</div>
           <div class="price-plan" id="t-yr-plan">Yearly</div>
           <div class="price-amount">€99 <span id="t-yr1">/year</span></div>
-          <div class="price-desc" id="t-yr-desc">Best value — 2 months free vs monthly</div>
+          <div class="price-desc" id="t-yr-desc">
+            Best value — 2 months free vs monthly
+          </div>
           <ul class="price-features">
-            <li class="pink"><i class="ti ti-check"></i><span id="t-pf8">Unlimited replies</span></li>
-            <li class="pink"><i class="ti ti-check"></i><span id="t-pf9">All tone options</span></li>
-            <li class="pink"><i class="ti ti-check"></i><span id="t-pf10">Priority support</span></li>
-            <li class="pink"><i class="ti ti-check"></i><span id="t-pf11">Cancel anytime</span></li>
+            <li class="pink">
+              <i class="ti ti-check"></i
+              ><span id="t-pf8">Unlimited replies</span>
+            </li>
+            <li class="pink">
+              <i class="ti ti-check"></i
+              ><span id="t-pf9">All tone options</span>
+            </li>
+            <li class="pink">
+              <i class="ti ti-check"></i
+              ><span id="t-pf10">Priority support</span>
+            </li>
+            <li class="pink">
+              <i class="ti ti-check"></i><span id="t-pf11">Cancel anytime</span>
+            </li>
           </ul>
-          <button class="btn-plan" onclick="checkout('yearly')" id="t-yr-btn" style="background: linear-gradient(135deg, #8b5cf6, #ec4899); border: none; color: #fff;">Годишен — €99</button>
+          <button
+            class="btn-plan"
+            onclick="checkout('yearly')"
+            id="t-yr-btn"
+            style="
+              background: linear-gradient(135deg, #8b5cf6, #ec4899);
+              border: none;
+              color: #fff;
+            "
+          >
+            Годишен — €99
+          </button>
         </div>
       </div>
     </section>
@@ -1163,9 +1380,21 @@
           <p class="modal-subtitle">Start generating smarter review replies.</p>
         </div>
         <div class="modal-body">
-          <input id="emailInput" class="modal-input" type="email" placeholder="Email" />
-          <input id="passwordInput" class="modal-input" type="password" placeholder="Password (min 6 chars, include a number)" />
-          <button class="modal-register-btn" id="authSubmitBtn">Create Account</button>
+          <input
+            id="emailInput"
+            class="modal-input"
+            type="email"
+            placeholder="Email"
+          />
+          <input
+            id="passwordInput"
+            class="modal-input"
+            type="password"
+            placeholder="Password (min 6 chars, include a number)"
+          />
+          <button class="modal-register-btn" id="authSubmitBtn">
+            Create Account
+          </button>
           <p class="switch-auth" id="switchAuthText">
             Already have an account? <span id="switchAuthMode">Log in</span>
           </p>
@@ -1175,19 +1404,86 @@
 
     <!-- LOGIN REQUIRED MODAL -->
     <div class="modal-overlay" id="loginRequiredModal">
-      <div class="register-modal" style="padding: 40px 24px; width: 100%; max-width: 380px; box-sizing: border-box;">
+      <div
+        class="register-modal"
+        style="
+          padding: 40px 24px;
+          width: 100%;
+          max-width: 380px;
+          box-sizing: border-box;
+        "
+      >
         <button class="close-modal" id="closeLoginRequired">×</button>
-        <div class="modal-header" style="margin-bottom: 24px;">
-          <div style="width: 48px; height: 48px; background: rgba(139, 92, 246, 0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 22px;">🔒</div>
-          <h2 id="loginRequiredTitle" style="font-size: 18px; color: #fff; line-height: 1.4;">You've used all 6 free replies!</h2>
-          <div style="width: 40px; height: 1px; background: rgba(139, 92, 246, 0.4); margin: 16px auto;"></div>
-          <p class="modal-subtitle" id="loginRequiredSubtitle" style="font-size: 14px; color: rgba(255,255,255,0.55); font-weight: 400; margin-top: 0;">Subscribe to get more replies.</p>
+        <div class="modal-header" style="margin-bottom: 24px">
+          <div
+            style="
+              width: 48px;
+              height: 48px;
+              background: rgba(139, 92, 246, 0.15);
+              border-radius: 50%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              margin: 0 auto 16px;
+              font-size: 22px;
+            "
+          >
+            🔒
+          </div>
+          <h2
+            id="loginRequiredTitle"
+            style="font-size: 18px; color: #fff; line-height: 1.4"
+          >
+            You've used all 6 free replies!
+          </h2>
+          <div
+            style="
+              width: 40px;
+              height: 1px;
+              background: rgba(139, 92, 246, 0.4);
+              margin: 16px auto;
+            "
+          ></div>
+          <p
+            class="modal-subtitle"
+            id="loginRequiredSubtitle"
+            style="
+              font-size: 14px;
+              color: rgba(255, 255, 255, 0.55);
+              font-weight: 400;
+              margin-top: 0;
+            "
+          >
+            Subscribe to get more replies.
+          </p>
         </div>
         <div class="modal-body">
-          <button class="modal-register-btn" id="goToLoginBtn" style="padding: 10px 16px; font-size: 14px; background: linear-gradient(135deg, #8b5cf6, #6366f1);">Login</button>
-          <p class="switch-auth" style="margin-top: 24px; font-size: 14px;">
-            <span style="color: #94a3b8" id="noAccountText">No account yet?</span>
-            <span id="goToRegisterBtn" style="font-size: 14px; font-weight: 700; color: #a78bfa; cursor: pointer; text-decoration: underline;">Register</span>
+          <button
+            class="modal-register-btn"
+            id="goToLoginBtn"
+            style="
+              padding: 10px 16px;
+              font-size: 14px;
+              background: linear-gradient(135deg, #8b5cf6, #6366f1);
+            "
+          >
+            Login
+          </button>
+          <p class="switch-auth" style="margin-top: 24px; font-size: 14px">
+            <span style="color: #94a3b8" id="noAccountText"
+              >No account yet?</span
+            >
+            <span
+              id="goToRegisterBtn"
+              style="
+                font-size: 14px;
+                font-weight: 700;
+                color: #a78bfa;
+                cursor: pointer;
+                text-decoration: underline;
+              "
+              >Register</span
+            >
           </p>
         </div>
       </div>
@@ -1203,15 +1499,21 @@
       document.getElementById("heroTryBtn").onclick = () => {
         document.getElementById("demoSection").style.display = "none";
         document.getElementById("appCard").style.display = "block";
-        document.getElementById("appCard").scrollIntoView({ behavior: "smooth" });
+        document
+          .getElementById("appCard")
+          .scrollIntoView({ behavior: "smooth" });
       };
       document.getElementById("heroSeeBtn").onclick = () => {
-        document.getElementById("demoSection").scrollIntoView({ behavior: "smooth" });
+        document
+          .getElementById("demoSection")
+          .scrollIntoView({ behavior: "smooth" });
       };
       document.getElementById("ctaTryBtn").onclick = () => {
         document.getElementById("demoSection").style.display = "none";
         document.getElementById("appCard").style.display = "block";
-        document.getElementById("appCard").scrollIntoView({ behavior: "smooth" });
+        document
+          .getElementById("appCard")
+          .scrollIntoView({ behavior: "smooth" });
       };
     </script>
   </body>
