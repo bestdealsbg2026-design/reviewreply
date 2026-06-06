@@ -691,8 +691,18 @@ select option {
   .rr-logo {
     font-size: 22px;
   }
+  .rr-hero {
+    padding: 50px 20px 40px;
+  }
   .rr-hero h1 {
-    font-size: 34px;
+    font-size: 32px;
+  }
+  .rr-hero p {
+    font-size: 14px;
+  }
+  .rr-hero-btns {
+    flex-direction: column;
+    align-items: center;
   }
   .rr-section {
     padding: 0 16px;
@@ -703,11 +713,30 @@ select option {
   .stats-box {
     grid-template-columns: 1fr;
   }
+  .stat-item {
+    border-right: none;
+    border-bottom: 0.5px solid rgba(255, 255, 255, 0.08);
+    padding: 20px;
+  }
   .app-row {
     flex-direction: column;
   }
   .nav-email {
     display: none;
+  }
+  .nav-btn {
+    width: 80px;
+    font-size: 13px;
+  }
+  .reviews-grid {
+    grid-template-columns: 1fr;
+  }
+  .register-modal {
+    width: 90%;
+    padding: 28px 20px;
+  }
+  .demo-inner {
+    padding: 18px;
   }
 }
 
