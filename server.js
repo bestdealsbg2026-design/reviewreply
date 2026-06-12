@@ -5,11 +5,12 @@ import Stripe from "stripe";
 import { initializeApp, cert } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
 
-// IP rate limiting за guest потребители
+// Rate limiting
 const ipUsage = {};
 const GUEST_LIMIT = 5;
 const FREE_ACCOUNT_LIMIT = 5;
 const WHITELIST_IPS = ["84.40.105.147"];
+const WHITELIST_EMAILS = ["bestdealsbg2026@gmail.com"];
 
 function getClientIP(req) {
   return (
@@ -189,7 +190,7 @@ app.post("/api/reply", async (req, res) => {
     const { review, tone, uid, rating, lang } = req.body;
     const ip = getClientIP(req);
 
-    // Whitelist - без лимит
+    // Whitelist IP - без лимит
     if (!WHITELIST_IPS.includes(ip)) {
       if (uid) {
         // Логнат потребител
@@ -202,13 +203,16 @@ app.post("/api/reply", async (req, res) => {
           return res.status(400).json({ error: "User not found" });
         }
 
-        // Premium - неограничено
-        if (!userData.isPremium) {
-          // Безплатен акаунт - 5 на месец
-          if ((userData.usageCount || 0) >= FREE_ACCOUNT_LIMIT) {
-            return res.status(429).json({ error: "limit_reached" });
+        // Whitelist email - без лимит
+        if (!WHITELIST_EMAILS.includes(userData.email)) {
+          // Premium - неограничено
+          if (!userData.isPremium) {
+            // Безплатен акаунт - 5 на месец
+            if ((userData.usageCount || 0) >= FREE_ACCOUNT_LIMIT) {
+              return res.status(429).json({ error: "limit_reached" });
+            }
+            await ref.update({ usageCount: (userData.usageCount || 0) + 1 });
           }
-          await ref.update({ usageCount: (userData.usageCount || 0) + 1 });
         }
       } else {
         // Guest - 5 по IP
