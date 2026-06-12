@@ -179,20 +179,20 @@ async function checkAndResetUsage(uid) {
    AI REPLY
 ========================= */
 app.post("/api/reply", async (req, res) => {
+  console.log("CLIENT IP:", getClientIP(req));
+  console.log("X-FORWARDED-FOR:", req.headers["x-forwarded-for"]);
+  console.log("REMOTE ADDRESS:", req.socket.remoteAddress);
   console.log("HANDLER STARTED");
   console.log("BODY:", req.body);
 
   try {
-    const { review, tone, uid, rating } = req.body;
-    if (uid) await checkAndResetUsage(uid);
+    const { review, tone, uid, rating, lang } = req.body;
+    const ip = getClientIP(req);
 
-    // IP rate limiting за guest потребители
-    // IP rate limiting за guest потребители
-    const WHITELIST_IPS = ["84.40.105.147"];
-
-    if (!uid) {
-      const ip = getClientIP(req);
-      if (!WHITELIST_IPS.includes(ip)) {
+    if (!WHITELIST_IPS.includes(ip)) {
+      if (uid) {
+        await checkAndResetUsage(uid);
+      } else {
         ipUsage[ip] = ipUsage[ip] || 0;
         if (ipUsage[ip] >= IP_LIMIT) {
           return res.status(429).json({ error: "limit_reached" });
@@ -200,11 +200,11 @@ app.post("/api/reply", async (req, res) => {
         ipUsage[ip]++;
       }
     }
+
     if (!review) {
       return res.status(400).json({ error: "Review required" });
     }
 
-    const { lang } = req.body;
     const langText =
       lang === "bg"
         ? "Reply in Bulgarian language."
@@ -266,12 +266,4 @@ ${review}`;
     console.error("SERVER CRASH:", err);
     return res.status(500).json({ error: err.message });
   }
-});
-
-/* =========================
-   START SERVER
-========================= */
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
 });
