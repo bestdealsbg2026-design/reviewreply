@@ -181,6 +181,7 @@ async function checkAndResetUsage(uid) {
    AI REPLY
 ========================= */
 app.post("/api/reply", async (req, res) => {
+  console.log("CLIENT IP:", getClientIP(req));
   console.log("HANDLER STARTED");
   console.log("BODY:", req.body);
 
