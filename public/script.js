@@ -320,8 +320,8 @@ async function generateReply() {
       if (h2)
         h2.textContent =
           window.currentLang === "bg"
-            ? "Използвал си всичките 6 безплатни отговора!"
-            : "You've used all 6 free replies!";
+            ? "Използвал си всичките 5 безплатни отговора!"
+            : "You've used all 5 free replies!";
       if (p)
         p.textContent =
           window.currentLang === "bg"
