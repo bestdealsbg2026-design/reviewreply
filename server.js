@@ -187,15 +187,19 @@ app.post("/api/reply", async (req, res) => {
     if (uid) await checkAndResetUsage(uid);
 
     // IP rate limiting за guest потребители
+    // IP rate limiting за guest потребители
+    const WHITELIST_IPS = ["84.40.105.147"];
+
     if (!uid) {
       const ip = getClientIP(req);
-      ipUsage[ip] = ipUsage[ip] || 0;
-      if (ipUsage[ip] >= IP_LIMIT) {
-        return res.status(429).json({ error: "limit_reached" });
+      if (!WHITELIST_IPS.includes(ip)) {
+        ipUsage[ip] = ipUsage[ip] || 0;
+        if (ipUsage[ip] >= IP_LIMIT) {
+          return res.status(429).json({ error: "limit_reached" });
+        }
+        ipUsage[ip]++;
       }
-      ipUsage[ip]++;
     }
-
     if (!review) {
       return res.status(400).json({ error: "Review required" });
     }
