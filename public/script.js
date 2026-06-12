@@ -378,6 +378,11 @@ async function generateReply() {
       const modal = document.getElementById("loginRequiredModal");
       const h2 = modal.querySelector("h2");
       const p = modal.querySelector(".modal-subtitle");
+      const loginBtn = document.getElementById("goToLoginBtn");
+      const noAccount =
+        document.querySelector(".switch-auth[style]") ||
+        modal.querySelector(".switch-auth");
+
       if (h2)
         h2.textContent =
           window.currentLang === "bg"
@@ -388,6 +393,27 @@ async function generateReply() {
           window.currentLang === "bg"
             ? "Абонирай се за още отговори."
             : "Subscribe to get more replies.";
+
+      if (currentUser) {
+        if (loginBtn) {
+          loginBtn.textContent =
+            window.currentLang === "bg" ? "Абонирай се" : "Subscribe";
+          loginBtn.onclick = () => window.checkout("monthly");
+        }
+        const switchAuth = modal.querySelector("p.switch-auth");
+        if (switchAuth) switchAuth.style.display = "none";
+      } else {
+        if (loginBtn) {
+          loginBtn.textContent = window.currentLang === "bg" ? "Вход" : "Login";
+          loginBtn.onclick = () => {
+            modal.classList.remove("active");
+            openModal(true);
+          };
+        }
+        const switchAuth = modal.querySelector("p.switch-auth");
+        if (switchAuth) switchAuth.style.display = "block";
+      }
+
       modal.classList.add("active");
       return;
     }
