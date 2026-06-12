@@ -5,6 +5,16 @@ import Stripe from "stripe";
 import { initializeApp, cert } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
 
+// IP rate limiting за guest потребители
+const ipUsage = {};
+const IP_LIMIT = 6;
+
+function getClientIP(req) {
+  return (
+    req.headers["x-forwarded-for"]?.split(",")[0] || req.socket.remoteAddress
+  );
+}
+
 dotenv.config();
 
 /* =========================
@@ -176,6 +186,16 @@ app.post("/api/reply", async (req, res) => {
     const { review, tone, uid, rating } = req.body;
     if (uid) await checkAndResetUsage(uid);
 
+    // IP rate limiting за guest потребители
+    if (!uid) {
+      const ip = getClientIP(req);
+      ipUsage[ip] = ipUsage[ip] || 0;
+      if (ipUsage[ip] >= IP_LIMIT) {
+        return res.status(429).json({ error: "limit_reached" });
+      }
+      ipUsage[ip]++;
+    }
+
     if (!review) {
       return res.status(400).json({ error: "Review required" });
     }
@@ -190,8 +210,6 @@ app.post("/api/reply", async (req, res) => {
 Tone: ${tone || "friendly"}
 Rating: ${rating || 5} out of 5 stars
 ${langText}
-
-
 
 Rules:
 - natural human tone
