@@ -9,7 +9,7 @@ import { getFirestore } from "firebase-admin/firestore";
 const ipUsage = {};
 const GUEST_LIMIT = 5;
 const FREE_ACCOUNT_LIMIT = 5;
-const WHITELIST_IPS = ["84.40.105.147"];
+const WHITELIST_IPS = [];
 const WHITELIST_EMAILS = ["bestdealsbg2026@gmail.com"];
 
 function getClientIP(req) {
