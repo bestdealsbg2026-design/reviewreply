@@ -375,7 +375,20 @@ async function generateReply() {
     const data = await res.json();
 
     if (data.error === "limit_reached") {
-      document.getElementById("loginRequiredModal").classList.add("active");
+      const modal = document.getElementById("loginRequiredModal");
+      const h2 = modal.querySelector("h2");
+      const p = modal.querySelector(".modal-subtitle");
+      if (h2)
+        h2.textContent =
+          window.currentLang === "bg"
+            ? "Използвал си всичките 5 безплатни отговора!"
+            : "You've used all 5 free replies!";
+      if (p)
+        p.textContent =
+          window.currentLang === "bg"
+            ? "Абонирай се за още отговори."
+            : "Subscribe to get more replies.";
+      modal.classList.add("active");
       return;
     }
 
