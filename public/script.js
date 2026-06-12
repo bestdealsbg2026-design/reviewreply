@@ -7,7 +7,7 @@ let currentUser = null;
 let userData = null;
 let isLoginMode = false;
 
-const FREE_LIMIT = 6;
+const FREE_LIMIT = 999;
 
 /* ===================== */
 /* FIREBASE IMPORTS */
