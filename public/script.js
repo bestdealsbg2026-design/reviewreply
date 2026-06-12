@@ -373,6 +373,12 @@ async function generateReply() {
     );
 
     const data = await res.json();
+
+    if (data.error === "limit_reached") {
+      document.getElementById("loginRequiredModal").classList.add("active");
+      return;
+    }
+
     const stars = "⭐".repeat(rating);
     output.textContent =
       stars + "\n\n" + (data.reply || "No response received.");
