@@ -7,7 +7,9 @@ import { getFirestore } from "firebase-admin/firestore";
 
 // IP rate limiting за guest потребители
 const ipUsage = {};
-const IP_LIMIT = 6;
+const GUEST_LIMIT = 5;
+const FREE_ACCOUNT_LIMIT = 5;
+const WHITELIST_IPS = ["84.40.105.147"];
 
 function getClientIP(req) {
   return (
@@ -179,9 +181,6 @@ async function checkAndResetUsage(uid) {
    AI REPLY
 ========================= */
 app.post("/api/reply", async (req, res) => {
-  console.log("CLIENT IP:", getClientIP(req));
-  console.log("X-FORWARDED-FOR:", req.headers["x-forwarded-for"]);
-  console.log("REMOTE ADDRESS:", req.socket.remoteAddress);
   console.log("HANDLER STARTED");
   console.log("BODY:", req.body);
 
@@ -189,12 +188,31 @@ app.post("/api/reply", async (req, res) => {
     const { review, tone, uid, rating, lang } = req.body;
     const ip = getClientIP(req);
 
+    // Whitelist - без лимит
     if (!WHITELIST_IPS.includes(ip)) {
       if (uid) {
+        // Логнат потребител
         await checkAndResetUsage(uid);
+        const ref = db.collection("users").doc(uid);
+        const snap = await ref.get();
+        const userData = snap.data();
+
+        if (!userData) {
+          return res.status(400).json({ error: "User not found" });
+        }
+
+        // Premium - неограничено
+        if (!userData.isPremium) {
+          // Безплатен акаунт - 5 на месец
+          if ((userData.usageCount || 0) >= FREE_ACCOUNT_LIMIT) {
+            return res.status(429).json({ error: "limit_reached" });
+          }
+          await ref.update({ usageCount: (userData.usageCount || 0) + 1 });
+        }
       } else {
+        // Guest - 5 по IP
         ipUsage[ip] = ipUsage[ip] || 0;
-        if (ipUsage[ip] >= IP_LIMIT) {
+        if (ipUsage[ip] >= GUEST_LIMIT) {
           return res.status(429).json({ error: "limit_reached" });
         }
         ipUsage[ip]++;
@@ -209,6 +227,7 @@ app.post("/api/reply", async (req, res) => {
       lang === "bg"
         ? "Reply in Bulgarian language."
         : "Reply in English language.";
+
     const prompt = `You are a business owner replying to a Google review.
 
 Tone: ${tone || "friendly"}
@@ -266,4 +285,12 @@ ${review}`;
     console.error("SERVER CRASH:", err);
     return res.status(500).json({ error: err.message });
   }
+});
+
+/* =========================
+   START SERVER
+========================= */
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
