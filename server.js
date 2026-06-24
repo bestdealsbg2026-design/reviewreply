@@ -128,8 +128,8 @@ app.get("/", (req, res) => {
    STRIPE PRICE IDS
 ========================= */
 const PRICES = {
-  monthly: "price_1TdEdJAf3yjIYEdS8X7FUhsb",
-  yearly: "price_1TdEiSAf3yjIYEdS61Vskc7f",
+  monthly: "price_1Tear5AQoQFQDVwfVyXdWWIW",
+  yearly: "price_1TeasCAQoQFQDVwfhlx1KXqU",
 };
 
 /* =========================
