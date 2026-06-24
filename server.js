@@ -205,6 +205,7 @@ You are a business owner replying to a Google review.
 Tone: ${tone || "friendly"}
 
 Rules:
+- Reply in the SAME language as the review below. If the review is in Bulgarian, reply only in Bulgarian. If it's in English, reply only in English. Never mix languages or provide more than one language.
 - natural human tone
 - 1–2 sentences max
 - no emojis
