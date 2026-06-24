@@ -83,6 +83,8 @@ const translations = {
     ctaH2: "Ready to save hours every week?",
     ctaP: "Join hundreds of businesses already using ReviewReply",
     ctaTryBtn: "Start for free →",
+    footerSupport:
+      'Any problems write to Customer support at <a href="mailto:bestdealsbg2026@gmail.com" style="color: rgba(255,255,255,0.35); text-decoration: underline;">bestdealsbg2026@gmail.com</a>',
   },
   bg: {
     badge: "AI управление на ревюта",
@@ -165,6 +167,8 @@ const translations = {
     ctaH2: "Готов ли си да спестяваш часове всяка седмица?",
     ctaP: "Присъедини се към стотиците бизнеси, използващи ReviewReply",
     ctaTryBtn: "Започни безплатно →",
+    footerSupport:
+      'При проблеми пишете на Клиентска поддръжка на <a href="mailto:bestdealsbg2026@gmail.com" style="color: rgba(255,255,255,0.35); text-decoration: underline;">bestdealsbg2026@gmail.com</a>',
   },
 };
 
@@ -244,6 +248,7 @@ const elMap = {
   ctaH2: "t-cta-h2",
   ctaP: "t-cta-p",
   ctaTryBtn: "ctaTryBtn",
+  footerSupport: "t-footer-support",
 };
 
 function setLang(lang) {
