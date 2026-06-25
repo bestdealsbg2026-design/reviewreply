@@ -7,8 +7,6 @@ let currentUser = null;
 let userData = null;
 let isLoginMode = false;
 
-const FREE_LIMIT = 4;
-
 /* ===================== */
 /* FIREBASE IMPORTS */
 /* ===================== */
@@ -19,7 +17,6 @@ import {
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
-  sendEmailVerification,
 } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
 
 import {
@@ -45,441 +42,184 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 /* ===================== */
-/* GUEST USAGE TRACKING */
-/* ===================== */
-function getGuestCount() {
-  return parseInt(localStorage.getItem("guestCount") || "0");
-}
-
-function incrementGuestCount() {
-  const count = getGuestCount() + 1;
-  localStorage.setItem("guestCount", count);
-  return count;
-}
-
-function updateGuestCounter() {
-  const remaining = FREE_LIMIT - getGuestCount();
-  const btn = document.getElementById("generateBtn");
-  if (btn && !currentUser) {
-    btn.textContent =
-      remaining > 0
-        ? `✨ Generate Reply for Free (${remaining} left)`
-        : "✨ Register to continue";
-  }
-}
-
-/* ===================== */
-/* NAVBAR RENDERER */
-/* ===================== */
-function renderNavbar(user, data = null) {
-  const nav = document.getElementById("navActions");
-
-  if (user) {
-    const planLabel = data?.isPremium
-      ? '<span class="nav-plan premium">⭐ Premium</span>'
-      : '<span class="nav-plan free">Free Plan</span>';
-
-    nav.innerHTML = `
-      <span class="nav-email">${user.email}</span>
-      ${planLabel}
-      <button class="nav-btn outline" id="logoutBtn">Logout</button>
-    `;
-    document.getElementById("logoutBtn").onclick = () => signOut(auth);
-  } else {
-    const lang = window.currentLang || "en";
-    nav.innerHTML = `
-      <button class="nav-btn outline" id="loginBtn">${lang === "bg" ? "Вход" : "Login"}</button>
-      <button class="nav-btn filled" id="registerBtn">${lang === "bg" ? "Регистрация" : "Register"}</button>
-    `;
-    document.getElementById("loginBtn").onclick = () => openModal(true);
-    document.getElementById("registerBtn").onclick = () => openModal(false);
-    updateGuestCounter();
-  }
-}
-
-/* ===================== */
-/* AUTH STATE */
+/* AUTH STATE (CRITICAL) */
 /* ===================== */
 onAuthStateChanged(auth, async (user) => {
   currentUser = user;
 
+  const logoutBtn = document.getElementById("logoutBtn");
+
   if (user) {
+    logoutBtn.style.display = "inline-block";
+
     const ref = doc(db, "users", user.uid);
     const snap = await getDoc(ref);
-    if (snap.exists()) {
-      userData = snap.data();
-    }
-    renderNavbar(user, userData);
-    // Reset generate button text for logged in users
-    const btn = document.getElementById("generateBtn");
-    if (btn) btn.textContent = "✨ Generate Reply for Free";
+
+    if (snap.exists()) userData = snap.data();
   } else {
+    logoutBtn.style.display = "none";
     userData = null;
-    renderNavbar(null);
   }
 
   console.log("AUTH STATE:", user?.email || null);
 });
 
 /* ===================== */
-/* MODAL HELPERS */
-/* ===================== */
-function openModal(loginMode) {
-  isLoginMode = loginMode;
-  updateModalUI();
-  document.getElementById("registerModal").classList.add("active");
-}
-
-function updateModalUI() {
-  const title = document.getElementById("authTitle");
-  const authBtn = document.getElementById("authSubmitBtn");
-  const switchText = document.getElementById("switchAuthText");
-  const switchLink = document.getElementById("switchAuthMode");
-  const isBg = window.currentLang === "bg";
-
-  if (isLoginMode) {
-    title.textContent = isBg ? "Добре дошъл" : "Welcome Back";
-    authBtn.textContent = isBg ? "Вход" : "Login";
-    switchText.childNodes[0].textContent = isBg
-      ? "Нямаш акаунт? "
-      : "Don't have an account? ";
-    switchLink.textContent = isBg ? "Регистрация" : "Register";
-  } else {
-    title.textContent = isBg ? "Създай акаунт" : "Create Account";
-    authBtn.textContent = isBg ? "Създай акаунт" : "Create Account";
-    switchText.childNodes[0].textContent = isBg
-      ? "Вече имаш акаунт? "
-      : "Already have an account? ";
-    switchLink.textContent = isBg ? "Влез" : "Log in";
-  }
-}
-/* ===================== */
-/* DOM READY */
+/* MODAL + LOGIN/REGISTER */
 /* ===================== */
 document.addEventListener("DOMContentLoaded", () => {
+  const registerBtn = document.getElementById("registerBtn");
+  const loginBtn = document.getElementById("loginBtn");
   const modal = document.getElementById("registerModal");
   const closeBtn = document.getElementById("closeModalBtn");
+  const logoutBtn = document.getElementById("logoutBtn");
+
   const authBtn = document.getElementById("authSubmitBtn");
-  const switchLink = document.getElementById("switchAuthMode");
+  const switchMode = document.getElementById("switchAuthMode");
+  const title = document.getElementById("authTitle");
+
+  /* OPEN REGISTER */
+  registerBtn.onclick = () => {
+    isLoginMode = false;
+    title.textContent = "Create Account";
+    authBtn.textContent = "Create Account";
+    modal.classList.add("active");
+  };
+
+  /* OPEN LOGIN */
+  loginBtn.onclick = () => {
+    isLoginMode = true;
+    title.textContent = "Welcome Back";
+    authBtn.textContent = "Login";
+    modal.classList.add("active");
+  };
 
   closeBtn.onclick = () => modal.classList.remove("active");
 
-  document.getElementById("registerModal").addEventListener("keydown", (e) => {
-    if (e.key === "Enter") authBtn.click();
-  });
+  logoutBtn.onclick = () => signOut(auth);
 
-  switchLink.onclick = () => {
+  /* SWITCH TEXT INSIDE MODAL */
+  switchMode.onclick = () => {
     isLoginMode = !isLoginMode;
-    updateModalUI();
+
+    if (isLoginMode) {
+      title.textContent = "Welcome Back";
+      authBtn.textContent = "Login";
+    } else {
+      title.textContent = "Create Account";
+      authBtn.textContent = "Create Account";
+    }
   };
 
+  /* AUTH ACTION */
   authBtn.onclick = async () => {
     const email = document.getElementById("emailInput").value.trim();
     const password = document.getElementById("passwordInput").value.trim();
 
-    if (!email || !password)
-      return showModalError("Please fill in all fields.");
-
-    if (!isLoginMode) {
-      if (password.length < 6 || !/\d/.test(password)) {
-        return showModalError(
-          "Password must be at least 6 characters and contain a number.",
-        );
-      }
-    }
+    if (!email || !password) return alert("Missing fields");
 
     try {
       if (isLoginMode) {
-        const cred = await signInWithEmailAndPassword(auth, email, password);
-        if (!cred.user.emailVerified) {
-          await signOut(auth);
-          return showModalError(
-            "Please verify your email first. Check your inbox!",
-          );
-        }
-        showSuccessMessage("👋 Welcome back! You're logged in.");
+        await signInWithEmailAndPassword(auth, email, password);
       } else {
         const cred = await createUserWithEmailAndPassword(
           auth,
           email,
           password,
         );
+
         await setDoc(doc(db, "users", cred.user.uid), {
           email: cred.user.email,
           isPremium: false,
           usageCount: 0,
-          stripeCustomerId: null,
-          lastReset: new Date().toISOString(),
         });
-        await sendEmailVerification(cred.user);
-        await signOut(auth);
-        showSuccessMessage("📧 Check your email to verify your account!");
       }
 
       modal.classList.remove("active");
     } catch (e) {
-      showModalError(e.message);
+      alert(e.message);
     }
   };
 
-  document.getElementById("closeLoginRequired").onclick = () => {
-    document.getElementById("loginRequiredModal").classList.remove("active");
-  };
-
-  document.getElementById("goToLoginBtn").onclick = () => {
-    document.getElementById("loginRequiredModal").classList.remove("active");
-    openModal(true);
-  };
-
-  document.getElementById("goToRegisterBtn").onclick = () => {
-    document.getElementById("loginRequiredModal").classList.remove("active");
-    openModal(false);
-  };
-
-  document.querySelectorAll(".star").forEach((star) => {
-    star.addEventListener("click", () => {
-      rating = parseInt(star.dataset.value);
-      document.querySelectorAll(".star").forEach((s) => {
-        s.classList.toggle("active", parseInt(s.dataset.value) <= rating);
-      });
-    });
-  });
-
+  /* GENERATE BUTTON */
   document.getElementById("generateBtn").onclick = generateReply;
-  updateGuestCounter();
 });
 
 /* ===================== */
-/* MODAL ERROR MESSAGE */
-/* ===================== */
-function showModalError(msg) {
-  let err = document.getElementById("modalError");
-  if (!err) {
-    err = document.createElement("p");
-    err.id = "modalError";
-    err.style.cssText =
-      "color:#f87171;font-size:13px;margin-top:10px;text-align:center;";
-    document.querySelector(".modal-body").appendChild(err);
-  }
-  err.textContent = msg;
-  setTimeout(() => {
-    err.textContent = "";
-  }, 4000);
-}
-
-/* ===================== */
-/* SUCCESS MESSAGE */
-/* ===================== */
-function showSuccessMessage(text) {
-  const box = document.getElementById("successModal");
-  const inner = box.querySelector(".success-box");
-  inner.textContent = text;
-  box.classList.add("active");
-  setTimeout(() => box.classList.remove("active"), 2500);
-}
-
-/* ===================== */
-/* REPLY GENERATOR */
+/* REPLY GENERATOR (FIXED SAFE) */
 /* ===================== */
 async function generateReply() {
-  const review = document.getElementById("reviewInput").value.trim();
-  const tone = document.getElementById("toneSelect").value;
+  if (!currentUser) return alert("Login first");
+  if (!userData) return alert("User not loaded");
+
+  const review = document.getElementById("reviewInput").value;
   const output = document.getElementById("outputBox");
   const loading = document.getElementById("loading");
 
-  if (!review) {
-    const output = document.getElementById("outputBox");
-    output.style.color = "#f87171";
-    output.textContent =
-      window.currentLang === "bg"
-        ? "⚠️ Моля, постави ревю преди да генерираш отговор."
-        : "⚠️ Please paste a review first.";
-    setTimeout(() => {
-      output.style.color = "";
-      output.textContent = "";
-    }, 3000);
-    return;
-  }
-  const noAccountEl = document.getElementById("noAccountText");
-  if (noAccountEl) {
-    noAccountEl.textContent =
-      window.currentLang === "bg" ? "Нямаш акаунт?" : "No account yet?";
-  }
-
-  // Guest user - check limit
-  if (!currentUser) {
-    const count = getGuestCount();
-    if (count >= FREE_LIMIT) {
-      // Show register modal
-      document.getElementById("loginRequiredModal").classList.add("active");
-      if (typeof setLang === "function") setLang(window.currentLang || "en");
-      // Update modal text
-      const modal = document.getElementById("loginRequiredModal");
-      const h2 = modal.querySelector("h2");
-      const p = modal.querySelector(".modal-subtitle");
-      if (h2)
-        h2.textContent =
-          window.currentLang === "bg"
-            ? "Използвал си всичките 5 безплатни отговора!"
-            : "You've used all 5 free replies!";
-      if (p)
-        p.textContent =
-          window.currentLang === "bg"
-            ? "Абонирай се за още отговори."
-            : "Subscribe to get more replies.";
-      return;
-    }
-    if (window.currentLang === "bg") {
-      const m = document.getElementById("loginRequiredModal");
-      m.querySelector("h2").textContent = "Необходима е регистрация";
-      m.querySelector(".modal-subtitle").textContent =
-        "Влез или създай акаунт.";
-      document.getElementById("goToLoginBtn").textContent = "Вход";
-      document.getElementById("goToRegisterBtn").textContent = "Регистрация";
-    }
-  }
-
-  if (currentUser && !userData) {
-    const output = document.getElementById("outputBox");
-    output.style.color = "#f87171";
-    output.textContent =
-      window.currentLang === "bg"
-        ? "⚠️ Данните не са заредени, опитай пак."
-        : "⚠️ User data not loaded, please try again.";
-    setTimeout(() => {
-      output.style.color = "";
-      output.textContent = "";
-    }, 3000);
-    return;
-  }
+  if (!review) return alert("Add review");
 
   loading.style.display = "block";
-  output.textContent = "";
 
-  try {
-    const res = await fetch(
-      "https://reviewreply-production-c63d.up.railway.app/api/reply",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          review,
-          rating,
-          tone,
-          lang: window.currentLang || "en",
-          uid: currentUser?.uid || null,
-        }),
-      },
-    );
+  const res = await fetch("/api/reply", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ review, rating, tone: "Friendly" }),
+  });
 
-    const data = await res.json();
+  const data = await res.json();
 
-    if (data.error === "limit_reached") {
-      const modal = document.getElementById("loginRequiredModal");
-      const h2 = modal.querySelector("h2");
-      const p = modal.querySelector(".modal-subtitle");
-      const loginBtn = document.getElementById("goToLoginBtn");
-      const noAccount =
-        document.querySelector(".switch-auth[style]") ||
-        modal.querySelector(".switch-auth");
+  output.textContent = data.reply || "No response";
 
-      if (h2)
-        h2.textContent =
-          window.currentLang === "bg"
-            ? "Използвал си всичките 5 безплатни отговора!"
-            : "You've used all 5 free replies!";
-      if (p)
-        p.textContent =
-          window.currentLang === "bg"
-            ? "Абонирай се за още отговори."
-            : "Subscribe to get more replies.";
-
-      if (currentUser) {
-        if (loginBtn) {
-          loginBtn.textContent =
-            window.currentLang === "bg" ? "Абонирай се" : "Subscribe";
-          loginBtn.onclick = () => window.checkout("monthly");
-        }
-        const switchAuth = modal.querySelector("p.switch-auth");
-        if (switchAuth) switchAuth.style.display = "none";
-      } else {
-        if (loginBtn) {
-          loginBtn.textContent = window.currentLang === "bg" ? "Вход" : "Login";
-          loginBtn.onclick = () => {
-            modal.classList.remove("active");
-            openModal(true);
-          };
-        }
-        const switchAuth = modal.querySelector("p.switch-auth");
-        if (switchAuth) switchAuth.style.display = "block";
-      }
-
-      modal.classList.add("active");
-      return;
-    }
-
-    const stars = "⭐".repeat(rating);
-    output.textContent =
-      stars + "\n\n" + (data.reply || "No response received.");
-
-    // Increment guest count after successful reply
-    if (!currentUser) {
-      incrementGuestCount();
-      updateGuestCounter();
-    }
-  } catch (err) {
-    output.textContent = "Error connecting to server.";
-  } finally {
-    loading.style.display = "none";
-  }
+  loading.style.display = "none";
 }
 
 /* ===================== */
-/* COPY */
-/* ===================== */
-window.copyReply = function () {
-  const text = document.getElementById("outputBox").textContent;
-  navigator.clipboard.writeText(text);
-};
-
-/* ===================== */
-/* PRICING */
+/* PRICING FIX */
 /* ===================== */
 window.selectPlan = function (plan) {
   currentPlan = plan;
+
   document
     .querySelectorAll(".pricing-card")
     .forEach((c) => c.classList.remove("popular"));
+
   document.querySelector(`.pricing-card.${plan}`)?.classList.add("popular");
 };
 
 window.checkout = async function (plan) {
-  if (!currentUser) {
-    document.getElementById("loginRequiredModal").classList.add("active");
-    if (typeof setLang === "function") setLang(window.currentLang || "en");
-    return;
-  }
-  if (window.currentLang === "bg") {
-    const m = document.getElementById("loginRequiredModal");
-    m.querySelector("h2").textContent = "Необходима е регистрация";
-    m.querySelector(".modal-subtitle").textContent = "Влез или създай акаунт.";
-    document.getElementById("goToLoginBtn").textContent = "Вход";
-    document.getElementById("goToRegisterBtn").textContent = "Регистрация";
-  }
+  if (!currentUser) return alert("Login first");
 
-  const res = await fetch(
-    "https://reviewreply-production-c63d.up.railway.app/create-checkout-session",
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        plan,
-        uid: currentUser.uid,
-        email: currentUser.email,
-      }),
-    },
-  );
+  const res = await fetch("/create-checkout-session", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      plan,
+      uid: currentUser.uid,
+      email: currentUser.email,
+    }),
+  });
 
   const data = await res.json();
   if (data.url) window.location.href = data.url;
 };
+
+/* ===================== */
+/* SUPPORT EMAIL LINK (built via JS so it can't be broken by HTML formatting) */
+/* ===================== */
+document.addEventListener("DOMContentLoaded", () => {
+  const supportEl = document.getElementById("t-footer-support");
+  if (supportEl) {
+    const lang = window.currentLang || "en";
+    const text =
+      lang === "bg"
+        ? "При проблеми пишете на Клиентска поддръжка на "
+        : "Any problems write to Customer support at ";
+    const link = document.createElement("a");
+    link.href = "mailto:bestdealsbg2026@gmail.com";
+    link.textContent = "bestdealsbg2026@gmail.com";
+    link.style.color = "rgba(255,255,255,0.45)";
+    link.style.textDecoration = "underline";
+    supportEl.textContent = text;
+    supportEl.appendChild(link);
+  }
+});
