@@ -202,3 +202,24 @@ window.checkout = async function (plan) {
   const data = await res.json();
   if (data.url) window.location.href = data.url;
 };
+
+/* ===================== */
+/* SUPPORT EMAIL LINK (built via JS so it can't be broken by HTML formatting) */
+/* ===================== */
+document.addEventListener("DOMContentLoaded", () => {
+  const supportEl = document.getElementById("t-footer-support");
+  if (supportEl) {
+    const lang = window.currentLang || "en";
+    const text =
+      lang === "bg"
+        ? "При проблеми пишете на Клиентска поддръжка на "
+        : "Any problems write to Customer support at ";
+    const link = document.createElement("a");
+    link.href = "mailto:bestdealsbg2026@gmail.com";
+    link.textContent = "bestdealsbg2026@gmail.com";
+    link.style.color = "rgba(255,255,255,0.45)";
+    link.style.textDecoration = "underline";
+    supportEl.textContent = text;
+    supportEl.appendChild(link);
+  }
+});
