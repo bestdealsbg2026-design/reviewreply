@@ -274,7 +274,7 @@ document.addEventListener("DOMContentLoaded", () => {
     supportEl.style.webkitBackgroundClip = "text";
     supportEl.style.backgroundClip = "text";
     supportEl.style.webkitTextFillColor = "transparent";
-    supportEl.style.display = "inline-block";
+    supportEl.style.display = "block";
 
     const leadSpan = document.createElement("span");
     leadSpan.textContent = text;
