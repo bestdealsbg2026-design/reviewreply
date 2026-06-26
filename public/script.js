@@ -352,25 +352,27 @@ async function generateReply() {
       // test account is never actually blocked.
       const wouldBeUsed = (userData.usageCount || 0) + 1;
       if (wouldBeUsed >= REGISTERED_FREE_LIMIT) {
-        await updateDoc(ref, { usageCount: 0 });
         userData.usageCount = 0;
         showAuthMessage(
           "You've used all your free replies as a registered user. Please subscribe to continue generating replies. (Test account — limit auto-reset.)",
           "error",
         );
+        updateDoc(ref, { usageCount: 0 }).catch((err) =>
+          console.error("Failed to reset usageCount:", err),
+        );
       } else {
-        await updateDoc(ref, { usageCount: increment(1) });
         userData.usageCount = wouldBeUsed;
         const remaining = REGISTERED_FREE_LIMIT - wouldBeUsed;
         showAuthMessage(
           `You have ${remaining} free ${remaining === 1 ? "reply" : "replies"} left before you'll need to subscribe. (Test account)`,
           "success",
         );
+        updateDoc(ref, { usageCount: increment(1) }).catch((err) =>
+          console.error("Failed to update usageCount:", err),
+        );
       }
     } else {
-      await updateDoc(ref, { usageCount: increment(1) });
       userData.usageCount = (userData.usageCount || 0) + 1;
-
       const remaining = REGISTERED_FREE_LIMIT - userData.usageCount;
       if (remaining > 0) {
         showAuthMessage(
@@ -378,6 +380,9 @@ async function generateReply() {
           "success",
         );
       }
+      updateDoc(ref, { usageCount: increment(1) }).catch((err) =>
+        console.error("Failed to update usageCount:", err),
+      );
     }
   }
 }
