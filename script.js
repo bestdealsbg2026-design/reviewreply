@@ -275,9 +275,6 @@ async function generateReply() {
           "You've used all your free replies as a registered user. Please subscribe to continue generating replies.",
           "error",
         );
-        document
-          .querySelector(".rr-pricing")
-          ?.scrollIntoView({ behavior: "smooth" });
         return;
       }
     }
