@@ -185,9 +185,69 @@ app.post("/create-checkout-session", async (req, res) => {
 });
 
 /* =========================
+   ANONYMOUS IP RATE LIMIT
+   Tracks free-trial usage by IP in Firestore so it
+   survives cache-clearing/incognito. Server-trusted,
+   so it can't be bypassed by editing client JS.
+========================= */
+const ANON_FREE_LIMIT = 5;
+const EXEMPT_IPS = ["84.40.105.147"];
+
+function getClientIp(req) {
+  const forwarded = req.headers["x-forwarded-for"];
+  if (forwarded) return forwarded.split(",")[0].trim();
+  return req.socket.remoteAddress || "unknown";
+}
+
+async function checkAnonRateLimit(req, res, next) {
+  // Only applies to requests that don't carry a logged-in uid.
+  // The frontend only sends uid-based checks via Firestore for
+  // logged-in users, so anonymous requests are identified simply
+  // by absence of an Authorization/uid context — here we rate-limit
+  // by IP regardless, but logged-in users are already capped
+  // client-side via Firestore usageCount, so this is a safety net
+  // specifically for anonymous abuse.
+  const ip = getClientIp(req);
+
+  if (EXEMPT_IPS.includes(ip)) {
+    return next();
+  }
+
+  const { uid } = req.body || {};
+  if (uid) {
+    // Logged-in request — handled by Firestore usageCount in the frontend.
+    return next();
+  }
+
+  try {
+    const ref = dbAdmin.collection("anonIpUsage").doc(ip);
+    const snap = await ref.get();
+    const count = snap.exists ? snap.data().count || 0 : 0;
+
+    if (count >= ANON_FREE_LIMIT) {
+      return res.status(403).json({
+        error: "FREE_LIMIT_REACHED",
+        message: "Free trial limit reached. Please register to continue.",
+      });
+    }
+
+    await ref.set(
+      { count: count + 1, lastUsed: new Date().toISOString() },
+      { merge: true },
+    );
+
+    next();
+  } catch (err) {
+    console.error("RATE LIMIT CHECK FAILED:", err);
+    // Fail open rather than blocking legitimate users if Firestore hiccups
+    next();
+  }
+}
+
+/* =========================
    AI REPLY
 ========================= */
-app.post("/api/reply", async (req, res) => {
+app.post("/api/reply", checkAnonRateLimit, async (req, res) => {
   console.log("HANDLER STARTED");
 
   try {

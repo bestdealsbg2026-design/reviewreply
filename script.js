@@ -271,14 +271,28 @@ async function generateReply() {
   const res = await fetch("/api/reply", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ review, rating, tone: "Friendly" }),
+    body: JSON.stringify({
+      review,
+      rating,
+      tone: "Friendly",
+      uid: currentUser ? currentUser.uid : undefined,
+    }),
   });
+
+  loading.style.display = "none";
+
+  if (res.status === 403) {
+    const errData = await res.json().catch(() => ({}));
+    if (errData.error === "FREE_LIMIT_REACHED") {
+      const loginRequiredModal = document.getElementById("loginRequiredModal");
+      if (loginRequiredModal) loginRequiredModal.classList.add("active");
+      return;
+    }
+  }
 
   const data = await res.json();
 
   output.textContent = data.reply || "No response";
-
-  loading.style.display = "none";
 
   if (!currentUser) {
     anonymousReplyCount += 1;
