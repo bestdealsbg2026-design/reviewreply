@@ -353,6 +353,7 @@ async function generateReply() {
       s.style.cursor = "default";
       resultStars.appendChild(s);
     }
+    resultStars.style.display = "block";
   }
 
   if (!currentUser) {
