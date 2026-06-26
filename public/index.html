@@ -806,9 +806,9 @@
         background: rgba(139, 92, 246, 0.06);
         border: 0.5px solid rgba(139, 92, 246, 0.2);
         border-radius: 10px;
-        padding: 16px;
-        min-height: 100px;
-        line-height: 1.7;
+        padding: 14px 16px;
+        min-height: auto;
+        line-height: 1.6;
         white-space: pre-wrap;
         font-size: 16px;
         color: rgba(255, 255, 255, 0.8);
@@ -1131,7 +1131,16 @@
           </button>
         </div>
         <div id="outputBox" class="output-box">
-          <div class="stars" id="resultStars" style="margin-bottom: 8px"></div>
+          <div
+            class="stars"
+            id="resultStars"
+            style="
+              margin-bottom: 6px;
+              font-size: 14px;
+              justify-content: flex-start;
+              gap: 3px;
+            "
+          ></div>
           <span id="outputText">Your generated reply will appear here...</span>
         </div>
       </div>
