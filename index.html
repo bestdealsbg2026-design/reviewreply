@@ -1130,9 +1130,22 @@
             Copy
           </button>
         </div>
-        <div id="outputBox" class="output-box">
-          <div class="stars" id="resultStars" style="margin: 0 0 8px 0"></div>
-          <div id="outputText" style="display: block">
+        <div
+          id="outputBox"
+          class="output-box"
+          style="display: flex; flex-direction: column; padding: 12px 16px"
+        >
+          <div
+            class="stars"
+            id="resultStars"
+            style="
+              margin: 0;
+              padding: 0;
+              line-height: 1;
+              align-self: flex-start;
+            "
+          ></div>
+          <div id="outputText" style="margin-top: 6px; line-height: 1.5">
             Your generated reply will appear here...
           </div>
         </div>
