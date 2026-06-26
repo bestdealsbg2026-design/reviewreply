@@ -286,7 +286,7 @@ const EXEMPT_TEST_EMAILS = ["dimitardamianov@yahoo.com"];
 
 async function generateReply() {
   const review = document.getElementById("reviewInput").value;
-  const output = document.getElementById("outputText");
+  const output = document.getElementById("outputBox");
   const loading = document.getElementById("loading");
 
   if (!review) return alert("Add review");
@@ -342,19 +342,6 @@ async function generateReply() {
   const data = await res.json();
 
   output.textContent = data.reply || "No response";
-
-  const resultStars = document.getElementById("resultStars");
-  if (resultStars) {
-    resultStars.innerHTML = "";
-    for (let i = 1; i <= 5; i++) {
-      const s = document.createElement("span");
-      s.className = "star" + (i <= rating ? " active" : "");
-      s.textContent = "★";
-      s.style.cursor = "default";
-      resultStars.appendChild(s);
-    }
-    resultStars.style.display = "block";
-  }
 
   if (!currentUser) {
     anonymousReplyCount += 1;
@@ -415,10 +402,10 @@ async function generateReply() {
 /* COPY REPLY BUTTON */
 /* ===================== */
 window.copyReply = function () {
-  const outputText = document.getElementById("outputText");
-  if (!outputText) return;
+  const outputBox = document.getElementById("outputBox");
+  if (!outputBox) return;
   navigator.clipboard
-    .writeText(outputText.textContent)
+    .writeText(outputBox.textContent)
     .then(() => showAuthMessage("Copied to clipboard!", "success"))
     .catch(() => showAuthMessage("Could not copy text.", "error"));
 };
