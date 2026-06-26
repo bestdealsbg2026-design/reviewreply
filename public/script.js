@@ -149,18 +149,6 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   }
 
-  /* ON-PAGE MESSAGE HELPER (replaces alert()) */
-  function showAuthMessage(text, type) {
-    const el = document.getElementById("authMessage");
-    el.textContent = text;
-    el.className = "auth-message show " + (type || "success");
-    el.scrollIntoView({ behavior: "smooth", block: "center" });
-    clearTimeout(window._authMsgTimeout);
-    window._authMsgTimeout = setTimeout(() => {
-      el.classList.remove("show");
-    }, 8000);
-  }
-
   /* SWITCH TEXT INSIDE MODAL */
   switchMode.onclick = () => {
     isLoginMode = !isLoginMode;
@@ -229,7 +217,35 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* GENERATE BUTTON */
   document.getElementById("generateBtn").onclick = generateReply;
+
+  /* ENTER KEY SUPPORT IN AUTH MODAL */
+  const emailInput = document.getElementById("emailInput");
+  const passwordInput = document.getElementById("passwordInput");
+  [emailInput, passwordInput].forEach((input) => {
+    if (input) {
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          authBtn.click();
+        }
+      });
+    }
+  });
 });
+
+/* ===================== */
+/* ON-PAGE MESSAGE HELPER (replaces alert()) */
+/* ===================== */
+function showAuthMessage(text, type) {
+  const el = document.getElementById("authMessage");
+  el.textContent = text;
+  el.className = "auth-message show " + (type || "success");
+  el.scrollIntoView({ behavior: "smooth", block: "center" });
+  clearTimeout(window._authMsgTimeout);
+  window._authMsgTimeout = setTimeout(() => {
+    el.classList.remove("show");
+  }, 8000);
+}
 
 /* ===================== */
 /* REPLY GENERATOR (FIXED SAFE) */
@@ -255,8 +271,9 @@ async function generateReply() {
     if (!userData?.isPremium) {
       const used = userData?.usageCount || 0;
       if (used >= REGISTERED_FREE_LIMIT) {
-        alert(
+        showAuthMessage(
           "You've used all your free replies as a registered user. Please subscribe to continue generating replies.",
+          "error",
         );
         document
           .querySelector(".rr-pricing")
@@ -297,10 +314,26 @@ async function generateReply() {
   if (!currentUser) {
     anonymousReplyCount += 1;
     sessionStorage.setItem("anonReplyCount", String(anonymousReplyCount));
+
+    const remaining = FREE_TRIAL_LIMIT - anonymousReplyCount;
+    if (remaining > 0) {
+      showAuthMessage(
+        `You have ${remaining} free ${remaining === 1 ? "try" : "tries"} left. Register to keep using ReviewReply after that.`,
+        "success",
+      );
+    }
   } else if (!userData?.isPremium) {
     const ref = doc(db, "users", currentUser.uid);
     await updateDoc(ref, { usageCount: increment(1) });
     userData.usageCount = (userData.usageCount || 0) + 1;
+
+    const remaining = REGISTERED_FREE_LIMIT - userData.usageCount;
+    if (remaining > 0) {
+      showAuthMessage(
+        `You have ${remaining} free ${remaining === 1 ? "reply" : "replies"} left before you'll need to subscribe.`,
+        "success",
+      );
+    }
   }
 }
 
