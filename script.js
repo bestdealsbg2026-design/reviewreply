@@ -269,12 +269,23 @@ document.addEventListener("DOMContentLoaded", () => {
       lang === "bg"
         ? "При проблеми пишете на Клиентска поддръжка на "
         : "Any problems write to Customer support at ";
+
+    const leadSpan = document.createElement("span");
+    leadSpan.textContent = text;
+    leadSpan.style.color = "rgba(255,255,255,0.35)";
+
     const link = document.createElement("a");
     link.href = "mailto:bestdealsbg2026@gmail.com";
     link.textContent = "bestdealsbg2026@gmail.com";
-    link.style.color = "rgba(255,255,255,0.45)";
     link.style.textDecoration = "underline";
-    supportEl.textContent = text;
+    link.style.fontWeight = "500";
+    link.style.background = "linear-gradient(135deg, #f59e0b, #ec4899)";
+    link.style.webkitBackgroundClip = "text";
+    link.style.backgroundClip = "text";
+    link.style.webkitTextFillColor = "transparent";
+
+    supportEl.textContent = "";
+    supportEl.appendChild(leadSpan);
     supportEl.appendChild(link);
   }
 });
