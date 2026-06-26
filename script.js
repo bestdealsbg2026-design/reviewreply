@@ -304,7 +304,7 @@ async function generateReply() {
     }
   }
 
-  loading.style.display = "block";
+  loading.classList.add("active");
 
   const res = await fetch("/api/reply", {
     method: "POST",
@@ -317,7 +317,7 @@ async function generateReply() {
     }),
   });
 
-  loading.style.display = "none";
+  loading.classList.remove("active");
 
   if (res.status === 403) {
     const errData = await res.json().catch(() => ({}));

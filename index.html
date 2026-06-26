@@ -744,10 +744,41 @@
       }
       .loading {
         display: none;
-        text-align: center;
-        color: rgba(255, 255, 255, 0.45);
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        color: rgba(255, 255, 255, 0.6);
         margin-bottom: 12px;
         font-size: 14px;
+      }
+      .loading.active {
+        display: flex;
+      }
+      .loading-spinner {
+        width: 16px;
+        height: 16px;
+        border: 2px solid rgba(139, 92, 246, 0.25);
+        border-top-color: #8b5cf6;
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+        flex-shrink: 0;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .loading-text {
+        animation: pulse-text 1.4s ease-in-out infinite;
+      }
+      @keyframes pulse-text {
+        0%,
+        100% {
+          opacity: 0.5;
+        }
+        50% {
+          opacity: 1;
+        }
       }
       .output-header {
         display: flex;
@@ -1089,7 +1120,10 @@
         <button id="generateBtn" class="btn-generate">
           ✨ Generate Reply for Free
         </button>
-        <div class="loading" id="loading">Generating your reply...</div>
+        <div class="loading" id="loading">
+          <span class="loading-spinner"></span>
+          <span class="loading-text">Generating your reply...</span>
+        </div>
         <div class="output-header">
           <label id="t-output-label">💬 Generated Reply</label>
           <button class="copy-btn" id="t-copy-btn" onclick="copyReply()">
