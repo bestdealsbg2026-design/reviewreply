@@ -270,19 +270,21 @@ document.addEventListener("DOMContentLoaded", () => {
         ? "При проблеми пишете на Клиентска поддръжка на "
         : "Any problems write to Customer support at ";
 
+    supportEl.style.background = "linear-gradient(135deg, #f59e0b, #ec4899)";
+    supportEl.style.webkitBackgroundClip = "text";
+    supportEl.style.backgroundClip = "text";
+    supportEl.style.webkitTextFillColor = "transparent";
+    supportEl.style.display = "inline-block";
+
     const leadSpan = document.createElement("span");
     leadSpan.textContent = text;
-    leadSpan.style.color = "rgba(255,255,255,0.35)";
 
     const link = document.createElement("a");
     link.href = "mailto:bestdealsbg2026@gmail.com";
     link.textContent = "bestdealsbg2026@gmail.com";
     link.style.textDecoration = "underline";
     link.style.fontWeight = "500";
-    link.style.background = "linear-gradient(135deg, #f59e0b, #ec4899)";
-    link.style.webkitBackgroundClip = "text";
-    link.style.backgroundClip = "text";
-    link.style.webkitTextFillColor = "transparent";
+    link.style.color = "inherit";
 
     supportEl.textContent = "";
     supportEl.appendChild(leadSpan);
