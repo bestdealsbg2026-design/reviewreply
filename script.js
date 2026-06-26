@@ -7,6 +7,12 @@ let currentUser = null;
 let userData = null;
 let isLoginMode = false;
 
+const FREE_TRIAL_LIMIT = 5;
+let anonymousReplyCount = parseInt(
+  sessionStorage.getItem("anonReplyCount") || "0",
+  10,
+);
+
 /* ===================== */
 /* FIREBASE IMPORTS */
 /* ===================== */
@@ -99,24 +105,49 @@ document.addEventListener("DOMContentLoaded", () => {
   const title = document.getElementById("authTitle");
 
   /* OPEN REGISTER */
-  registerBtn.onclick = () => {
+  function openRegister() {
     isLoginMode = false;
     title.textContent = "Create Account";
     authBtn.textContent = "Create Account";
     modal.classList.add("active");
-  };
+  }
+  registerBtn.onclick = openRegister;
 
   /* OPEN LOGIN */
-  loginBtn.onclick = () => {
+  function openLogin() {
     isLoginMode = true;
     title.textContent = "Welcome Back";
     authBtn.textContent = "Login";
     modal.classList.add("active");
-  };
+  }
+  loginBtn.onclick = openLogin;
 
   closeBtn.onclick = () => modal.classList.remove("active");
 
   logoutBtn.onclick = () => signOut(auth);
+
+  /* LOGIN REQUIRED MODAL (shown after free trial limit reached) */
+  const loginRequiredModal = document.getElementById("loginRequiredModal");
+  const closeLoginRequired = document.getElementById("closeLoginRequired");
+  const goToLoginBtn = document.getElementById("goToLoginBtn");
+  const goToRegisterBtn = document.getElementById("goToRegisterBtn");
+
+  if (closeLoginRequired) {
+    closeLoginRequired.onclick = () =>
+      loginRequiredModal.classList.remove("active");
+  }
+  if (goToLoginBtn) {
+    goToLoginBtn.onclick = () => {
+      loginRequiredModal.classList.remove("active");
+      openLogin();
+    };
+  }
+  if (goToRegisterBtn) {
+    goToRegisterBtn.onclick = () => {
+      loginRequiredModal.classList.remove("active");
+      openRegister();
+    };
+  }
 
   /* ON-PAGE MESSAGE HELPER (replaces alert()) */
   function showAuthMessage(text, type) {
@@ -203,15 +234,37 @@ document.addEventListener("DOMContentLoaded", () => {
 /* ===================== */
 /* REPLY GENERATOR (FIXED SAFE) */
 /* ===================== */
-async function generateReply() {
-  if (!currentUser) return alert("Login first");
-  if (!userData) return alert("User not loaded");
+const REGISTERED_FREE_LIMIT = 3;
 
+async function generateReply() {
   const review = document.getElementById("reviewInput").value;
   const output = document.getElementById("outputBox");
   const loading = document.getElementById("loading");
 
   if (!review) return alert("Add review");
+
+  /* TIER 1: anonymous visitor, not logged in */
+  if (!currentUser) {
+    if (anonymousReplyCount >= FREE_TRIAL_LIMIT) {
+      const loginRequiredModal = document.getElementById("loginRequiredModal");
+      if (loginRequiredModal) loginRequiredModal.classList.add("active");
+      return;
+    }
+  } else {
+    /* TIER 2: logged in, not premium yet — 3 more free replies */
+    if (!userData?.isPremium) {
+      const used = userData?.usageCount || 0;
+      if (used >= REGISTERED_FREE_LIMIT) {
+        alert(
+          "You've used all your free replies as a registered user. Please subscribe to continue generating replies.",
+        );
+        document
+          .querySelector(".rr-pricing")
+          ?.scrollIntoView({ behavior: "smooth" });
+        return;
+      }
+    }
+  }
 
   loading.style.display = "block";
 
@@ -226,6 +279,15 @@ async function generateReply() {
   output.textContent = data.reply || "No response";
 
   loading.style.display = "none";
+
+  if (!currentUser) {
+    anonymousReplyCount += 1;
+    sessionStorage.setItem("anonReplyCount", String(anonymousReplyCount));
+  } else if (!userData?.isPremium) {
+    const ref = doc(db, "users", currentUser.uid);
+    await updateDoc(ref, { usageCount: increment(1) });
+    userData.usageCount = (userData.usageCount || 0) + 1;
+  }
 }
 
 /* ===================== */
