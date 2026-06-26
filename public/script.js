@@ -286,7 +286,7 @@ const EXEMPT_TEST_EMAILS = ["dimitardamianov@yahoo.com"];
 
 async function generateReply() {
   const review = document.getElementById("reviewInput").value;
-  const output = document.getElementById("outputBox");
+  const output = document.getElementById("outputText");
   const loading = document.getElementById("loading");
 
   if (!review) return alert("Add review");
@@ -409,6 +409,18 @@ async function generateReply() {
     }
   }
 }
+
+/* ===================== */
+/* COPY REPLY BUTTON */
+/* ===================== */
+window.copyReply = function () {
+  const outputText = document.getElementById("outputText");
+  if (!outputText) return;
+  navigator.clipboard
+    .writeText(outputText.textContent)
+    .then(() => showAuthMessage("Copied to clipboard!", "success"))
+    .catch(() => showAuthMessage("Could not copy text.", "error"));
+};
 
 /* ===================== */
 /* PRICING FIX */
