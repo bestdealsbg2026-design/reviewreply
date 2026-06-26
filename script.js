@@ -211,7 +211,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       modal.classList.remove("active");
     } catch (e) {
-      showAuthMessage(e.message, "error");
+      showAuthMessage(getFriendlyAuthError(e), "error");
     }
   };
 
@@ -247,10 +247,31 @@ function showAuthMessage(text, type) {
   }, 8000);
 }
 
+function getFriendlyAuthError(error) {
+  const code = error?.code || "";
+  switch (code) {
+    case "auth/invalid-credential":
+    case "auth/wrong-password":
+    case "auth/user-not-found":
+      return "Incorrect email or password. Please try again.";
+    case "auth/email-already-in-use":
+      return "An account with this email already exists. Try logging in instead.";
+    case "auth/invalid-email":
+      return "Please enter a valid email address.";
+    case "auth/weak-password":
+      return "Password is too weak — please use at least 6 characters.";
+    case "auth/too-many-requests":
+      return "Too many attempts. Please wait a moment and try again.";
+    default:
+      return "Something went wrong. Please try again.";
+  }
+}
+
 /* ===================== */
 /* REPLY GENERATOR (FIXED SAFE) */
 /* ===================== */
 const REGISTERED_FREE_LIMIT = 3;
+const EXEMPT_TEST_EMAILS = ["dimitardamianov@yahoo.com"];
 
 async function generateReply() {
   const review = document.getElementById("reviewInput").value;
@@ -259,6 +280,9 @@ async function generateReply() {
 
   if (!review) return alert("Add review");
 
+  const isExemptTestAccount =
+    currentUser && EXEMPT_TEST_EMAILS.includes(currentUser.email);
+
   /* TIER 1: anonymous visitor, not logged in */
   if (!currentUser) {
     if (anonymousReplyCount >= FREE_TRIAL_LIMIT) {
@@ -266,7 +290,7 @@ async function generateReply() {
       if (loginRequiredModal) loginRequiredModal.classList.add("active");
       return;
     }
-  } else {
+  } else if (!isExemptTestAccount) {
     /* TIER 2: logged in, not premium yet — 3 more free replies */
     if (!userData?.isPremium) {
       const used = userData?.usageCount || 0;
@@ -321,15 +345,39 @@ async function generateReply() {
     }
   } else if (!userData?.isPremium) {
     const ref = doc(db, "users", currentUser.uid);
-    await updateDoc(ref, { usageCount: increment(1) });
-    userData.usageCount = (userData.usageCount || 0) + 1;
 
-    const remaining = REGISTERED_FREE_LIMIT - userData.usageCount;
-    if (remaining > 0) {
-      showAuthMessage(
-        `You have ${remaining} free ${remaining === 1 ? "reply" : "replies"} left before you'll need to subscribe.`,
-        "success",
-      );
+    if (isExemptTestAccount) {
+      // Show the same messages a normal user would see, but loop
+      // the count back to 0 once it would hit the limit, so this
+      // test account is never actually blocked.
+      const wouldBeUsed = (userData.usageCount || 0) + 1;
+      if (wouldBeUsed >= REGISTERED_FREE_LIMIT) {
+        await updateDoc(ref, { usageCount: 0 });
+        userData.usageCount = 0;
+        showAuthMessage(
+          "You've used all your free replies as a registered user. Please subscribe to continue generating replies. (Test account — limit auto-reset.)",
+          "error",
+        );
+      } else {
+        await updateDoc(ref, { usageCount: increment(1) });
+        userData.usageCount = wouldBeUsed;
+        const remaining = REGISTERED_FREE_LIMIT - wouldBeUsed;
+        showAuthMessage(
+          `You have ${remaining} free ${remaining === 1 ? "reply" : "replies"} left before you'll need to subscribe. (Test account)`,
+          "success",
+        );
+      }
+    } else {
+      await updateDoc(ref, { usageCount: increment(1) });
+      userData.usageCount = (userData.usageCount || 0) + 1;
+
+      const remaining = REGISTERED_FREE_LIMIT - userData.usageCount;
+      if (remaining > 0) {
+        showAuthMessage(
+          `You have ${remaining} free ${remaining === 1 ? "reply" : "replies"} left before you'll need to subscribe.`,
+          "success",
+        );
+      }
     }
   }
 }
