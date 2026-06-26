@@ -343,6 +343,18 @@ async function generateReply() {
 
   output.textContent = data.reply || "No response";
 
+  const resultStars = document.getElementById("resultStars");
+  if (resultStars) {
+    resultStars.innerHTML = "";
+    for (let i = 1; i <= 5; i++) {
+      const s = document.createElement("span");
+      s.className = "star" + (i <= rating ? " active" : "");
+      s.textContent = "★";
+      s.style.cursor = "default";
+      resultStars.appendChild(s);
+    }
+  }
+
   if (!currentUser) {
     anonymousReplyCount += 1;
     sessionStorage.setItem("anonReplyCount", String(anonymousReplyCount));
