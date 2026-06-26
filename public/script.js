@@ -17,6 +17,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
+  sendEmailVerification,
 } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
 
 import {
@@ -48,9 +49,25 @@ onAuthStateChanged(auth, async (user) => {
   currentUser = user;
 
   const logoutBtn = document.getElementById("logoutBtn");
+  const loginBtn = document.getElementById("loginBtn");
+  const registerBtn = document.getElementById("registerBtn");
+  let emailDisplay = document.getElementById("navEmailDisplay");
 
   if (user) {
     logoutBtn.style.display = "inline-block";
+    if (loginBtn) loginBtn.style.display = "none";
+    if (registerBtn) registerBtn.style.display = "none";
+
+    // Create the email display element if it doesn't exist yet
+    if (!emailDisplay) {
+      emailDisplay = document.createElement("span");
+      emailDisplay.id = "navEmailDisplay";
+      emailDisplay.className = "nav-email";
+      logoutBtn.parentElement.insertBefore(emailDisplay, logoutBtn);
+    }
+    emailDisplay.textContent = user.email;
+    emailDisplay.style.display = "inline-block";
+    emailDisplay.style.marginRight = "10px";
 
     const ref = doc(db, "users", user.uid);
     const snap = await getDoc(ref);
@@ -58,6 +75,9 @@ onAuthStateChanged(auth, async (user) => {
     if (snap.exists()) userData = snap.data();
   } else {
     logoutBtn.style.display = "none";
+    if (loginBtn) loginBtn.style.display = "inline-block";
+    if (registerBtn) registerBtn.style.display = "inline-block";
+    if (emailDisplay) emailDisplay.style.display = "none";
     userData = null;
   }
 
@@ -120,7 +140,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
       if (isLoginMode) {
-        await signInWithEmailAndPassword(auth, email, password);
+        const cred = await signInWithEmailAndPassword(auth, email, password);
+
+        if (!cred.user.emailVerified) {
+          await signOut(auth);
+          alert(
+            "Please verify your email before logging in. Check your inbox for the verification link, or click 'Resend' below.",
+          );
+          return;
+        }
       } else {
         const cred = await createUserWithEmailAndPassword(
           auth,
@@ -133,6 +161,14 @@ document.addEventListener("DOMContentLoaded", () => {
           isPremium: false,
           usageCount: 0,
         });
+
+        await sendEmailVerification(cred.user);
+        await signOut(auth);
+        alert(
+          "Account created! We've sent a verification link to " +
+            cred.user.email +
+            " — please verify your email, then log in.",
+        );
       }
 
       modal.classList.remove("active");
