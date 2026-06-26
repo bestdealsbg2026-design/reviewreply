@@ -110,6 +110,26 @@
       }
       .auth-message {
         display: none;
+        text-align: center;
+        max-width: 600px;
+        margin: 12px auto 0;
+        padding: 12px 20px;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 500;
+      }
+      .auth-message.show {
+        display: block;
+      }
+      .auth-message.success {
+        background: rgba(34, 197, 94, 0.15);
+        border: 0.5px solid rgba(34, 197, 94, 0.4);
+        color: #86efac;
+      }
+      .auth-message.error {
+        background: rgba(239, 68, 68, 0.15);
+        border: 0.5px solid rgba(239, 68, 68, 0.4);
+        color: #fca5a5;
       }
 
       /* LANG SWITCHER */

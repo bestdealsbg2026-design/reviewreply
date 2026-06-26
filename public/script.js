@@ -118,6 +118,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
   logoutBtn.onclick = () => signOut(auth);
 
+  /* ON-PAGE MESSAGE HELPER (replaces alert()) */
+  function showAuthMessage(text, type) {
+    const el = document.getElementById("authMessage");
+    el.textContent = text;
+    el.className = "auth-message show " + (type || "success");
+    el.scrollIntoView({ behavior: "smooth", block: "center" });
+    clearTimeout(window._authMsgTimeout);
+    window._authMsgTimeout = setTimeout(() => {
+      el.classList.remove("show");
+    }, 8000);
+  }
+
   /* SWITCH TEXT INSIDE MODAL */
   switchMode.onclick = () => {
     isLoginMode = !isLoginMode;
@@ -136,7 +148,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const email = document.getElementById("emailInput").value.trim();
     const password = document.getElementById("passwordInput").value.trim();
 
-    if (!email || !password) return alert("Missing fields");
+    if (!email || !password) {
+      showAuthMessage("Please fill in both email and password.", "error");
+      return;
+    }
 
     try {
       if (isLoginMode) {
@@ -144,8 +159,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!cred.user.emailVerified) {
           await signOut(auth);
-          alert(
-            "Please verify your email before logging in. Check your inbox for the verification link, or click 'Resend' below.",
+          showAuthMessage(
+            "Please verify your email before logging in. Check your inbox for the verification link.",
+            "error",
           );
           return;
         }
@@ -164,16 +180,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
         await sendEmailVerification(cred.user);
         await signOut(auth);
-        alert(
+        modal.classList.remove("active");
+        showAuthMessage(
           "Account created! We've sent a verification link to " +
             cred.user.email +
             " — please verify your email, then log in.",
+          "success",
         );
+        return;
       }
 
       modal.classList.remove("active");
     } catch (e) {
-      alert(e.message);
+      showAuthMessage(e.message, "error");
     }
   };
 
