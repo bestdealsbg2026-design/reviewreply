@@ -218,6 +218,17 @@ document.addEventListener("DOMContentLoaded", () => {
   /* GENERATE BUTTON */
   document.getElementById("generateBtn").onclick = generateReply;
 
+  /* STAR RATING SELECTOR */
+  const starEls = document.querySelectorAll("#stars .star");
+  starEls.forEach((starEl) => {
+    starEl.addEventListener("click", () => {
+      rating = parseInt(starEl.dataset.value, 10);
+      starEls.forEach((s) => {
+        s.classList.toggle("active", parseInt(s.dataset.value, 10) <= rating);
+      });
+    });
+  });
+
   /* ENTER KEY SUPPORT IN AUTH MODAL */
   const emailInput = document.getElementById("emailInput");
   const passwordInput = document.getElementById("passwordInput");
