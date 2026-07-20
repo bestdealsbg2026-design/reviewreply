@@ -66,6 +66,7 @@ app.post(
                 isPremium: true,
                 stripeCustomerId: session.customer,
                 stripeSubscriptionId: session.subscription,
+                cancelAtPeriodEnd: false,
               },
               { merge: true },
             );
@@ -185,6 +186,82 @@ app.post("/create-checkout-session", async (req, res) => {
 });
 
 /* =========================
+   CANCEL SUBSCRIPTION (AT PERIOD END)
+   Only for logged-in users with an active subscription.
+   Sets cancel_at_period_end so the user keeps premium
+   access through the remainder of the billing period they
+   already paid for; Stripe fires customer.subscription.deleted
+   at the end of the period, which the webhook above already
+   handles by flipping isPremium to false.
+========================= */
+app.post("/cancel-subscription", async (req, res) => {
+  try {
+    const { uid } = req.body;
+
+    if (!uid) {
+      return res.status(400).json({ error: "uid required" });
+    }
+
+    const userRef = dbAdmin.collection("users").doc(uid);
+    const userDoc = await userRef.get();
+
+    if (!userDoc.exists) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const { stripeSubscriptionId, isPremium, cancelAtPeriodEnd } =
+      userDoc.data();
+
+    if (!isPremium || !stripeSubscriptionId) {
+      return res.status(400).json({
+        error: "No active subscription found for this account",
+      });
+    }
+
+    if (cancelAtPeriodEnd) {
+      return res.status(409).json({
+        error: "Subscription is already scheduled to cancel",
+        currentPeriodEnd: userDoc.data().currentPeriodEnd ?? null,
+      });
+    }
+
+    const subscription = await stripe.subscriptions.update(
+      stripeSubscriptionId,
+      { cancel_at_period_end: true },
+    );
+
+    // Newer Stripe API versions moved current_period_end from the
+    // subscription object down to the subscription item level.
+    const currentPeriodEnd =
+      subscription.current_period_end ??
+      subscription.items?.data?.[0]?.current_period_end ??
+      null;
+
+    // Reflect the pending cancellation immediately in Firestore so the
+    // UI can show "access until <date>" without waiting on the webhook.
+    // isPremium stays true — access continues until the period actually ends.
+    await userRef.set(
+      {
+        cancelAtPeriodEnd: true,
+        currentPeriodEnd,
+      },
+      { merge: true },
+    );
+
+    res.json({
+      canceled: true,
+      currentPeriodEnd,
+    });
+  } catch (err) {
+    console.error("CANCEL SUBSCRIPTION ERROR:", err);
+
+    res.status(500).json({
+      error: err.message,
+    });
+  }
+});
+
+/* =========================
    ANONYMOUS IP RATE LIMIT
    Tracks free-trial usage by IP in Firestore so it
    survives cache-clearing/incognito. Server-trusted,
@@ -200,13 +277,6 @@ function getClientIp(req) {
 }
 
 async function checkAnonRateLimit(req, res, next) {
-  // Only applies to requests that don't carry a logged-in uid.
-  // The frontend only sends uid-based checks via Firestore for
-  // logged-in users, so anonymous requests are identified simply
-  // by absence of an Authorization/uid context — here we rate-limit
-  // by IP regardless, but logged-in users are already capped
-  // client-side via Firestore usageCount, so this is a safety net
-  // specifically for anonymous abuse.
   const ip = getClientIp(req);
 
   if (EXEMPT_IPS.includes(ip)) {
@@ -215,7 +285,6 @@ async function checkAnonRateLimit(req, res, next) {
 
   const { uid } = req.body || {};
   if (uid) {
-    // Logged-in request — handled by Firestore usageCount in the frontend.
     return next();
   }
 
@@ -239,7 +308,6 @@ async function checkAnonRateLimit(req, res, next) {
     next();
   } catch (err) {
     console.error("RATE LIMIT CHECK FAILED:", err);
-    // Fail open rather than blocking legitimate users if Firestore hiccups
     next();
   }
 }
