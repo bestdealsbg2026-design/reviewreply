@@ -65,11 +65,15 @@ onAuthStateChanged(auth, async (user) => {
     if (loginBtn) loginBtn.style.display = "none";
     if (registerBtn) registerBtn.style.display = "none";
 
+    // Create the email display element if it doesn't exist yet.
+    // Insert before unsubscribeBtn (if present) so the visual order is
+    // email -> Unsubscribe -> Logout, rather than before logoutBtn directly.
     if (!emailDisplay) {
       emailDisplay = document.createElement("span");
       emailDisplay.id = "navEmailDisplay";
       emailDisplay.className = "nav-email";
-      const insertBeforeEl = unsubscribeBtn || logoutBtn; logoutBtn.parentElement.insertBefore(emailDisplay, insertBeforeEl);
+      const insertBeforeEl = unsubscribeBtn || logoutBtn;
+      logoutBtn.parentElement.insertBefore(emailDisplay, insertBeforeEl);
     }
     emailDisplay.textContent = user.email;
     emailDisplay.style.display = "inline-block";
@@ -97,6 +101,8 @@ onAuthStateChanged(auth, async (user) => {
 /* MANAGE / CANCEL SUBSCRIPTION */
 /* ===================== */
 
+// Only ever visible/usable for logged-in users with an active
+// (or pending-cancellation) premium subscription.
 window.updateUnsubscribeButton = function updateUnsubscribeButton() {
   const unsubscribeBtn = document.getElementById("unsubscribeBtn");
   if (!unsubscribeBtn) return;
@@ -128,18 +134,64 @@ window.updateUnsubscribeButton = function updateUnsubscribeButton() {
     unsubscribeBtn.textContent =
       window.currentLang === "bg" ? "Отписване" : "Unsubscribe";
   }
-};
+}
+
+function showUnsubscribeConfirm() {
+  return new Promise((resolve) => {
+    const modal = document.getElementById("unsubscribeConfirmModal");
+    const title = document.getElementById("unsubscribeConfirmTitle");
+    const subtitle = document.getElementById("unsubscribeConfirmSubtitle");
+    const cancelBtn = document.getElementById("unsubscribeCancelBtn");
+    const confirmBtn = document.getElementById("unsubscribeConfirmBtn");
+    const closeBtn = document.getElementById("closeUnsubscribeConfirm");
+
+    if (!modal) {
+      resolve(false);
+      return;
+    }
+
+    const isBg = window.currentLang === "bg";
+    if (title)
+      title.textContent = isBg
+        ? "Да отменим ли абонамента?"
+        : "Cancel your subscription?";
+    if (subtitle)
+      subtitle.textContent = isBg
+        ? "Абонаментът ще спре да се подновява. Ще запазиш достъп до края на текущия платен период."
+        : "Your subscription will stop renewing. You'll keep premium access until the end of your current billing period.";
+    if (cancelBtn)
+      cancelBtn.textContent = isBg ? "Запази абонамента" : "Keep subscription";
+    if (confirmBtn)
+      confirmBtn.textContent = isBg ? "Да, отмени" : "Yes, cancel";
+
+    function cleanup(result) {
+      modal.classList.remove("active");
+      cancelBtn.removeEventListener("click", onCancel);
+      confirmBtn.removeEventListener("click", onConfirm);
+      closeBtn.removeEventListener("click", onCancel);
+      resolve(result);
+    }
+    function onCancel() {
+      cleanup(false);
+    }
+    function onConfirm() {
+      cleanup(true);
+    }
+
+    cancelBtn.addEventListener("click", onCancel);
+    confirmBtn.addEventListener("click", onConfirm);
+    closeBtn.addEventListener("click", onCancel);
+
+    modal.classList.add("active");
+  });
+}
 
 window.manageSubscription = async function () {
   if (!currentUser || !userData?.isPremium) return;
-  if (userData?.cancelAtPeriodEnd) return;
+  if (userData?.cancelAtPeriodEnd) return; // already scheduled
 
-  const confirmMsg =
-    window.currentLang === "bg"
-      ? "Абонаментът ще бъде отменен и няма да се подновява. Ще запазите достъп до края на текущия платен период. Продължи?"
-      : "Your subscription will stop renewing. You'll keep premium access until the end of your current billing period. Continue?";
-
-  if (!window.confirm(confirmMsg)) return;
+  const confirmed = await showUnsubscribeConfirm();
+  if (!confirmed) return;
 
   const unsubscribeBtn = document.getElementById("unsubscribeBtn");
   if (unsubscribeBtn) unsubscribeBtn.disabled = true;
@@ -172,9 +224,11 @@ window.manageSubscription = async function () {
 
       updateUnsubscribeButton();
     } else if (res.status === 409) {
+      // Already scheduled to cancel (e.g. a second click landed before the
+      // UI updated, or another tab already canceled it) — just resync local
+      // state quietly rather than alarming the user with an "error".
       userData.cancelAtPeriodEnd = true;
-      if (data.currentPeriodEnd)
-        userData.currentPeriodEnd = data.currentPeriodEnd;
+      if (data.currentPeriodEnd) userData.currentPeriodEnd = data.currentPeriodEnd;
       updateUnsubscribeButton();
     } else {
       showAuthMessage(
@@ -212,6 +266,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const switchMode = document.getElementById("switchAuthMode");
   const title = document.getElementById("authTitle");
 
+  /* OPEN REGISTER */
   function openRegister() {
     isLoginMode = false;
     title.textContent = "Create Account";
@@ -220,6 +275,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   registerBtn.onclick = openRegister;
 
+  /* OPEN LOGIN */
   function openLogin() {
     isLoginMode = true;
     title.textContent = "Welcome Back";
@@ -232,6 +288,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   logoutBtn.onclick = () => signOut(auth);
 
+  /* LOGIN REQUIRED MODAL (shown after free trial limit reached) */
   const loginRequiredModal = document.getElementById("loginRequiredModal");
   const closeLoginRequired = document.getElementById("closeLoginRequired");
   const goToLoginBtn = document.getElementById("goToLoginBtn");
@@ -254,6 +311,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   }
 
+  /* SWITCH TEXT INSIDE MODAL */
   switchMode.onclick = () => {
     isLoginMode = !isLoginMode;
 
@@ -266,6 +324,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  /* AUTH ACTION */
   authBtn.onclick = async () => {
     const email = document.getElementById("emailInput").value.trim();
     const password = document.getElementById("passwordInput").value.trim();
@@ -318,8 +377,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  /* GENERATE BUTTON */
   document.getElementById("generateBtn").onclick = generateReply;
 
+  /* STAR RATING SELECTOR */
   const starEls = document.querySelectorAll("#stars .star");
   starEls.forEach((starEl) => {
     starEl.addEventListener("click", () => {
@@ -330,6 +391,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  /* ENTER KEY SUPPORT IN AUTH MODAL */
   const emailInput = document.getElementById("emailInput");
   const passwordInput = document.getElementById("passwordInput");
   [emailInput, passwordInput].forEach((input) => {
@@ -394,6 +456,7 @@ async function generateReply() {
   const isExemptTestAccount =
     currentUser && EXEMPT_TEST_EMAILS.includes(currentUser.email);
 
+  /* TIER 1: anonymous visitor, not logged in */
   if (!currentUser) {
     if (anonymousReplyCount >= FREE_TRIAL_LIMIT) {
       const loginRequiredModal = document.getElementById("loginRequiredModal");
@@ -401,6 +464,7 @@ async function generateReply() {
       return;
     }
   } else if (!isExemptTestAccount) {
+    /* TIER 2: logged in, not premium yet — 3 more free replies */
     if (!userData?.isPremium) {
       const used = userData?.usageCount || 0;
       if (used >= REGISTERED_FREE_LIMIT) {
@@ -456,6 +520,9 @@ async function generateReply() {
     const ref = doc(db, "users", currentUser.uid);
 
     if (isExemptTestAccount) {
+      // Show the same messages a normal user would see, but loop
+      // the count back to 0 once it would hit the limit, so this
+      // test account is never actually blocked.
       const wouldBeUsed = (userData.usageCount || 0) + 1;
       if (wouldBeUsed >= REGISTERED_FREE_LIMIT) {
         userData.usageCount = 0;

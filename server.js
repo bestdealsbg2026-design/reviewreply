@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import Stripe from "stripe";
 import admin from "firebase-admin";
+import nodemailer from "nodemailer";
 
 dotenv.config();
 
@@ -32,6 +33,57 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
 console.log("API KEY EXISTS:", !!API_KEY);
+
+/* =========================
+   EMAIL NOTIFICATIONS
+   Uses Gmail SMTP via nodemailer. Requires GMAIL_USER and
+   GMAIL_APP_PASSWORD env vars (an App Password, not the normal
+   Gmail login password — see https://myaccount.google.com/apppasswords).
+   Failures here are logged but never block the actual cancellation.
+========================= */
+const NOTIFY_EMAILS = [
+  "dimitardamianov@yahoo.com",
+  "bestdealsbg2026@gmail.com",
+];
+
+let mailTransporter = null;
+if (process.env.GMAIL_USER && process.env.GMAIL_APP_PASSWORD) {
+  mailTransporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.GMAIL_USER,
+      pass: process.env.GMAIL_APP_PASSWORD,
+    },
+  });
+} else {
+  console.warn(
+    "GMAIL_USER / GMAIL_APP_PASSWORD not set — unsubscribe email notifications are disabled.",
+  );
+}
+
+async function notifyUnsubscribe({ userEmail, uid, currentPeriodEnd }) {
+  if (!mailTransporter) return;
+
+  const periodEndText = currentPeriodEnd
+    ? new Date(currentPeriodEnd * 1000).toLocaleDateString("en-US")
+    : "unknown";
+
+  try {
+    await mailTransporter.sendMail({
+      from: process.env.GMAIL_USER,
+      to: NOTIFY_EMAILS.join(","),
+      subject: "ReviewReply — a user unsubscribed",
+      text: `A user has canceled their subscription.
+
+User email: ${userEmail || "unknown"}
+User ID: ${uid}
+Access remains active until: ${periodEndText}
+`,
+    });
+  } catch (err) {
+    console.error("UNSUBSCRIBE EMAIL NOTIFICATION FAILED:", err);
+  }
+}
 
 app.use(cors());
 
@@ -252,6 +304,13 @@ app.post("/cancel-subscription", async (req, res) => {
       canceled: true,
       currentPeriodEnd,
     });
+
+    // Fire-and-forget — don't delay the response to the user on email sending.
+    notifyUnsubscribe({
+      userEmail: userDoc.data().email,
+      uid,
+      currentPeriodEnd,
+    });
   } catch (err) {
     console.error("CANCEL SUBSCRIPTION ERROR:", err);
 
@@ -277,6 +336,13 @@ function getClientIp(req) {
 }
 
 async function checkAnonRateLimit(req, res, next) {
+  // Only applies to requests that don't carry a logged-in uid.
+  // The frontend only sends uid-based checks via Firestore for
+  // logged-in users, so anonymous requests are identified simply
+  // by absence of an Authorization/uid context — here we rate-limit
+  // by IP regardless, but logged-in users are already capped
+  // client-side via Firestore usageCount, so this is a safety net
+  // specifically for anonymous abuse.
   const ip = getClientIp(req);
 
   if (EXEMPT_IPS.includes(ip)) {
@@ -285,6 +351,7 @@ async function checkAnonRateLimit(req, res, next) {
 
   const { uid } = req.body || {};
   if (uid) {
+    // Logged-in request — handled by Firestore usageCount in the frontend.
     return next();
   }
 
@@ -308,6 +375,7 @@ async function checkAnonRateLimit(req, res, next) {
     next();
   } catch (err) {
     console.error("RATE LIMIT CHECK FAILED:", err);
+    // Fail open rather than blocking legitimate users if Firestore hiccups
     next();
   }
 }

@@ -74,8 +74,6 @@
         border: 1px solid #8b5cf6 !important;
         color: #fff !important;
       }
-      #unsubscribeBtn { background: #8b5cf6 !important; border: 1px solid #8b5cf6 !important; color: #fff !important; }
-      #unsubscribeBtn:disabled { opacity: 0.6; cursor: not-allowed; }
       .nav-btn.filled {
         background: #8b5cf6;
         border: 1px solid #8b5cf6;
@@ -88,6 +86,15 @@
         -webkit-text-fill-color: transparent;
         background-clip: text;
         font-weight: 500;
+      }
+      #unsubscribeBtn {
+        background: #8b5cf6 !important;
+        border: 1px solid #8b5cf6 !important;
+        color: #fff !important;
+      }
+      #unsubscribeBtn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
       }
       .nav-plan {
         font-size: 12px;
@@ -1036,7 +1043,15 @@
       <div class="nav-actions" id="navActions">
         <button class="nav-btn outline" id="registerBtn">Register</button>
         <button class="nav-btn filled" id="loginBtn">Login</button>
-        <button class="nav-btn outline" id="unsubscribeBtn" style="display: none" onclick="manageSubscription()">Unsubscribe</button><button class="nav-btn" id="logoutBtn" style="display: none">
+        <button
+          class="nav-btn outline"
+          id="unsubscribeBtn"
+          style="display: none"
+          onclick="manageSubscription()"
+        >
+          Unsubscribe
+        </button>
+        <button class="nav-btn" id="logoutBtn" style="display: none">
           Logout
         </button>
       </div>
@@ -1468,6 +1483,88 @@
     </div>
 
     <!-- LOGIN REQUIRED MODAL -->
+    <div class="modal-overlay" id="unsubscribeConfirmModal">
+      <div
+        class="register-modal"
+        style="
+          padding: 40px 24px;
+          width: 100%;
+          max-width: 380px;
+          box-sizing: border-box;
+        "
+      >
+        <button class="close-modal" id="closeUnsubscribeConfirm">×</button>
+        <div class="modal-header" style="margin-bottom: 24px">
+          <div
+            style="
+              width: 48px;
+              height: 48px;
+              background: rgba(139, 92, 246, 0.15);
+              border-radius: 50%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              margin: 0 auto 16px;
+              font-size: 22px;
+            "
+          >
+            ⚠️
+          </div>
+          <h2
+            id="unsubscribeConfirmTitle"
+            style="font-size: 18px; color: #fff; line-height: 1.4"
+          >
+            Cancel your subscription?
+          </h2>
+          <div
+            style="
+              width: 40px;
+              height: 1px;
+              background: rgba(139, 92, 246, 0.4);
+              margin: 16px auto;
+            "
+          ></div>
+          <p
+            class="modal-subtitle"
+            id="unsubscribeConfirmSubtitle"
+            style="
+              font-size: 14px;
+              color: rgba(255, 255, 255, 0.55);
+              font-weight: 400;
+              margin-top: 0;
+            "
+          >
+            Your subscription will stop renewing. You'll keep premium access
+            until the end of your current billing period.
+          </p>
+        </div>
+        <div
+          class="modal-body"
+          style="display: flex; gap: 10px; justify-content: center"
+        >
+          <button
+            class="nav-btn outline"
+            id="unsubscribeCancelBtn"
+            style="width: auto; padding: 10px 20px"
+          >
+            Keep subscription
+          </button>
+          <button
+            class="modal-register-btn"
+            id="unsubscribeConfirmBtn"
+            style="
+              padding: 10px 20px;
+              font-size: 14px;
+              width: auto;
+              background: linear-gradient(135deg, #8b5cf6, #6366f1);
+            "
+          >
+            Yes, cancel
+          </button>
+        </div>
+      </div>
+    </div>
+
     <div class="modal-overlay" id="loginRequiredModal">
       <div
         class="register-modal"
