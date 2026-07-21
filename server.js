@@ -62,7 +62,7 @@ if (process.env.GMAIL_USER && process.env.GMAIL_APP_PASSWORD) {
 }
 
 async function notifyUnsubscribe({ userEmail, uid, currentPeriodEnd }) {
-  if (!mailTransporter) return;
+  if (!mailTransporter) return { sent: false, reason: "not configured" };
 
   const periodEndText = currentPeriodEnd
     ? new Date(currentPeriodEnd * 1000).toLocaleDateString("en-US")
@@ -80,8 +80,10 @@ User ID: ${uid}
 Access remains active until: ${periodEndText}
 `,
     });
+    return { sent: true };
   } catch (err) {
     console.error("UNSUBSCRIBE EMAIL NOTIFICATION FAILED:", err);
+    return { sent: false, error: err.message };
   }
 }
 
@@ -235,6 +237,20 @@ app.post("/create-checkout-session", async (req, res) => {
       error: err.message,
     });
   }
+});
+
+/* =========================
+   TEMPORARY DEBUG ENDPOINT — remove after testing!
+   Lets us verify Gmail SMTP is working without needing
+   a real Stripe subscription.
+========================= */
+app.post("/debug-test-email", async (req, res) => {
+  const result = await notifyUnsubscribe({
+    userEmail: "test@example.com",
+    uid: "debug-test-uid",
+    currentPeriodEnd: Math.floor(Date.now() / 1000) + 30 * 24 * 60 * 60,
+  });
+  res.json(result);
 });
 
 /* =========================
