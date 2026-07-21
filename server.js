@@ -246,20 +246,6 @@ app.post("/create-checkout-session", async (req, res) => {
 });
 
 /* =========================
-   TEMPORARY DEBUG ENDPOINT — remove after testing!
-   Lets us verify Gmail SMTP is working without needing
-   a real Stripe subscription.
-========================= */
-app.post("/debug-test-email", async (req, res) => {
-  const result = await notifyUnsubscribe({
-    userEmail: "test@example.com",
-    uid: "debug-test-uid",
-    currentPeriodEnd: Math.floor(Date.now() / 1000) + 30 * 24 * 60 * 60,
-  });
-  res.json(result);
-});
-
-/* =========================
    CANCEL SUBSCRIPTION (AT PERIOD END)
    Only for logged-in users with an active subscription.
    Sets cancel_at_period_end so the user keeps premium
