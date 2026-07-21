@@ -69,7 +69,7 @@ onAuthStateChanged(auth, async (user) => {
       emailDisplay = document.createElement("span");
       emailDisplay.id = "navEmailDisplay";
       emailDisplay.className = "nav-email";
-      logoutBtn.parentElement.insertBefore(emailDisplay, logoutBtn);
+      const insertBeforeEl = unsubscribeBtn || logoutBtn; logoutBtn.parentElement.insertBefore(emailDisplay, insertBeforeEl);
     }
     emailDisplay.textContent = user.email;
     emailDisplay.style.display = "inline-block";
