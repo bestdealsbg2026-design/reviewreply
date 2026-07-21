@@ -3,7 +3,6 @@ import cors from "cors";
 import dotenv from "dotenv";
 import Stripe from "stripe";
 import admin from "firebase-admin";
-import nodemailer from "nodemailer";
 
 dotenv.config();
 
@@ -36,9 +35,11 @@ console.log("API KEY EXISTS:", !!API_KEY);
 
 /* =========================
    EMAIL NOTIFICATIONS
-   Uses Gmail SMTP via nodemailer. Requires GMAIL_USER and
-   GMAIL_APP_PASSWORD env vars (an App Password, not the normal
-   Gmail login password — see https://myaccount.google.com/apppasswords).
+   Uses Resend's HTTPS API (https://resend.com) instead of SMTP —
+   Railway blocks outbound SMTP ports (465/587) on Free/Trial/Hobby
+   plans, so a regular Gmail SMTP connection just hangs forever there.
+   Resend works over plain HTTPS, so it isn't affected by that block.
+   Requires RESEND_API_KEY and RESEND_FROM_EMAIL env vars.
    Failures here are logged but never block the actual cancellation.
 ========================= */
 const NOTIFY_EMAILS = [
@@ -46,41 +47,49 @@ const NOTIFY_EMAILS = [
   "bestdealsbg2026@gmail.com",
 ];
 
-let mailTransporter = null;
-if (process.env.GMAIL_USER && process.env.GMAIL_APP_PASSWORD) {
-  mailTransporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.GMAIL_USER,
-      pass: process.env.GMAIL_APP_PASSWORD,
-    },
-  });
-} else {
+const resendConfigured = !!process.env.RESEND_API_KEY;
+if (!resendConfigured) {
   console.warn(
-    "GMAIL_USER / GMAIL_APP_PASSWORD not set — unsubscribe email notifications are disabled.",
+    "RESEND_API_KEY not set — unsubscribe email notifications are disabled.",
   );
 }
 
 async function notifyUnsubscribe({ userEmail, uid, currentPeriodEnd }) {
-  if (!mailTransporter) return { sent: false, reason: "not configured" };
+  if (!resendConfigured) return { sent: false, reason: "not configured" };
 
   const periodEndText = currentPeriodEnd
     ? new Date(currentPeriodEnd * 1000).toLocaleDateString("en-US")
     : "unknown";
 
   try {
-    await mailTransporter.sendMail({
-      from: process.env.GMAIL_USER,
-      to: NOTIFY_EMAILS.join(","),
-      subject: "ReviewReply — a user unsubscribed",
-      text: `A user has canceled their subscription.
+    const res = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from:
+          process.env.RESEND_FROM_EMAIL || "ReviewReply <onboarding@resend.dev>",
+        to: NOTIFY_EMAILS,
+        subject: "ReviewReply — a user unsubscribed",
+        text: `A user has canceled their subscription.
 
 User email: ${userEmail || "unknown"}
 User ID: ${uid}
 Access remains active until: ${periodEndText}
 `,
+      }),
     });
-    return { sent: true };
+
+    const data = await res.json().catch(() => ({}));
+
+    if (!res.ok) {
+      console.error("UNSUBSCRIBE EMAIL NOTIFICATION FAILED:", data);
+      return { sent: false, error: data?.message || `HTTP ${res.status}` };
+    }
+
+    return { sent: true, id: data?.id };
   } catch (err) {
     console.error("UNSUBSCRIBE EMAIL NOTIFICATION FAILED:", err);
     return { sent: false, error: err.message };
