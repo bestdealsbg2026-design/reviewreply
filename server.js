@@ -42,10 +42,7 @@ console.log("API KEY EXISTS:", !!API_KEY);
    Requires RESEND_API_KEY and RESEND_FROM_EMAIL env vars.
    Failures here are logged but never block the actual cancellation.
 ========================= */
-const NOTIFY_EMAILS = [
-  "dimitardamianov@yahoo.com",
-  "bestdealsbg2026@gmail.com",
-];
+const NOTIFY_EMAILS = ["bestdealsbg2026@gmail.com"];
 
 const resendConfigured = !!process.env.RESEND_API_KEY;
 if (!resendConfigured) {
